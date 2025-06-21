@@ -5,9 +5,7 @@ import langCard from "./api/top-langs.js";
 import wakatimeCard from "./api/wakatime.js";
 import gistCard from "./api/gist.js";
 import express from "express";
-import ensureDbSchema from "./src/common/utils.js";
 
-ensureDbSchema();
 const app = express();
 app.listen(process.env.port || 9000);
 

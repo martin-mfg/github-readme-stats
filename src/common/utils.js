@@ -258,22 +258,6 @@ const request = (data, headers) => {
 };
 
 /**
- * Creates the database table "requests" if it does not exist.
- */
-export async function ensureDbSchema() {
-  if (!pool) {
-    return;
-  }
-  const createTableSQL = `
-      CREATE TABLE IF NOT EXISTS requests (
-        request TEXT PRIMARY KEY,
-        requested_at TIMESTAMP NOT NULL DEFAULT now()
-      );
-  `;
-  await pool.query(createTableSQL);
-}
-
-/**
  * Stores or updates the request in the database.
  */
 export async function storeRequest(req) {
@@ -281,6 +265,11 @@ export async function storeRequest(req) {
     return;
   }
   const query = `
+    CREATE TABLE IF NOT EXISTS requests (
+      request TEXT PRIMARY KEY,
+      requested_at TIMESTAMP NOT NULL DEFAULT now()
+    );
+
     INSERT INTO requests (request, requested_at)
     VALUES ($1, NOW())
     ON CONFLICT (request)
