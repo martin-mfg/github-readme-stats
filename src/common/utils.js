@@ -264,18 +264,32 @@ export async function storeRequest(req) {
   if (!pool) {
     return;
   }
-  const query = `
-    CREATE TABLE IF NOT EXISTS requests (
-      request TEXT PRIMARY KEY,
-      requested_at TIMESTAMP NOT NULL DEFAULT now()
-    );
 
+  const insertQuery = `
     INSERT INTO requests (request, requested_at)
     VALUES ($1, NOW())
     ON CONFLICT (request)
     DO UPDATE SET requested_at = EXCLUDED.requested_at
   `;
-  await pool.query(query, [req.url]);
+
+  try {
+    await pool.query(insertQuery, [req.url]);
+  } catch (err) {
+    // Check for undefined_table error (SQLSTATE 42P01)
+    if (err.code === "42P01") {
+      const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS requests (
+          request TEXT PRIMARY KEY,
+          requested_at TIMESTAMP NOT NULL DEFAULT now()
+        )
+      `;
+      await pool.query(createTableQuery);
+      // Retry the insert after creating the table
+      await pool.query(insertQuery, [req.url]);
+    } else {
+      throw err; // Re-throw if it's some other error
+    }
+  }
 }
 
 /**
