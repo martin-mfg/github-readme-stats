@@ -5,6 +5,7 @@ import {
   parseArray,
   parseBoolean,
   renderError,
+  storeRequest,
 } from "../src/common/utils.js";
 import { fetchWakatimeStats } from "../src/fetchers/wakatime-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
@@ -49,6 +50,7 @@ export default async (req, res) => {
   }
 
   try {
+    await storeRequest(req);
     const stats = await fetchWakatimeStats({ username, api_domain });
 
     let cacheSeconds = clampValue(

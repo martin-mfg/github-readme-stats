@@ -3,6 +3,7 @@ import { blacklist } from "../src/common/blacklist.js";
 import {
   clampValue,
   CONSTANTS,
+  storeRequest,
   parseArray,
   parseBoolean,
   renderError,
@@ -81,6 +82,7 @@ export default async (req, res) => {
   }
 
   try {
+    await storeRequest(req);
     const showStats = parseArray(show);
     const repoData = await fetchRepo(
       username,

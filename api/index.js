@@ -5,6 +5,7 @@ import {
   CONSTANTS,
   parseArray,
   parseBoolean,
+  storeRequest,
   renderError,
 } from "../src/common/utils.js";
 import { fetchStats } from "../src/fetchers/stats-fetcher.js";
@@ -89,6 +90,7 @@ export default async (req, res) => {
   }
 
   try {
+    await storeRequest(req);
     const showStats = parseArray(show);
     const organizations = parseArray(owners);
     let repositories = parseArray(repos);

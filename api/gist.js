@@ -3,6 +3,7 @@ import {
   CONSTANTS,
   renderError,
   parseBoolean,
+  storeRequest,
 } from "../src/common/utils.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { renderGistCard } from "../src/cards/gist-card.js";
@@ -39,6 +40,7 @@ export default async (req, res) => {
   }
 
   try {
+    await storeRequest(req);
     const gistData = await fetchGist(id);
 
     let cacheSeconds = clampValue(

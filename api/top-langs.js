@@ -5,6 +5,7 @@ import {
   parseArray,
   parseBoolean,
   renderError,
+  storeRequest,
 } from "../src/common/utils.js";
 import { fetchTopLanguages } from "../src/fetchers/top-languages-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
@@ -62,6 +63,7 @@ export default async (req, res) => {
   }
 
   try {
+    await storeRequest(req);
     const topLangs = await fetchTopLanguages(
       username,
       parseArray(exclude_repo),

@@ -3,7 +3,14 @@ import axios from "axios";
 import toEmoji from "emoji-name-map";
 import wrap from "word-wrap";
 import { themes } from "../../themes/index.js";
+import pkg from "pg";
+const { Pool } = pkg;
 
+const pool = process.env.POSTGRES_URL
+  ? new Pool({
+      connectionString: process.env.POSTGRES_URL,
+    })
+  : null;
 const TRY_AGAIN_LATER = "Please try again later";
 
 const SECONDARY_ERROR_MESSAGES = {
@@ -249,6 +256,38 @@ const request = (data, headers) => {
     data,
   });
 };
+
+/**
+ * Creates the database table "requests" if it does not exist.
+ */
+export async function ensureDbSchema() {
+  if (!pool) {
+    return;
+  }
+  const createTableSQL = `
+      CREATE TABLE IF NOT EXISTS requests (
+        request TEXT PRIMARY KEY,
+        requested_at TIMESTAMP NOT NULL DEFAULT now()
+      );
+  `;
+  await pool.query(createTableSQL);
+}
+
+/**
+ * Stores or updates the request in the database.
+ */
+export async function storeRequest(req) {
+  if (!pool) {
+    return;
+  }
+  const query = `
+    INSERT INTO requests (request, requested_at)
+    VALUES ($1, NOW())
+    ON CONFLICT (request)
+    DO UPDATE SET requested_at = EXCLUDED.requested_at
+  `;
+  await pool.query(query, [req.url]);
+}
 
 /**
  * Object containing card colors.
