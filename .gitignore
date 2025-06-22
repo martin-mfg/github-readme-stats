@@ -1,4 +1,5 @@
-.vercel
+.vercel/project.json
+.vercel/README.txt
 .env
 node_modules
 *.lock
@@ -12,5 +13,3 @@ vercel_token
 !.vscode/extensions.json
 !.vscode/settings.json
 *.code-workspace
-
-.vercel

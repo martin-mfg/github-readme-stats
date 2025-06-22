@@ -1,0 +1,4 @@
+{
+  "runtime": "nodejs20.x",
+  "handler": "index.js"
+}
