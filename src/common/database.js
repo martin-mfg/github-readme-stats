@@ -96,7 +96,7 @@ async function makeRequests(urls, poolSize) {
       if (idx >= urls.length) {
         break;
       }
-      const url = urls[idx];
+      const url = "http://" + process.env.VERCEL_BRANCH_URL + urls[idx];
       try {
         if (idx % 10 === 0) {
           console.log(`Processing request ${idx + 1} out of ${urls.length}`);
