@@ -15,16 +15,21 @@ export async function storeRequest(req) {
   if (!pool) {
     return;
   }
-  if (req.headers && req.headers["x-bypass-store"]) {
-    return;
-  }
 
-  const insertQuery = `
-      INSERT INTO requests (request, requested_at)
-      VALUES ($1, NOW())
-      ON CONFLICT (request)
-      DO UPDATE SET requested_at = EXCLUDED.requested_at
-    `;
+  const isBypass = req.headers && req.headers["x-bypass-store"];
+  const insertQuery = isBypass
+    ? `
+        INSERT INTO requests (request, requested_at)
+        VALUES ($1, NOW())
+        ON CONFLICT (request)
+        DO UPDATE SET requested_at = EXCLUDED.requested_at
+      `
+    : `
+        INSERT INTO requests (request, requested_at, user_requested_at)
+        VALUES ($1, NOW(), NOW())
+        ON CONFLICT (request)
+        DO UPDATE SET requested_at = EXCLUDED.requested_at, user_requested_at = EXCLUDED.user_requested_at
+      `;
 
   try {
     await pool.query(insertQuery, [req.url]);
@@ -56,7 +61,7 @@ async function deleteOldRequests() {
 
   const deleteQuery = `
       DELETE FROM requests
-      WHERE requested_at < NOW() - INTERVAL '7 days'
+      WHERE user_requested_at < NOW() - INTERVAL '7 days'
     `;
   const result = await pool.query(deleteQuery);
   console.log(`Deleted ${result.rowCount} old requests.`);
@@ -75,7 +80,8 @@ async function getRecentRequests() {
       SELECT request
       FROM requests
       WHERE requested_at >= NOW() - INTERVAL '7 days'
-        AND requested_at < NOW() - INTERVAL '1 hour';
+        AND requested_at < NOW() - INTERVAL '1 hour'
+      ORDER BY requested_at ASC
       `;
   const { rows } = await pool.query(query);
   return rows.map((row) => row.request);
