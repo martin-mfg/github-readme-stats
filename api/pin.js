@@ -3,13 +3,13 @@ import { blacklist } from "../src/common/blacklist.js";
 import {
   clampValue,
   CONSTANTS,
-  storeRequest,
   parseArray,
   parseBoolean,
   renderError,
 } from "../src/common/utils.js";
 import { fetchRepo } from "../src/fetchers/repo-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
+import { storeRequest } from "../src/common/database.js";
 
 export default async (req, res) => {
   const {

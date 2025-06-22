@@ -3,11 +3,11 @@ import {
   CONSTANTS,
   renderError,
   parseBoolean,
-  storeRequest,
 } from "../src/common/utils.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { renderGistCard } from "../src/cards/gist-card.js";
 import { fetchGist } from "../src/fetchers/gist-fetcher.js";
+import { storeRequest } from "../src/common/database.js";
 
 export default async (req, res) => {
   const {

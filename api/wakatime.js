@@ -5,10 +5,10 @@ import {
   parseArray,
   parseBoolean,
   renderError,
-  storeRequest,
 } from "../src/common/utils.js";
 import { fetchWakatimeStats } from "../src/fetchers/wakatime-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
+import { storeRequest } from "../src/common/database.js";
 
 export default async (req, res) => {
   const {

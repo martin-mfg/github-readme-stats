@@ -5,11 +5,11 @@ import {
   CONSTANTS,
   parseArray,
   parseBoolean,
-  storeRequest,
   renderError,
 } from "../src/common/utils.js";
 import { fetchStats } from "../src/fetchers/stats-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
+import { storeRequest } from "../src/common/database.js";
 
 export default async (req, res) => {
   const {
