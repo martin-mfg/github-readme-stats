@@ -15,6 +15,9 @@ export async function storeRequest(req) {
   if (!pool) {
     return;
   }
+  if (req.headers && req.headers["x-bypass-store"]) {
+    return;
+  }
 
   const insertQuery = `
       INSERT INTO requests (request, requested_at)
@@ -96,12 +99,15 @@ async function makeRequests(urls, poolSize) {
       if (idx >= urls.length) {
         break;
       }
-      const url = "http://" + process.env.VERCEL_BRANCH_URL + urls[idx];
+      const url = "https://" + process.env.VERCEL_BRANCH_URL + urls[idx];
       try {
         if (idx % 10 === 0) {
           console.log(`Processing request ${idx + 1} out of ${urls.length}`);
         }
-        await axios.get(url, { timeout: 10000 });
+        await axios.get(url, {
+          timeout: 10000,
+          headers: { "x-bypass-store": "true" },
+        });
       } catch (err) {
         console.error(`Error fetching ${url}:`, err.message);
       }
