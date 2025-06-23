@@ -1,5 +1,5 @@
 import fs from "fs";
-import { themes } from "../.vercel/output/functions/api.func/core-app/themes/index.js";
+import { themes } from "../themes/index.js";
 
 const TARGET_FILE = "./themes/README.md";
 const REPO_CARD_LINKS_FLAG = "<!-- REPO_CARD_LINKS -->";

@@ -8,7 +8,7 @@
     "cards",
     "card-generator"
   ],
-  "main": ".vercel/output/functions/api.func/core-app/src/index.js",
+  "main": "src/index.js",
   "type": "module",
   "homepage": "https://github.com/anuraghazra/github-readme-stats",
   "bugs": {
@@ -27,10 +27,10 @@
     "preview-theme": "node scripts/preview-theme",
     "close-stale-theme-prs": "node scripts/close-stale-theme-prs",
     "generate-langs-json": "node scripts/generate-langs-json",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "prettier --write ../../../../..",
+    "format:check": "prettier --check ../../../../..",
     "prepare": "husky",
-    "lint": "npx eslint --max-warnings 0 \".vercel/output/functions/api.func/core-app/src/**/*.js\" \"./scripts/**/*.js\" \".vercel/output/functions/api.func/core-app/tests/**/*.js\" \".vercel/output/functions/api.func/core-app/api/**/*.js\" \".vercel/output/functions/api.func/core-app/themes/**/*.js\"",
+    "lint": "npx eslint --max-warnings 0 \"./src/**/*.js\" \"./scripts/**/*.js\" \"./tests/**/*.js\" \"./api/**/*.js\" \"./themes/**/*.js\"",
     "bench": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.bench.config.js"
   },
   "author": "Anurag Hazra",
