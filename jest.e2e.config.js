@@ -3,5 +3,5 @@ export default {
   transform: {},
   testEnvironment: "node",
   coverageProvider: "v8",
-  testMatch: ["<rootDir>/tests/e2e/**/*.test.js"],
+  testMatch: ["<rootDir>/.vercel/output/functions/api.func/core-app/tests/e2e/**/*.test.js"],
 };

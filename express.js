@@ -1,9 +1,9 @@
 import "dotenv/config";
-import statsCard from "./api/index.js";
-import repoCard from "./api/pin.js";
-import langCard from "./api/top-langs.js";
-import wakatimeCard from "./api/wakatime.js";
-import gistCard from "./api/gist.js";
+import statsCard from "./.vercel/output/functions/api.func/core-app/api/index.js";
+import repoCard from "./.vercel/output/functions/api.func/core-app/api/pin.js";
+import langCard from "./.vercel/output/functions/api.func/core-app/api/top-langs.js";
+import wakatimeCard from "./.vercel/output/functions/api.func/core-app/api/wakatime.js";
+import gistCard from "./.vercel/output/functions/api.func/core-app/api/gist.js";
 import express from "express";
 
 const app = express();

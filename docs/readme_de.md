@@ -91,7 +91,7 @@ Passe den Wert des URL-Parameters `?username=` so an, dass dort dein GitHub-Nutz
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
 ```
 
-_Hinweis: Die Berechnung des Ranges basiert auf den jeweiligen Benutzerstatistiken, siehe [src/calculateRank.js](../src/calculateRank.js)_
+_Hinweis: Die Berechnung des Ranges basiert auf den jeweiligen Benutzerstatistiken, siehe [src/calculateRank.js](../.vercel/output/functions/api.func/core-app/src/calculateRank.js)_
 
 ### Verbergen individueller Statistiken
 
@@ -127,7 +127,7 @@ dark, radical, merko, gruvbox, tokyonight, onedark, cobalt, synthwave, highcontr
 
 <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1595174536/grs-themes_l4ynja.png" alt="GitHub Readme Stat Themes" width="600px"/>
 
-Du kannst dir eine Vorschau [aller verfügbaren Themes](../themes/README.md) ansehen oder die [theme config Datei](../themes/index.js) ansehen.
+Du kannst dir eine Vorschau [aller verfügbaren Themes](../.vercel/output/functions/api.func/core-app/themes/README.md) ansehen oder die [theme config Datei](../.vercel/output/functions/api.func/core-app/themes/index.js) ansehen.
 Außerdem **kannst du neue Themes erstellen**, Beiträge an diesem Projekt sind gerne gesehen! :D
 
 ### Anpassungen/Personalisierung
@@ -141,7 +141,7 @@ Du kannst das Erscheinungsbild deiner `Stats Card` oder `Repo Card`, mithilfe vo
 - `icon_color` - Symbolfarbe (falls verfügbar) _(hex color)_
 - `bg_color` - Hintergrundfarbe _(hex color)_ **oder** ein Farbverlauf in der Form von _winkel,start,ende_
 - `hide_border` - Blendet den Rand der Karte aus _(Boolean)_
-- `theme` - Name des Erscheinungsbildes/Themes [alle verfügbaren Themes](../themes/README.md)
+- `theme` - Name des Erscheinungsbildes/Themes [alle verfügbaren Themes](../.vercel/output/functions/api.func/core-app/themes/README.md)
 - `cache_seconds` - manuelles festlegen der Cachezeiten _(min: 14400, max: 86400)_
 - `locale` - Stellen Sie die Sprache auf der Karte ein _(z.B. cn, de, es, etc.)_
 

@@ -92,7 +92,7 @@ Mude o valor de `?username=` para o seu nome de usuário no GitHub.
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
 ```
 
-_Nota: As classificações são baseadas nas estatísticas do usuário, veja [src/calculateRank.js](../src/calculateRank.js)_
+_Nota: As classificações são baseadas nas estatísticas do usuário, veja [src/calculateRank.js](../.vercel/output/functions/api.func/core-app/src/calculateRank.js)_
 
 ### Ocultando estatísticas específicas
 
@@ -140,7 +140,7 @@ dark, radical, merko, gruvbox, tokyonight, onedark, cobalt, synthwave, highcontr
 
 <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1595174536/grs-themes_l4ynja.png" alt="GitHub Readme Stat Themes" width="600px"/>
 
-Visualize [todos o temas disponíveis](../themes/README.md) ou o [arquivo de configuração de tema](../themes/index.js), além de **também poder contribuir com novos temas**, se desejar :D
+Visualize [todos o temas disponíveis](../.vercel/output/functions/api.func/core-app/themes/README.md) ou o [arquivo de configuração de tema](../.vercel/output/functions/api.func/core-app/themes/index.js), além de **também poder contribuir com novos temas**, se desejar :D
 
 ### Personalização
 
@@ -153,7 +153,7 @@ Personalize a aparência do seu `Stats Card` ou `Repo Card` da maneira que desej
 - `icon_color` - Cor dos ícones (se disponível) _(hex color)_
 - `bg_color` - Cor de fundo do cartão _(hex color)_
 - `hide_border` - Esconde a borda do cartão _(boleano)_
-- `theme` - Nome do tema, escolha em [todos os temas disponíveis](../themes/README.md)
+- `theme` - Nome do tema, escolha em [todos os temas disponíveis](../.vercel/output/functions/api.func/core-app/themes/README.md)
 - `cache_seconds` - Defina o cabeçalho do cache manualmente _(min: 14400, max: 86400)_
 - `locale` - defina o idioma no cartão _(por exemplo. cn, de, es, etc.)_
 

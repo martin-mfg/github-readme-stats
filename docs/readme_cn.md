@@ -90,7 +90,7 @@
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
 ```
 
-_注: 等级基于用户的统计信息计算得出，详见 [src/calculateRank.js](../src/calculateRank.js)_
+_注: 等级基于用户的统计信息计算得出，详见 [src/calculateRank.js](../.vercel/output/functions/api.func/core-app/src/calculateRank.js)_
 
 ### 隐藏指定统计
 
@@ -138,7 +138,7 @@ dark, radical, merko, gruvbox, tokyonight, onedark, cobalt, synthwave, highcontr
 
 <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1595174536/grs-themes_l4ynja.png" alt="GitHub Readme Stat Themes" width="600px"/>
 
-你可以预览[所有可用主题](../themes/README.md)或者签出[主题配置文件](../themes/index.js), 而且如果你喜欢, **你也可以贡献新的主题** :D
+你可以预览[所有可用主题](../.vercel/output/functions/api.func/core-app/themes/README.md)或者签出[主题配置文件](../.vercel/output/functions/api.func/core-app/themes/index.js), 而且如果你喜欢, **你也可以贡献新的主题** :D
 
 ### 自定义
 
@@ -151,7 +151,7 @@ dark, radical, merko, gruvbox, tokyonight, onedark, cobalt, synthwave, highcontr
 - `icon_color` - 图标颜色（如果可用）_（十六进制色码）_
 - `bg_color` - 卡片背景颜色 _（十六进制色码）_ **或者** 以 _angle,start,end_ 的形式渐变
 - `hide_border` - 隐藏卡的边框 _(布尔值)_
-- `theme` - 主题名称，从[所有可用主题](../themes/README.md)中选择
+- `theme` - 主题名称，从[所有可用主题](../.vercel/output/functions/api.func/core-app/themes/README.md)中选择
 - `cache_seconds` - 手动设置缓存头 _（最小值: 14400，最大值: 86400）_
 - `locale` - 在卡片中设置语言 _(例如 cn, de, es, 等等)_
 

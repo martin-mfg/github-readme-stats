@@ -95,7 +95,7 @@ Cambia el valor de `?username=` al nombre de tu usuario de GitHub.
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
 ```
 
-_Nota: Los rangos disponibles son S+ (top 1%), S (top 25%), A++ (top 45%), A+ (top 60%) y B+ (todos). Los valores se calculan utilizando la [función de distribución acumulada](https://es.wikipedia.org/wiki/Funci%C3%B3n_de_distribuci%C3%B3n) utilizando commits, contribuciones, issues, estrellas, pull request, seguidores y repositorios propios. Puedes investigar más sobre la implementación en [src/calculateRank.js](../src/calculateRank.js)._
+_Nota: Los rangos disponibles son S+ (top 1%), S (top 25%), A++ (top 45%), A+ (top 60%) y B+ (todos). Los valores se calculan utilizando la [función de distribución acumulada](https://es.wikipedia.org/wiki/Funci%C3%B3n_de_distribuci%C3%B3n) utilizando commits, contribuciones, issues, estrellas, pull request, seguidores y repositorios propios. Puedes investigar más sobre la implementación en [src/calculateRank.js](../.vercel/output/functions/api.func/core-app/src/calculateRank.js)._
 
 ### Ocultar estadísticas individualmente
 
@@ -143,7 +143,7 @@ dark, radical, merko, gruvbox, tokyonight, onedark, cobalt, synthwave, highcontr
 
 <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1595174536/grs-themes_l4ynja.png" alt="GitHub Readme Stat Themes" width="600px"/>
 
-Puedes ver una vista previa de [todos los temas disponibles](../themes/README.md) o ver el [archivo de configuración](../themes/index.js) del tema y también **puedes contribuir con nuevos temas** si lo deseas :D
+Puedes ver una vista previa de [todos los temas disponibles](../.vercel/output/functions/api.func/core-app/themes/README.md) o ver el [archivo de configuración](../.vercel/output/functions/api.func/core-app/themes/index.js) del tema y también **puedes contribuir con nuevos temas** si lo deseas :D
 
 ### Personalización
 
@@ -156,7 +156,7 @@ Puedes personalizar el aspecto de tu `Tarjeta de Estadísticas` o `Tarjeta de Re
 - `icon_color` - Color de icono si esta disponible _(hex color)_
 - `bg_color` - Color de fondo _(hex color)_
 - `hide_border` - Oculta el borde de la tarjeta _(booleano)_
-- `theme` - Nombre del tema, elige uno de [todos los temas disponible ](../themes/README.md)
+- `theme` - Nombre del tema, elige uno de [todos los temas disponible ](../.vercel/output/functions/api.func/core-app/themes/README.md)
 - `cache_seconds` - Cache _(min: 14400, max: 86400)_
 - `locale` - configurar el idioma en la tarjeta _(p.ej. cn, de, es, etc.)_
 
