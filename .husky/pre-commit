@@ -1,3 +1,3 @@
-npm test
-npm run lint
+npm --prefix .vercel/output/functions/api.func/core-app/ test
+npm --prefix .vercel/output/functions/api.func/core-app/ run lint
 npx lint-staged

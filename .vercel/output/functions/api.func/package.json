@@ -1,3 +1,6 @@
 {
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "core-app": "file:core-app"
+  }
 }
