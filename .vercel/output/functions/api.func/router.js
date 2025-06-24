@@ -3,6 +3,7 @@ import { default as pin } from "./core-app/api/pin.js";
 import axios from "axios";
 
 export default async (req, res) => {
+  console.log(axios);
   const url = new URL(req.url, "https://localhost");
   req.query = Object.fromEntries(url.searchParams.entries());
   switch (url.pathname) {
@@ -17,13 +18,4 @@ export default async (req, res) => {
       res.end("Not Found");
       break;
   }
-};
-
-export const dummyRequest = (data, headers) => {
-  return axios({
-    url: "https://api.github.com/graphql",
-    method: "post",
-    headers,
-    data,
-  });
 };

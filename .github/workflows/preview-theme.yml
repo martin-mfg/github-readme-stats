@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - ".vercel/output/functions/api.func/core-app/themes/index.js"
+      - "themes/index.js"
 
 permissions:
   actions: read

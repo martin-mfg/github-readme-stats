@@ -60,7 +60,7 @@ const fetcher = (variables, token) => {
 const urlExample = "/api/pin?username=USERNAME&amp;repo=REPO_NAME";
 
 /**
- * @typedef {import("./types").RepositoryData} RepositoryData Repository data.
+ * @typedef {import("./types.js").RepositoryData} RepositoryData Repository data.
  */
 
 /**

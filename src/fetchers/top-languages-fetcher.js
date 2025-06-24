@@ -53,7 +53,7 @@ const fetcher = (variables, token) => {
 };
 
 /**
- * @typedef {import("./types").TopLangData} TopLangData Top languages data.
+ * @typedef {import("./types.js").TopLangData} TopLangData Top languages data.
  */
 
 /**

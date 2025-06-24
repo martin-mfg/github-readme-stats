@@ -91,7 +91,7 @@
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
 ```
 
-_Note: カードに表示されるランクはユーザの統計情報に基づいて計算されています。詳しくは、[src/calculateRank.js](../.vercel/output/functions/api.func/core-app/src/calculateRank.js)をご覧ください。_
+_Note: カードに表示されるランクはユーザの統計情報に基づいて計算されています。詳しくは、[src/calculateRank.js](../src/calculateRank.js)をご覧ください。_
 
 ### 特定の統計情報を隠す
 
@@ -139,7 +139,7 @@ dark, radical, merko, gruvbox, tokyonight, onedark, cobalt, synthwave, highcontr
 
 <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1595174536/grs-themes_l4ynja.png" alt="GitHub Readme Stat Themes" width="600px"/>
 
-その他の使用可能なテーマの[プレビュー](../.vercel/output/functions/api.func/core-app/themes/README.md)や[設定ファイル](../.vercel/output/functions/api.func/core-app/themes/index.js)もご覧ください。もしよろしければ、**新しいテーマを投稿してみてください** :smile:
+その他の使用可能なテーマの[プレビュー](../themes/README.md)や[設定ファイル](../themes/index.js)もご覧ください。もしよろしければ、**新しいテーマを投稿してみてください** :smile:
 
 ### テーマを自分でカスタマイズする
 
@@ -152,7 +152,7 @@ dark, radical, merko, gruvbox, tokyonight, onedark, cobalt, synthwave, highcontr
 - `icon_color` - アイコンの色（変更可能な場合のみ） _(16 進数カラーコード)_
 - `bg_color` - 背景の色 _(16 進数カラーコード)_ **または** _angle,start,end_ の形式でグラデーションを指定することも可
 - `hide_border` - カードの境界線を非表示にします _(ブール値)_
-- `theme` - [使用可能なテーマ一覧](../.vercel/output/functions/api.func/core-app/themes/README.md) から選んだテーマ名
+- `theme` - [使用可能なテーマ一覧](../themes/README.md) から選んだテーマ名
 - `cache_seconds` - キャッシュ時間の秒数 _(最小値: 14400, 最大値: 86400)_
 - `locale` - カードに言語を設定する _(例えば cn, de, es, 等)_
 

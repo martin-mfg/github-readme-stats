@@ -199,8 +199,8 @@ const getStyles = ({
 };
 
 /**
- * @typedef {import('../fetchers/types').StatsData} StatsData
- * @typedef {import('./types').StatCardOptions} StatCardOptions
+ * @typedef {import('../fetchers/types.js').StatsData} StatsData
+ * @typedef {import('./types.js').StatCardOptions} StatCardOptions
  */
 
 /**

@@ -77,7 +77,7 @@ const calculatePrimaryLanguage = (files) => {
 };
 
 /**
- * @typedef {import('./types').GistData} GistData Gist data.
+ * @typedef {import('./types.js').GistData} GistData Gist data.
  */
 
 /**

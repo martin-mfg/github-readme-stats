@@ -36,7 +36,7 @@ const noCodingActivityNode = ({ color, text }) => {
 };
 
 /**
- * @typedef {import('../fetchers/types').WakaTimeLang} WakaTimeLang
+ * @typedef {import('../fetchers/types.js').WakaTimeLang} WakaTimeLang
  */
 
 /**
@@ -207,8 +207,8 @@ const getStyles = ({
 };
 
 /**
- * @typedef {import('../fetchers/types').WakaTimeData} WakaTimeData
- * @typedef {import('./types').WakaTimeOptions} WakaTimeOptions
+ * @typedef {import('../fetchers/types.js').WakaTimeData} WakaTimeData
+ * @typedef {import('./types.js').WakaTimeOptions} WakaTimeOptions
  */
 
 /**

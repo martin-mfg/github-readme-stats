@@ -273,7 +273,7 @@ const fetchRepoUserStats = async (
 };
 
 /**
- * @typedef {import("./types").StatsData} StatsData Stats data.
+ * @typedef {import("./types.js").StatsData} StatsData Stats data.
  */
 
 /**

@@ -89,7 +89,7 @@ Remplacez la valeur `?username=` par le nom d'utilisateur de votre GitHub.
 [![Les Stats GitHub de Anurag](https://github-readme-stats.vercel.app/api?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
 ```
 
-_Note: Les rangs sont calculés sur la base des statistiques de l'utilisateur, voir [src/calculateRank.js](../.vercel/output/functions/api.func/core-app/src/calculateRank.js)_
+_Note: Les rangs sont calculés sur la base des statistiques de l'utilisateur, voir [src/calculateRank.js](../src/calculateRank.js)_
 
 ### Cacher les statistiques individuelles
 
@@ -125,7 +125,7 @@ dark, radical, merko, gruvbox, tokyonight, onedark, cobalt, synthwave, highcontr
 
 <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1595174536/grs-themes_l4ynja.png" alt="GitHub Readme Stat Themes" width="600px"/>
 
-Vous pouvez consulter un aperçu de [tous les thèmes disponibles](../.vercel/output/functions/api.func/core-app/themes/README.md) ou consulter le [fichier de configuration des thèmes](../.vercel/output/functions/api.func/core-app/themes/index.js) & **vous pouvez également ajouter de nouveaux thèmes** si vous le souhaitez :D
+Vous pouvez consulter un aperçu de [tous les thèmes disponibles](../themes/README.md) ou consulter le [fichier de configuration des thèmes](../themes/index.js) & **vous pouvez également ajouter de nouveaux thèmes** si vous le souhaitez :D
 
 ### Personnalisation
 
@@ -138,7 +138,7 @@ Vous pouvez personnaliser l'apparence de votre `Carte des stats` ou `Carte de d�
 - `icon_color` - Couleur des icônes si disponibles _(hex color)_
 - `bg_color` - Couleur du fond de la carte _(hex color)_ **ou** un gradiant de la forme _angle,start,end_
 - `hide_border` - Cache la bordure de la carte _(booléen)_
-- `theme` - Nom du thème, parmis [tous les thèmes disponibles](../.vercel/output/functions/api.func/core-app/themes/README.md)
+- `theme` - Nom du thème, parmis [tous les thèmes disponibles](../themes/README.md)
 - `cache_seconds` - Paramétrer le cache manuellement _(min: 14400, max: 86400)_
 - `locale` - définir la langue de la carte _(par exemple. cn, de, es, etc.)_
 
