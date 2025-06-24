@@ -1,4 +1,4 @@
-type ThemeNames = keyof typeof import("../../themes");
+type ThemeNames = keyof typeof import("../../themes/index.js");
 type RankIcon = "default" | "github" | "percentile";
 
 export type CommonOptions = {

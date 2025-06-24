@@ -30,8 +30,8 @@ const CARD_DEFAULT_WIDTH = 400;
 const HEADER_MAX_LENGTH = 35;
 
 /**
- * @typedef {import('./types.js').GistCardOptions} GistCardOptions Gist card options.
- * @typedef {import('../fetchers/types.js').GistData} GistData Gist data.
+ * @typedef {import('./types').GistCardOptions} GistCardOptions Gist card options.
+ * @typedef {import('../fetchers/types').GistData} GistData Gist data.
  */
 
 /**

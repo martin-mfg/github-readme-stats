@@ -26,7 +26,7 @@ const PIE_LAYOUT_DEFAULT_LANGS_COUNT = 6;
 const DONUT_VERTICAL_LAYOUT_DEFAULT_LANGS_COUNT = 6;
 
 /**
- * @typedef {import("../fetchers/types.js").Lang} Lang
+ * @typedef {import("../fetchers/types").Lang} Lang
  */
 
 /**
@@ -666,7 +666,7 @@ const renderDonutLayout = (langs, width, totalLanguageSize) => {
 };
 
 /**
- * @typedef {import("./types.js").TopLangOptions} TopLangOptions
+ * @typedef {import("./types").TopLangOptions} TopLangOptions
  * @typedef {TopLangOptions["layout"]} Layout
  */
 
@@ -710,7 +710,7 @@ const getDefaultLanguagesCountByLayout = ({ layout, hide_progress }) => {
 };
 
 /**
- * @typedef {import('../fetchers/types.js').TopLangData} TopLangData
+ * @typedef {import('../fetchers/types').TopLangData} TopLangData
  */
 
 /**

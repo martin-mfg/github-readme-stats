@@ -45,8 +45,8 @@ const getBadgeSVG = (label, textColor, xOffset = 0) => `
 `;
 
 /**
- * @typedef {import("../fetchers/types.js").RepositoryData} RepositoryData Repository data.
- * @typedef {import("./types.js").RepoCardOptions} RepoCardOptions Repo card options.
+ * @typedef {import("../fetchers/types").RepositoryData} RepositoryData Repository data.
+ * @typedef {import("./types").RepoCardOptions} RepoCardOptions Repo card options.
  */
 
 /**

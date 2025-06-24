@@ -1,5 +1,4 @@
-.vercel/project.json
-.vercel/README.txt
+.vercel
 .env
 node_modules
 *.lock

@@ -51,7 +51,7 @@ We're currently paused addition of new themes to decrease maintenance efforts. A
 
 GitHub Readme Stats supports multiple languages, if we are missing your language, you can contribute it! You can check the currently supported languages [here](./readme.md#available-locales).
 
-To contribute your language you need to edit the [src/translations.js](src/translations.js) file and add new property to each object where the key is the language code in [ISO 639-1 standard](https://www.andiamo.co.uk/resources/iso-language-codes/) and the value is the translated string.
+To contribute your language you need to edit the [src/translations.js](./src/translations.js) file and add new property to each object where the key is the language code in [ISO 639-1 standard](https://www.andiamo.co.uk/resources/iso-language-codes/) and the value is the translated string.
 
 ## Any contributions you make will be under the MIT Software License
 

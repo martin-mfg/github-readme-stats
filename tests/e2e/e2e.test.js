@@ -86,7 +86,7 @@ const REPOSITORY_DATA = {
 };
 
 /**
- * @typedef {import("../../src/fetchers/types.js").GistData} GistData Gist data type.
+ * @typedef {import("../../src/fetchers/types").GistData} GistData Gist data type.
  */
 
 /**
