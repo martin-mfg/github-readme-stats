@@ -1,5 +1,5 @@
-import { default as gist } from "./core-app/api/gist.js";
-import { default as pin } from "./core-app/api/pin.js";
+import { default as gist } from "./api/gist.js";
+import { default as pin } from "./api/pin.js";
 import axios from "axios";
 
 export default async (req, res) => {
