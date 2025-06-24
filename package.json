@@ -1,0 +1,12 @@
+{
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "emoji-name-map": "^1.2.8",
+    "github-username-regex": "^1.0.0",
+    "pg": "^8.16.2",
+    "upgrade": "^1.1.0",
+    "word-wrap": "^1.2.5"
+  }
+}
