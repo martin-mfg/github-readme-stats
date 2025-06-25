@@ -5,8 +5,8 @@
   ],
   "redirects": [
     {
-      "source": "/:match*",
-      "destination": "/isr/:match*"
+      "source": "/api:match*",
+      "destination": "/isr/api:match*"
     }
   ]
 }
