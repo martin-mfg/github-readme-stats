@@ -4,7 +4,7 @@ import { default as pin } from "./api-copy/pin.js";
 import { default as topLangs } from "./api-copy/top-langs.js";
 import { default as wakatime } from "./api-copy/wakatime.js";
 import { default as repeatRecent } from "./api-copy/repeat-recent.js";
-import { default as patInfo } from "./api-copy/pat-info.js";
+import { default as patInfo } from "./api-copy/status/pat-info.js";
 import { default as statusUp } from "./api-copy/status/up.js";
 
 export default async (req, res) => {
