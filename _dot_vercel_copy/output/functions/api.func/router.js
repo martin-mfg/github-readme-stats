@@ -1,5 +1,11 @@
+import { default as api } from "./api/index.js";
 import { default as gist } from "./api/gist.js";
 import { default as pin } from "./api/pin.js";
+import { default as topLangs } from "./api/top-langs.js";
+import { default as wakatime } from "./api/wakatime.js";
+import { default as repeatRecent } from "./api/repeat-recent.js";
+import { default as patInfo } from "./api/pat-info.js";
+import { default as statusUp } from "./api/status/up.js";
 
 export default async (req, res) => {
   // remaining code expects express.js-like request and response objects
@@ -19,11 +25,29 @@ export default async (req, res) => {
   req.query = Object.fromEntries(url.searchParams.entries());
 
   switch (url.pathname) {
-    case "/gist":
+    case "/api":
+      api(req, res);
+      break;
+    case "/api/gist":
       gist(req, res);
       break;
-    case "/pin":
+    case "/api/pin":
       pin(req, res);
+      break;
+    case "/api/top-langs":
+      topLangs(req, res);
+      break;
+    case "/api/wakatime":
+      wakatime(req, res);
+      break;
+    case "/api/repeat-recent":
+      repeatRecent(req, res);
+      break;
+    case "/api/pat-info":
+      patInfo(req, res);
+      break;
+    case "/api/status/up":
+      statusUp(req, res);
       break;
     default:
       res.statusCode = 404;
