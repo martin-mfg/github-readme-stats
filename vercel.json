@@ -1,12 +1,15 @@
 {
   "buildCommand": "npm install && mkdir --parents .vercel/output/functions/isr/api.func/ && cp --recursive ./* .vercel/output/functions/isr/api.func/ && cp --recursive .vercel/output/functions/isr/api.func/_dot_vercel_copy/output/ .vercel/",
   "rewrites": [
-    { "source": "/api", "destination": "/isr/api" }
+    {
+      "source": "/:match*",
+      "destination": "/isr/:match*"
+    }
   ],
   "redirects": [
     {
-      "source": "/api:match*",
-      "destination": "/isr/api:match*"
+      "source": "/",
+      "destination": "https://github.com/anuraghazra/github-readme-stats"
     }
   ]
 }
