@@ -2,15 +2,27 @@ import { default as gist } from "./api/gist.js";
 import { default as pin } from "./api/pin.js";
 
 export default async (req, res) => {
+  res.send = function (data) {
+    if (typeof data === "object") {
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(data));
+    } else {
+      res.end(data);
+    }
+  };
+  res.status = function (code) {
+    res.statusCode = code;
+    return res;
+  };
   const url = new URL(req.url, "https://localhost");
   req.query = Object.fromEntries(url.searchParams.entries());
 
   console.log(
-    req.query +
+    JSON.stringify(req.query) +
       " # " +
       req.method +
       " # " +
-      req.headers +
+      JSON.stringify(req.headers) +
       " # " +
       res.setHeader +
       " # " +
