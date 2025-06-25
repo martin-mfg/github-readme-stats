@@ -1,5 +1,5 @@
 {
-  "buildCommand": "mv ./api api-renamed && npm install && mkdir --parents .vercel/output/functions/api.func/ && cp --recursive ./* .vercel/output/functions/api.func/ && cp --recursive .vercel/output/functions/api.func/_dot_vercel_copy/output/ .vercel/ && mv ./api api-renamed",
+  "buildCommand": "mv ./api api-renamed && npm install && mkdir --parents .vercel/output/functions/api.func/ && cp --recursive ./* .vercel/output/functions/api.func/ && cp --recursive .vercel/output/functions/api.func/_dot_vercel_copy/output/ .vercel/",
   "redirects": [
     {
       "source": "/",
