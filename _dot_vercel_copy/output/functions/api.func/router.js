@@ -2,6 +2,7 @@ import { default as gist } from "./api/gist.js";
 import { default as pin } from "./api/pin.js";
 
 export default async (req, res) => {
+  // remaining code expects express.js-like request and response objects
   res.send = function (data) {
     if (typeof data === "object") {
       res.setHeader("Content-Type", "application/json");
@@ -16,20 +17,6 @@ export default async (req, res) => {
   };
   const url = new URL(req.url, "https://localhost");
   req.query = Object.fromEntries(url.searchParams.entries());
-
-  console.log(
-    JSON.stringify(req.query) +
-      " # " +
-      req.method +
-      " # " +
-      JSON.stringify(req.headers) +
-      " # " +
-      res.setHeader +
-      " # " +
-      res.send +
-      " # " +
-      res.status,
-  );
 
   switch (url.pathname) {
     case "/gist":

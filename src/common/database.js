@@ -39,7 +39,8 @@ export async function storeRequest(req) {
       const createTableQuery = `
           CREATE TABLE IF NOT EXISTS requests (
             request TEXT PRIMARY KEY,
-            requested_at TIMESTAMP NOT NULL DEFAULT now()
+            requested_at TIMESTAMP NOT NULL DEFAULT now(),
+            user_requested_at TIMESTAMP NOT NULL DEFAULT now()
           )
         `;
       await pool.query(createTableQuery);
