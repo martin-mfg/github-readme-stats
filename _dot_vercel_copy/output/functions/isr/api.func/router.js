@@ -50,8 +50,8 @@ export default async (req, res) => {
       statusUp(req, res);
       break;
     default:
-      res.statusCode = 404;
-      res.end("Not Found");
+      res.statusCode = 200;
+      res.end("(fake) Found");
       break;
   }
 };
