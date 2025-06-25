@@ -1,11 +1,11 @@
-import { default as api } from "./api-copy/index.js";
-import { default as gist } from "./api-copy/gist.js";
-import { default as pin } from "./api-copy/pin.js";
-import { default as topLangs } from "./api-copy/top-langs.js";
-import { default as wakatime } from "./api-copy/wakatime.js";
-import { default as repeatRecent } from "./api-copy/repeat-recent.js";
-import { default as patInfo } from "./api-copy/status/pat-info.js";
-import { default as statusUp } from "./api-copy/status/up.js";
+import { default as api } from "./api-renamed/index.js";
+import { default as gist } from "./api-renamed/gist.js";
+import { default as pin } from "./api-renamed/pin.js";
+import { default as topLangs } from "./api-renamed/top-langs.js";
+import { default as wakatime } from "./api-renamed/wakatime.js";
+import { default as repeatRecent } from "./api-renamed/repeat-recent.js";
+import { default as patInfo } from "./api-renamed/status/pat-info.js";
+import { default as statusUp } from "./api-renamed/status/up.js";
 
 export default async (req, res) => {
   // remaining code expects express.js-like request and response objects
