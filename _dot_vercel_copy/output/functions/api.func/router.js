@@ -13,8 +13,10 @@ export default async (req, res) => {
     if (typeof data === "object") {
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify(data));
-    } else {
+    } else if (typeof data === "string") {
       res.end(data);
+    } else {
+      res.end(String(data));
     }
   };
   res.status = function (code) {
