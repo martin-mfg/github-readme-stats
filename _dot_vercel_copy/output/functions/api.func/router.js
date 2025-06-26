@@ -19,10 +19,6 @@ export default async (req, res) => {
       res.end(String(data));
     }
   };
-  res.status = function (code) {
-    res.statusCode = code;
-    return res;
-  };
   const url = new URL(req.url, "https://localhost");
   req.query = Object.fromEntries(url.searchParams.entries());
 
