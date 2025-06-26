@@ -43,7 +43,7 @@ export default async (req, res) => {
     case "/api/repeat-recent":
       repeatRecent(req, res);
       break;
-    case "/api/pat-info":
+    case "/api/status/pat-info":
       patInfo(req, res);
       break;
     case "/api/status/up":
