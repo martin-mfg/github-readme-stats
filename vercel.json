@@ -1,15 +1,5 @@
 {
   "buildCommand": "npm install && mkdir --parents .vercel/output/functions/api.func/ && cp --recursive ./* .vercel/output/functions/api.func/ && cp --recursive .vercel/output/functions/api.func/_dot_vercel_copy/output/ .vercel/",
-  "rewrites": [
-    {
-      "source": "/api/status/:match*",
-      "destination": "/api-rewrite/status/:match*"
-    },
-    {
-      "source": "/api/repeat-recent:match*",
-      "destination": "/api-rewrite/repeat-recent:match*"
-    }
-  ],
   "redirects": [
     {
       "source": "/",
