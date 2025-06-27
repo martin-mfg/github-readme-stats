@@ -26,16 +26,16 @@ export default async (req, res) => {
     case "/api":
       api(req, res);
       break;
-    case "/api-rewrite/gist":
+    case "/api/gist":
       gist(req, res);
       break;
-    case "/api-rewrite/pin":
+    case "/api/pin":
       pin(req, res);
       break;
-    case "/api-rewrite/top-langs":
+    case "/api/top-langs":
       topLangs(req, res);
       break;
-    case "/api-rewrite/wakatime":
+    case "/api/wakatime":
       wakatime(req, res);
       break;
     case "/api-rewrite/repeat-recent":
