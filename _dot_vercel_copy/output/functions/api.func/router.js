@@ -24,6 +24,7 @@ export default async (req, res) => {
 
   switch (url.pathname) {
     case "/api":
+    case "/api/":
       api(req, res);
       break;
     case "/api/gist":
@@ -38,18 +39,18 @@ export default async (req, res) => {
     case "/api/wakatime":
       wakatime(req, res);
       break;
-    case "/api-rewrite/repeat-recent":
+    case "/api/repeat-recent":
       repeatRecent(req, res);
       break;
-    case "/api-rewrite/status/pat-info":
+    case "/api/status/pat-info":
       patInfo(req, res);
       break;
-    case "/api-rewrite/status/up":
+    case "/api/status/up":
       statusUp(req, res);
       break;
     default:
-      res.statusCode = 200;
-      res.end("(fake) Found");
+      res.statusCode = 404;
+      res.end("Not Found");
       break;
   }
 };
