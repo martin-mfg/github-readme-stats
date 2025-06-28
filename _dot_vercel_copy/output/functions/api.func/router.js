@@ -24,7 +24,6 @@ export default async (req, res) => {
 
   switch (url.pathname) {
     case "/api":
-      //case "/api/":
       api(req, res);
       break;
     case "/api/gist":
