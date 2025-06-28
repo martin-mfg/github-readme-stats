@@ -1,4 +1,4 @@
-name: trigger server to update cached data
+name: Trigger server to update cached data
 on:
   schedule:
     #        ┌───────────── minute (0 - 59)
@@ -10,11 +10,12 @@ on:
     #        │ │  │  │ │
     #        │ │  │  │ │
     #        * *  *  * *
-    - cron: "*/5 * * * *"
+    - cron: "45 1/12 * * *"
   workflow_dispatch:
 
 jobs:
   triggerRepeatRecent:
+    name: Trigger server to update cached data.
     runs-on: ubuntu-latest
     steps:
       - name: Make Request
