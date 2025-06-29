@@ -10,7 +10,7 @@ on:
     #        │ │  │  │ │
     #        │ │  │  │ │
     #        * *  *  * *
-    - cron: "45 1/6 * * *"
+    - cron: "45 * * * *"
   workflow_dispatch:
 
 jobs:
