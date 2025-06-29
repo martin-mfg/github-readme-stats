@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 import "@testing-library/jest-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import pin from "../api/pin.js";
+import pin from "../api-renamed/pin.js";
 import { renderRepoCard } from "../src/cards/repo-card.js";
 import { renderError } from "../src/common/utils.js";
 import { expect, it, describe, afterEach } from "@jest/globals";

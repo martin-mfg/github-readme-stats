@@ -1,27 +1,38 @@
+import { renderWakatimeCard } from "../src/cards/wakatime-card.js";
 import {
   clampValue,
   CONSTANTS,
-  renderError,
+  parseArray,
   parseBoolean,
+  renderError,
 } from "../src/common/utils.js";
+import { fetchWakatimeStats } from "../src/fetchers/wakatime-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
-import { renderGistCard } from "../src/cards/gist-card.js";
-import { fetchGist } from "../src/fetchers/gist-fetcher.js";
+import { storeRequest } from "../src/common/database.js";
 
 export default async (req, res) => {
   const {
-    id,
+    username,
     title_color,
     icon_color,
+    hide_border,
+    line_height,
     text_color,
     bg_color,
     theme,
     cache_seconds,
+    hide_title,
+    hide_progress,
+    custom_title,
     locale,
+    layout,
+    langs_count,
+    hide,
+    api_domain,
     border_radius,
     border_color,
-    show_owner,
-    hide_border,
+    display_format,
+    disable_animations,
   } = req.query;
 
   res.setHeader("Content-Type", "image/svg+xml");
@@ -39,12 +50,13 @@ export default async (req, res) => {
   }
 
   try {
-    const gistData = await fetchGist(id);
+    await storeRequest(req);
+    const stats = await fetchWakatimeStats({ username, api_domain });
 
     let cacheSeconds = clampValue(
-      parseInt(cache_seconds || CONSTANTS.TWO_DAY, 10),
+      parseInt(cache_seconds || CONSTANTS.CARD_CACHE_SECONDS, 10),
+      CONSTANTS.FOUR_HOURS,
       CONSTANTS.TWO_DAY,
-      CONSTANTS.SIX_DAY,
     );
     cacheSeconds = process.env.CACHE_SECONDS
       ? parseInt(process.env.CACHE_SECONDS, 10) || cacheSeconds
@@ -52,21 +64,31 @@ export default async (req, res) => {
 
     res.setHeader(
       "Cache-Control",
-      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}`,
+      `max-age=${
+        cacheSeconds / 2
+      }, s-maxage=${cacheSeconds}, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
     );
 
     return res.send(
-      renderGistCard(gistData, {
+      renderWakatimeCard(stats, {
+        custom_title,
+        hide_title: parseBoolean(hide_title),
+        hide_border: parseBoolean(hide_border),
+        hide: parseArray(hide),
+        line_height,
         title_color,
         icon_color,
         text_color,
         bg_color,
         theme,
+        hide_progress,
         border_radius,
         border_color,
         locale: locale ? locale.toLowerCase() : null,
-        show_owner: parseBoolean(show_owner),
-        hide_border: parseBoolean(hide_border),
+        layout,
+        langs_count,
+        display_format,
+        disable_animations: parseBoolean(disable_animations),
       }),
     );
   } catch (err) {

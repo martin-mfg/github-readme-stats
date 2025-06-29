@@ -30,7 +30,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",
-    "lint": "npx eslint --max-warnings 0 \"./src/**/*.js\" \"./scripts/**/*.js\" \"./tests/**/*.js\" \"./api/**/*.js\" \"./themes/**/*.js\"",
+    "lint": "npx eslint --max-warnings 0 \"./src/**/*.js\" \"./scripts/**/*.js\" \"./tests/**/*.js\" \"./api-renamed/**/*.js\" \"./themes/**/*.js\"",
     "bench": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.bench.config.js"
   },
   "author": "Anurag Hazra",
@@ -65,6 +65,7 @@
     "dotenv": "^16.5.0",
     "emoji-name-map": "^1.2.8",
     "github-username-regex": "^1.0.0",
+    "pg": "^8.16.2",
     "upgrade": "^1.1.0",
     "word-wrap": "^1.2.5"
   },

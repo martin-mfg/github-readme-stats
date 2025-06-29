@@ -5,7 +5,7 @@ import MockAdapter from "axios-mock-adapter";
 import { expect, it, describe, afterEach } from "@jest/globals";
 import { renderGistCard } from "../src/cards/gist-card.js";
 import { renderError } from "../src/common/utils.js";
-import gist from "../api/gist.js";
+import gist from "../api-renamed/gist.js";
 
 const gist_data = {
   data: {

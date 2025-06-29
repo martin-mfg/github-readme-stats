@@ -8,6 +8,7 @@ import {
 } from "../src/common/utils.js";
 import { fetchTopLanguages } from "../src/fetchers/top-languages-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
+import { storeRequest } from "../src/common/database.js";
 
 export default async (req, res) => {
   const {
@@ -62,6 +63,7 @@ export default async (req, res) => {
   }
 
   try {
+    await storeRequest(req);
     const topLangs = await fetchTopLanguages(
       username,
       parseArray(exclude_repo),

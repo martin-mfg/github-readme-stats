@@ -1,4 +1,4 @@
-import { renderRepoCard } from "../src/cards/repo-card.js";
+import { renderStatsCard } from "../src/cards/stats-card.js";
 import { blacklist } from "../src/common/blacklist.js";
 import {
   clampValue,
@@ -7,33 +7,41 @@ import {
   parseBoolean,
   renderError,
 } from "../src/common/utils.js";
-import { fetchRepo } from "../src/fetchers/repo-fetcher.js";
+import { fetchStats } from "../src/fetchers/stats-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
+import { storeRequest } from "../src/common/database.js";
 
 export default async (req, res) => {
   const {
     username,
-    repo,
+    repos,
+    owners,
+    hide,
+    hide_title,
     hide_border,
+    card_width,
+    hide_rank,
+    show_icons,
+    include_all_commits,
+    line_height,
     title_color,
+    ring_color,
     icon_color,
     text_color,
-    bg_color,
-    card_width,
-    theme,
-    show_owner,
-    show,
-    show_icons,
-    number_format,
     text_bold,
-    line_height,
+    bg_color,
+    theme,
     cache_seconds,
+    exclude_repo,
+    custom_title,
     locale,
+    disable_animations,
     border_radius,
+    number_format,
     border_color,
-    description_lines_count,
+    rank_icon,
+    show,
   } = req.query;
-
   res.setHeader("Content-Type", "image/svg+xml");
 
   if (blacklist.includes(username)) {
@@ -63,12 +71,13 @@ export default async (req, res) => {
   const safePattern = /^[-\w\/.,]+$/;
   if (
     (username && !safePattern.test(username)) ||
-    (repo && !safePattern.test(repo))
+    (repos && !safePattern.test(repos)) ||
+    (owners && !safePattern.test(owners))
   ) {
     return res.send(
       renderError(
         "Something went wrong",
-        "Username or repository contains unsafe characters",
+        "Username, repository or owner contains unsafe characters",
         {
           title_color,
           text_color,
@@ -81,10 +90,24 @@ export default async (req, res) => {
   }
 
   try {
+    await storeRequest(req);
     const showStats = parseArray(show);
-    const repoData = await fetchRepo(
+    const organizations = parseArray(owners);
+    let repositories = parseArray(repos);
+    repositories = repositories.map((repo) =>
+      repo.includes("/") ? repo : `${username}/${repo}`,
+    );
+
+    const stats = await fetchStats(
       username,
-      repo,
+      parseBoolean(include_all_commits),
+      parseArray(exclude_repo),
+      showStats.includes("prs_merged") ||
+        showStats.includes("prs_merged_percentage"),
+      showStats.includes("discussions_started"),
+      showStats.includes("discussions_answered"),
+      repositories,
+      organizations,
       showStats.includes("prs_authored"),
       showStats.includes("prs_commented"),
       showStats.includes("prs_reviewed"),
@@ -93,9 +116,9 @@ export default async (req, res) => {
     );
 
     let cacheSeconds = clampValue(
-      parseInt(cache_seconds || CONSTANTS.PIN_CARD_CACHE_SECONDS, 10),
-      CONSTANTS.ONE_DAY,
-      CONSTANTS.TEN_DAY,
+      parseInt(cache_seconds || CONSTANTS.CARD_CACHE_SECONDS, 10),
+      CONSTANTS.FOUR_HOURS,
+      CONSTANTS.TWO_DAY,
     );
     cacheSeconds = process.env.CACHE_SECONDS
       ? parseInt(process.env.CACHE_SECONDS, 10) || cacheSeconds
@@ -103,30 +126,41 @@ export default async (req, res) => {
 
     res.setHeader(
       "Cache-Control",
-      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}`,
+      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
     );
 
     return res.send(
-      renderRepoCard(repoData, {
-        hide_border: parseBoolean(hide_border),
-        title_color,
-        icon_color,
-        text_color,
-        bg_color,
-        theme,
-        border_radius,
-        border_color,
-        card_width_input: parseInt(card_width, 10),
-        show_owner: parseBoolean(show_owner),
-        show: showStats,
-        show_icons: parseBoolean(show_icons),
-        number_format,
-        text_bold: parseBoolean(text_bold),
-        line_height,
+      renderStatsCard(
+        stats,
+        {
+          hide: parseArray(hide),
+          show_icons: parseBoolean(show_icons),
+          hide_title: parseBoolean(hide_title),
+          hide_border: parseBoolean(hide_border),
+          card_width: parseInt(card_width, 10),
+          hide_rank: parseBoolean(hide_rank),
+          include_all_commits: parseBoolean(include_all_commits),
+          line_height,
+          title_color,
+          ring_color,
+          icon_color,
+          text_color,
+          text_bold: parseBoolean(text_bold),
+          bg_color,
+          theme,
+          custom_title,
+          border_radius,
+          border_color,
+          number_format,
+          locale: locale ? locale.toLowerCase() : null,
+          disable_animations: parseBoolean(disable_animations),
+          rank_icon,
+          show: showStats,
+        },
         username,
-        locale: locale ? locale.toLowerCase() : null,
-        description_lines_count,
-      }),
+        repositories,
+        organizations,
+      ),
     );
   } catch (err) {
     res.setHeader(
