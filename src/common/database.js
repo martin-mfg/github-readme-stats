@@ -53,7 +53,7 @@ export async function storeRequest(req) {
 }
 
 /**
- * Deletes all requests older than 7 days from the database.
+ * Deletes all requests older than 8 days from the database.
  */
 async function deleteOldRequests() {
   if (!pool) {
@@ -62,15 +62,15 @@ async function deleteOldRequests() {
 
   const deleteQuery = `
       DELETE FROM requests
-      WHERE user_requested_at < NOW() - INTERVAL '7 days'
+      WHERE user_requested_at < NOW() - INTERVAL '8 days'
     `;
   const result = await pool.query(deleteQuery);
   console.log(`Deleted ${result.rowCount} old requests.`);
 }
 
 /**
- * Fetches all requests from the last 7 days.
- * @returns {Promise<string[]>} An array of requests made in the last 7 days.
+ * Fetches all requests which are between 11 hours and 8 days old.
+ * @returns {Promise<string[]>} Array of all requests between 11 hours and 8 days old.
  */
 async function getRecentRequests() {
   if (!pool) {
@@ -80,8 +80,8 @@ async function getRecentRequests() {
   const query = `
       SELECT request
       FROM requests
-      WHERE requested_at >= NOW() - INTERVAL '7 days'
-        AND requested_at < NOW() - INTERVAL '1 hour'
+      WHERE requested_at >= NOW() - INTERVAL '8 days'
+        AND requested_at < NOW() - INTERVAL '11 hours'
       ORDER BY requested_at ASC
       `;
   const { rows } = await pool.query(query);
@@ -129,7 +129,7 @@ async function makeRequests(urls, poolSize) {
 }
 
 /**
- * Repeats requests made in the last 7 days, excluding those made in the last hour.
+ * Repeats requests made in the last 8 days, excluding those made in the last 11 hours.
  */
 export async function repeatRecentRequests() {
   if (!pool) {

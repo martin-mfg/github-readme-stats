@@ -44,8 +44,8 @@ export default async (req, res) => {
     const gistData = await fetchGist(id);
 
     let cacheSeconds = clampValue(
-      parseInt(cache_seconds || CONSTANTS.TWO_DAY, 10),
-      CONSTANTS.TWO_DAY,
+      parseInt(cache_seconds || CONSTANTS.EIGHT_HOURS, 10),
+      CONSTANTS.FOUR_HOURS,
       CONSTANTS.SIX_DAY,
     );
     cacheSeconds = process.env.CACHE_SECONDS

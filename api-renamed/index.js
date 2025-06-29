@@ -117,7 +117,7 @@ export default async (req, res) => {
 
     let cacheSeconds = clampValue(
       parseInt(cache_seconds || CONSTANTS.CARD_CACHE_SECONDS, 10),
-      CONSTANTS.TWELVE_HOURS,
+      CONSTANTS.FOUR_HOURS,
       CONSTANTS.TWO_DAY,
     );
     cacheSeconds = process.env.CACHE_SECONDS
