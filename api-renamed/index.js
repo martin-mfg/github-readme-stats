@@ -14,8 +14,8 @@ import { storeRequest } from "../src/common/database.js";
 export default async (req, res) => {
   const {
     username,
-    repos,
-    owners,
+    repo,
+    owner,
     hide,
     hide_title,
     hide_border,
@@ -72,8 +72,8 @@ export default async (req, res) => {
   const safePattern = /^[-\w\/.,]+$/;
   if (
     (username && !safePattern.test(username)) ||
-    (repos && !safePattern.test(repos)) ||
-    (owners && !safePattern.test(owners))
+    (repo && !safePattern.test(repo)) ||
+    (owner && !safePattern.test(owner))
   ) {
     return res.send(
       renderError(
@@ -93,9 +93,9 @@ export default async (req, res) => {
   try {
     await storeRequest(req);
     const showStats = parseArray(show);
-    const organizations = parseArray(owners);
-    let repositories = parseArray(repos);
-    repositories = repositories.map((repo) =>
+    const repoOwner = parseArray(owner);
+    let repository = parseArray(repo);
+    repository = repository.map((repo) =>
       repo.includes("/") ? repo : `${username}/${repo}`,
     );
 
@@ -103,18 +103,18 @@ export default async (req, res) => {
       username,
       parseBoolean(include_all_commits),
       parseArray(exclude_repo),
-      parseArray(role),
       showStats.includes("prs_merged") ||
         showStats.includes("prs_merged_percentage"),
       showStats.includes("discussions_started"),
       showStats.includes("discussions_answered"),
-      repositories,
-      organizations,
+      repository,
+      repoOwner,
       showStats.includes("prs_authored"),
       showStats.includes("prs_commented"),
       showStats.includes("prs_reviewed"),
       showStats.includes("issues_authored"),
       showStats.includes("issues_commented"),
+      parseArray(role),
     );
 
     let cacheSeconds = clampValue(
@@ -160,8 +160,8 @@ export default async (req, res) => {
           show: showStats,
         },
         username,
-        repositories,
-        organizations,
+        repository,
+        repoOwner,
       ),
     );
   } catch (err) {

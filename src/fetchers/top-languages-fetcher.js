@@ -62,9 +62,9 @@ const fetcher = (variables, token) => {
  *
  * @param {string} username GitHub username.
  * @param {string[]} exclude_repo List of repositories to exclude. Default: [].
- * @param {string[]} ownerAffiliations The owner affiliations to filter by. Default: OWNER.
  * @param {number} size_weight Weightage to be given to size.
  * @param {number} count_weight Weightage to be given to count.
+ * @param {string[]} ownerAffiliations The owner affiliations to filter by. Default: OWNER.
  * @returns {Promise<TopLangData>} Top languages data.
  */
 const fetchTopLanguages = async (

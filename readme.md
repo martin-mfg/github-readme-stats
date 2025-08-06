@@ -178,7 +178,7 @@ To enable icons, you can pass `&show_icons=true` in the query param, like so:
 
 ### Filtering by repository and owner
 
-To compute your stats for only a specific repository, you can pass a query parameter `&repos=<user_or_organization>/<repository>`. You can also specify a comma-separated list of multiple repositories, e.g. `&repos=userA/repositoryA,organizationB/repositoryB`. And you can select all repositories owned by specific organizations or users by providing a comma-separated list of owners via the `owners` query parameter, e.g. `&owners=userA,organizationB,organizationC`. The `repos` and `owners` filters are supported by the following items: `commits` (when used with `&include_all_commits=true`), `prs_authored`, `prs_commented`, `prs_reviewed`, `issues_authored` and `issues_commented`. Note that most of these items are not displayed by default, but [you can enable them individually](#showing-additional-individual-stats).
+To compute your stats for only a specific repository, you can pass a query parameter `&repo=<user_or_organization>/<repository>`. You can also specify a comma-separated list of multiple repositories, e.g. `&repo=userA/repositoryA,organizationB/repositoryB`. And you can select all repositories owned by specific organizations or users by providing a comma-separated list of owners via the `owner` query parameter, e.g. `&owner=userA,organizationB,organizationC`. The `repo` and `owner` filters are supported by the following items: `commits` (when used with `&include_all_commits=true`), `prs_authored`, `prs_commented`, `prs_reviewed`, `issues_authored` and `issues_commented`. Note that most of these items are not displayed by default, but [you can enable them individually](#showing-additional-individual-stats).
 
 (Some of these mentioned items are similar to other items which are included by default, e.g. `issues_authored` is similar to `issues`. The difference is how these values are fetched - [via GraphQL or via REST API](https://github.com/anuraghazra/github-readme-stats/discussions/1770#number-of-commits-is-incorrect). The default items use GraphQL, but filtering by repository works better via REST API.)
 
@@ -384,14 +384,14 @@ If we don't support your language, please consider contributing! You can find mo
 | `include_all_commits` | Count total commits instead of just the current year commits. | boolean | `false` |
 | `line_height` | Sets the line height between text. | integer | `25` |
 | `exclude_repo` | Excludes specified repositories. Affects only the count for "Total Stars Earned". | string (comma-separated values) | `null` |
-| `repos` | Count only stats from the specified repositories. Affects only [certain items](#filtering-by-repository-and-owner). | string (comma-separated values) | `null` |
-| `owners` | Count only stats from the specified organizations or users. Affects only [certain items](#filtering-by-repository-and-owner). | string (comma-separated values) | `null` |
+| `repo` | Count only stats from the specified repositories. Affects only [certain items](#filtering-by-repository-and-owner). | string (comma-separated values) | `null` |
+| `owner` | Count only stats from the specified organizations or users. Affects only [certain items](#filtering-by-repository-and-owner). | string (comma-separated values) | `null` |
 | `custom_title` | Sets a custom title for the card. | string | `<username> GitHub Stats` |
 | `text_bold` | Uses bold text. | boolean | `true` |
 | `disable_animations` | Disables all animations in the card. | boolean | `false` |
 | `ring_color` | Color of the rank circle. | string (hex color) | `2f80ed` |
 | `number_format` | Switches between two available formats for displaying the card values: `short` (i.e. `6.6k`) and `long` (i.e. `6626`). | enum | `short` |
-| `show` | Shows [additional items](#showing-additional-individual-stats) on stats card (i.e. `reviews`, `discussions_started`, `discussions_answered`, `prs_merged` or `prs_merged_percentage`. And the following, which support the `repos` and `owners` filters: `prs_authored`, `prs_commented`, `prs_reviewed`, `issues_authored` or `issues_commented`). | string (comma-separated values) | `null` |
+| `show` | Shows [additional items](#showing-additional-individual-stats) on stats card (i.e. `reviews`, `discussions_started`, `discussions_answered`, `prs_merged` or `prs_merged_percentage`. And the following, which support the `repo` and `owner` filters: `prs_authored`, `prs_commented`, `prs_reviewed`, `issues_authored` or `issues_commented`). | string (comma-separated values) | `null` |
 
 > [!NOTE]\
 > When hide\_rank=`true`, the minimum card width is 270 px + the title length and padding.
@@ -678,11 +678,11 @@ Change the `?username=` value to your [WakaTime](https://wakatime.com) username.
 
 *   Showing stats for a specific repository
 
-![Anurag's GitHub stats for anuraghazra/github-readme-stats](https://github-readme-stats-phi-jet-58.vercel.app/api?username=anuraghazra\&repos=anuraghazra/github-readme-stats\&hide=prs,issues,stars,commits,contribs\&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented\&hide_rank=true\&custom_title=Anurag%27s%20Stats%20for%20github-readme-stats\&card_width=370)
+![Anurag's GitHub stats for anuraghazra/github-readme-stats](https://github-readme-stats-phi-jet-58.vercel.app/api?username=anuraghazra\&repo=anuraghazra/github-readme-stats\&hide=prs,issues,stars,commits,contribs\&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented\&hide_rank=true\&custom_title=Anurag%27s%20Stats%20for%20github-readme-stats\&card_width=370)
 
 *   Showing stats for a specific organization
 
-![Anurag's GitHub stats for razorpay](https://github-readme-stats-phi-jet-58.vercel.app/api?username=anuraghazra\&owners=razorpay\&hide=prs,issues,stars,commits,contribs\&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented\&hide_rank=true\&custom_title=Anurag%27s%20Stats%20for%20razorpay\&card_width=370)
+![Anurag's GitHub stats for razorpay](https://github-readme-stats-phi-jet-58.vercel.app/api?username=anuraghazra\&owner=razorpay\&hide=prs,issues,stars,commits,contribs\&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented\&hide_rank=true\&custom_title=Anurag%27s%20Stats%20for%20razorpay\&card_width=370)
 
 *   Showing icons
 
