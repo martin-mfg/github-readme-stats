@@ -214,8 +214,8 @@ const renderStatsCard = (
   stats,
   options = {},
   username,
-  repos = [],
-  owners = [],
+  repo = [],
+  owner = [],
 ) => {
   const {
     name,
@@ -360,7 +360,7 @@ const renderStatsCard = (
     };
   }
 
-  let repoFilter = encodeURIComponent(buildSearchFilter(repos, owners));
+  let repoFilter = encodeURIComponent(buildSearchFilter(repo, owner));
   if (show.includes("prs_authored")) {
     STATS.prs_authored = {
       icon: icons.prs,

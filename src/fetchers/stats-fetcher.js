@@ -11,13 +11,14 @@ import {
   MissingParamError,
   request,
   wrapTextMultiline,
+  parseOwnerAffiliations,
 } from "../common/utils.js";
 
 dotenv.config();
 
 // GraphQL queries.
 const GRAPHQL_REPOS_FIELD = `
-  repositories(first: 100, ownerAffiliations: OWNER, orderBy: {direction: DESC, field: STARGAZERS}, after: $after) {
+  repositories(first: 100, after: $after, ownerAffiliations: $ownerAffiliations, orderBy: {direction: DESC, field: STARGAZERS}) {
     totalCount
     nodes {
       name
@@ -33,15 +34,15 @@ const GRAPHQL_REPOS_FIELD = `
 `;
 
 const GRAPHQL_REPOS_QUERY = `
-  query userInfo($login: String!, $after: String) {
-    user(login: $login) {
+  query userInfo($login: String!, $after: String, $ownerAffiliations: [RepositoryAffiliation]) {
+    user(login: $login, ownerAffiliations: $ownerAffiliations) {
       ${GRAPHQL_REPOS_FIELD}
     }
   }
 `;
 
 const GRAPHQL_STATS_QUERY = `
-  query userInfo($login: String!, $after: String, $includeMergedPullRequests: Boolean!, $includeDiscussions: Boolean!, $includeDiscussionsAnswers: Boolean!) {
+  query userInfo($login: String!, $after: String, $includeMergedPullRequests: Boolean!, $includeDiscussions: Boolean!, $includeDiscussionsAnswers: Boolean!, $ownerAffiliations: [RepositoryAffiliation]) {
     user(login: $login) {
       name
       login
@@ -110,6 +111,7 @@ const fetcher = (variables, token) => {
  * @param {boolean} variables.includeMergedPullRequests Include merged pull requests.
  * @param {boolean} variables.includeDiscussions Include discussions.
  * @param {boolean} variables.includeDiscussionsAnswers Include discussions answers.
+ * @param {string[]} ownerAffiliations The owner affiliations to filter by. Default: OWNER.
  * @returns {Promise<AxiosResponse>} Axios response.
  *
  * @description This function supports multi-page fetching if the 'FETCH_MULTI_PAGE_STARS' environment variable is set to true.
@@ -119,6 +121,7 @@ const statsFetcher = async ({
   includeMergedPullRequests,
   includeDiscussions,
   includeDiscussionsAnswers,
+  ownerAffiliations,
 }) => {
   let stats;
   let hasNextPage = true;
@@ -131,6 +134,7 @@ const statsFetcher = async ({
       includeMergedPullRequests,
       includeDiscussions,
       includeDiscussionsAnswers,
+      ownerAffiliations,
     };
     let res = await retryer(fetcher, variables);
     if (res.data.errors) {
@@ -168,7 +172,7 @@ const statsFetcher = async ({
  * @description Done like this because the GitHub API does not provide a way to fetch all the commits. See
  * #92#issuecomment-661026467 and #211 for more information.
  */
-const totalItemsFetcher = async (username, repos, owners, type, filter) => {
+const totalItemsFetcher = async (username, repo, owner, type, filter) => {
   if (!githubUsernameRegex.test(username)) {
     logger.log("Invalid username provided.");
     throw new Error("Invalid username provided.");
@@ -182,7 +186,7 @@ const totalItemsFetcher = async (username, repos, owners, type, filter) => {
         `https://api.github.com/search/` +
         type +
         `?per_page=1&q=` +
-        buildSearchFilter(variables.repos, variables.owners).replaceAll(
+        buildSearchFilter(variables.repo, variables.owner).replaceAll(
           " ",
           "+",
         ) +
@@ -197,7 +201,11 @@ const totalItemsFetcher = async (username, repos, owners, type, filter) => {
 
   let res;
   try {
-    res = await retryer(fetchTotalItems, { login: username, repos, owners });
+    res = await retryer(fetchTotalItems, {
+      login: username,
+      repo,
+      owner,
+    });
   } catch (err) {
     logger.log(err);
     throw new Error(err);
@@ -215,8 +223,8 @@ const totalItemsFetcher = async (username, repos, owners, type, filter) => {
 
 const fetchRepoUserStats = async (
   username,
-  repos,
-  owners,
+  repo,
+  owner,
   include_prs_authored,
   include_prs_commented,
   include_prs_reviewed,
@@ -227,8 +235,8 @@ const fetchRepoUserStats = async (
   if (include_prs_authored) {
     stats.totalPRsAuthored = await totalItemsFetcher(
       username,
-      repos,
-      owners,
+      repo,
+      owner,
       "issues",
       `author:${username}+type:pr`,
     );
@@ -236,8 +244,8 @@ const fetchRepoUserStats = async (
   if (include_prs_commented) {
     stats.totalPRsCommented = await totalItemsFetcher(
       username,
-      repos,
-      owners,
+      repo,
+      owner,
       "issues",
       `commenter:${username}+-author:${username}+type:pr`,
     );
@@ -245,8 +253,8 @@ const fetchRepoUserStats = async (
   if (include_prs_reviewed) {
     stats.totalPRsReviewed = await totalItemsFetcher(
       username,
-      repos,
-      owners,
+      repo,
+      owner,
       "issues",
       `reviewed-by:${username}+-author:${username}+type:pr`,
     );
@@ -254,8 +262,8 @@ const fetchRepoUserStats = async (
   if (include_issues_authored) {
     stats.totalIssuesAuthored = await totalItemsFetcher(
       username,
-      repos,
-      owners,
+      repo,
+      owner,
       "issues",
       `author:${username}+type:issue`,
     );
@@ -263,8 +271,8 @@ const fetchRepoUserStats = async (
   if (include_issues_commented) {
     stats.totalIssuesCommented = await totalItemsFetcher(
       username,
-      repos,
-      owners,
+      repo,
+      owner,
       "issues",
       `commenter:${username}+-author:${username}+type:issue`,
     );
@@ -285,6 +293,7 @@ const fetchRepoUserStats = async (
  * @param {boolean} include_merged_pull_requests Include merged pull requests.
  * @param {boolean} include_discussions Include discussions.
  * @param {boolean} include_discussions_answers Include discussions answers.
+ * @param {string[]} ownerAffiliations Owner affiliations. Default: OWNER.
  * @returns {Promise<StatsData>} Stats data.
  */
 const fetchStats = async (
@@ -294,13 +303,14 @@ const fetchStats = async (
   include_merged_pull_requests = false,
   include_discussions = false,
   include_discussions_answers = false,
-  repos = [],
-  owners = [],
+  repo = [],
+  owner = [],
   include_prs_authored = false,
   include_prs_commented = false,
   include_prs_reviewed = false,
   include_issues_authored = false,
   include_issues_commented = false,
+  ownerAffiliations = [],
 ) => {
   if (!username) {
     throw new MissingParamError(["username"]);
@@ -325,12 +335,14 @@ const fetchStats = async (
     totalIssuesCommented: 0,
     rank: { level: "C", percentile: 100 },
   };
+  ownerAffiliations = parseOwnerAffiliations(ownerAffiliations);
 
   let res = await statsFetcher({
     username,
     includeMergedPullRequests: include_merged_pull_requests,
     includeDiscussions: include_discussions,
     includeDiscussionsAnswers: include_discussions_answers,
+    ownerAffiliations,
   });
 
   // Catch GraphQL errors.
@@ -362,8 +374,8 @@ const fetchStats = async (
   if (include_all_commits) {
     stats.totalCommits = await totalItemsFetcher(
       username,
-      repos,
-      owners,
+      repo,
+      owner,
       "commits",
       `author:${username}`,
     );
@@ -372,8 +384,8 @@ const fetchStats = async (
   }
   let repoUserStats = await fetchRepoUserStats(
     username,
-    repos,
-    owners,
+    repo,
+    owner,
     include_prs_authored,
     include_prs_commented,
     include_prs_reviewed,
