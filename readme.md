@@ -182,6 +182,8 @@ To compute your stats for only a specific repository, you can pass a query param
 
 (Some of these mentioned items are similar to other items which are included by default, e.g. `issues_authored` is similar to `issues`. The difference is how these values are fetched - [via GraphQL or via REST API](https://github.com/anuraghazra/github-readme-stats/discussions/1770#number-of-commits-is-incorrect). The default items use GraphQL, but filtering by repository works better via REST API.)
 
+Alternatively, you can use the `role` parameter to specify a comma-separated list of [roles](https://docs.github.com/en/graphql/reference/enums#repositoryaffiliation). The stats will include all repositories in which the user has the specified role. By default, only repositories where the user is OWNER will be included, but you could e.g. set `&role=OWNER,ORGANIZATION_MEMBER,COLLABORATOR`. The `role` parameter is supported by all items except the following: `commits` (when used with `&include_all_commits=true`), `prs_authored`, `prs_commented`, `prs_reviewed`, `issues_authored` and `issues_commented`.
+
 ### Themes
 
 With inbuilt themes, you can customize the look of the card without doing any [manual customization](#customization).
@@ -386,6 +388,7 @@ If we don't support your language, please consider contributing! You can find mo
 | `exclude_repo` | Excludes specified repositories. Affects only the count for "Total Stars Earned". | string (comma-separated values) | `null` |
 | `repo` | Count only stats from the specified repositories. Affects only [certain items](#filtering-by-repository-and-owner). | string (comma-separated values) | `null` |
 | `owner` | Count only stats from the specified organizations or users. Affects only [certain items](#filtering-by-repository-and-owner). | string (comma-separated values) | `null` |
+| `role` | Include repositories where the user has one of the specified [roles](https://docs.github.com/en/graphql/reference/enums#repositoryaffiliation) (OWNER, ORGANIZATION_MEMBER, COLLABORATOR). | string (comma-separated values) | `OWNER` |
 | `custom_title` | Sets a custom title for the card. | string | `<username> GitHub Stats` |
 | `text_bold` | Uses bold text. | boolean | `true` |
 | `disable_animations` | Disables all animations in the card. | boolean | `false` |
@@ -425,6 +428,7 @@ If we don't support your language, please consider contributing! You can find mo
 | `card_width` | Sets the card's width manually. | number | `300` |
 | `langs_count` | Shows more languages on the card, between 1-20. | integer | `5` for `normal` and `donut`, `6` for other layouts |
 | `exclude_repo` | Excludes specified repositories. | string (comma-separated values) | `null` |
+| `role` | Include repositories where the user has one of the specified [roles](https://docs.github.com/en/graphql/reference/enums#repositoryaffiliation) (OWNER, ORGANIZATION_MEMBER, COLLABORATOR). | string (comma-separated values) | `OWNER` |
 | `custom_title` | Sets a custom title for the card. | string | `Most Used Languages` |
 | `disable_animations` | Disables all animations in the card. | boolean | `false` |
 | `hide_progress` | Uses the compact layout option, hides percentages, and removes the bars. | boolean | `false` |
