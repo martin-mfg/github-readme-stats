@@ -213,8 +213,9 @@ const totalItemsFetcher = async (username, repo, owner, type, filter) => {
 
   const totalCount = res.data.total_count;
   if (isNaN(totalCount)) {
+    logger.error("GitHub error: " + JSON.stringify(res.data));
     throw new CustomError(
-      "Could not fetch data from GitHub REST API: " + JSON.stringify(res.data),
+      "Could not fetch data from GitHub REST API.",
       CustomError.GITHUB_REST_API_ERROR,
     );
   }
