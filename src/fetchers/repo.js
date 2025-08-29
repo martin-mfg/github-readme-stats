@@ -1,7 +1,7 @@
 // @ts-check
 import { retryer } from "../common/retryer.js";
 import { MissingParamError, request } from "../common/utils.js";
-import { fetchRepoUserStats } from "./stats-fetcher.js";
+import { fetchRepoUserStats } from "./stats.js";
 
 /**
  * @typedef {import('axios').AxiosRequestHeaders} AxiosRequestHeaders Axios request headers.

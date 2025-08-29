@@ -188,7 +188,7 @@ describe("Test /api/gist", () => {
     expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
     expect(res.setHeader).toBeCalledWith(
       "Cache-Control",
-      `max-age=${CONSTANTS.TWO_DAY}, s-maxage=${CONSTANTS.TWO_DAY}`,
+      `max-age=${CONSTANTS.CARD_CACHE_SECONDS}, s-maxage=${CONSTANTS.CARD_CACHE_SECONDS}`,
     );
   });
 });
