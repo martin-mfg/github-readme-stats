@@ -6,6 +6,7 @@ import { default as wakatime } from "./api-renamed/wakatime.js";
 import { default as repeatRecent } from "./api-renamed/repeat-recent.js";
 import { default as patInfo } from "./api-renamed/status/pat-info.js";
 import { default as statusUp } from "./api-renamed/status/up.js";
+import { default as login } from "./api-renamed/login.js";
 
 export default async (req, res) => {
   // remaining code expects express.js-like request and response objects
@@ -46,6 +47,9 @@ export default async (req, res) => {
       break;
     case "/api/status/up":
       statusUp(req, res);
+      break;
+    case "/api/login":
+      login(req, res);
       break;
     default:
       res.statusCode = 404;

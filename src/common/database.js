@@ -7,6 +7,33 @@ const pool = process.env.POSTGRES_URL
     })
   : null;
 
+/*
+ * Creates all required tables if they do not exist
+ */
+async function createAllTables() {
+  if (!pool) {
+    return;
+  }
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS requests (
+      request TEXT PRIMARY KEY,
+      requested_at TIMESTAMP NOT NULL DEFAULT now(),
+      user_requested_at TIMESTAMP NOT NULL DEFAULT now()
+    );
+    CREATE TABLE IF NOT EXISTS users (
+      user_id TEXT PRIMARY KEY,
+      access_token TEXT NOT NULL,
+      user_key TEXT,
+      private_access BOOLEAN NOT NULL DEFAULT false
+    );
+    -- CREATE TABLE IF NOT EXISTS code_key_map (
+    --   code TEXT PRIMARY KEY,
+    --   user_key TEXT NOT NULL
+    -- );
+  `);
+}
+
 /**
  * Stores or updates a request in the database.
  */
@@ -35,14 +62,7 @@ export async function storeRequest(req) {
   } catch (err) {
     // Check for undefined_table error (SQLSTATE 42P01)
     if (err.code === "42P01") {
-      const createTableQuery = `
-          CREATE TABLE IF NOT EXISTS requests (
-            request TEXT PRIMARY KEY,
-            requested_at TIMESTAMP NOT NULL DEFAULT now(),
-            user_requested_at TIMESTAMP NOT NULL DEFAULT now()
-          )
-        `;
-      await pool.query(createTableQuery);
+      await createAllTables();
       // Retry the insert after creating the table
       await pool.query(insertQuery, [req.url]);
     } else {
@@ -63,8 +83,18 @@ export async function deleteOldRequests() {
       DELETE FROM requests
       WHERE user_requested_at < NOW() - INTERVAL '8 days'
     `;
-  const result = await pool.query(deleteQuery);
-  console.log(`Deleted ${result.rowCount} old requests.`);
+  let result;
+  try {
+    result = await pool.query(deleteQuery);
+  } catch (err) {
+    if (err.code === "42P01") {
+      await createAllTables();
+      result = await pool.query(deleteQuery);
+    } else {
+      throw err;
+    }
+    console.log(`Deleted ${result.rowCount} old requests.`);
+  }
 }
 
 /**
@@ -83,6 +113,119 @@ export async function getRecentRequests() {
         AND requested_at < NOW() - INTERVAL '11 hours'
       ORDER BY requested_at ASC
       `;
-  const { rows } = await pool.query(query);
+  let rows;
+  try {
+    ({ rows } = await pool.query(query));
+  } catch (err) {
+    if (err.code === "42P01") {
+      await createAllTables();
+      ({ rows } = await pool.query(query));
+    } else {
+      throw err;
+    }
+  }
   return rows.map((row) => row.request);
 }
+
+/**
+ * Inserts or updates a user in the database.
+ * @param {string} userId GitHub userId (login name)
+ * @param {string} accessToken GitHub access token
+ * @param {string|null} userKey Optional user key
+ * @param {boolean} privateAccess Whether private access was requested
+ */
+export async function storeUser(userId, accessToken, userKey, privateAccess) {
+  if (!pool) {
+    return;
+  }
+
+  const insertQuery = `
+      INSERT INTO users (user_id, access_token, user_key, private_access)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (user_id)
+      DO UPDATE SET
+        access_token = EXCLUDED.access_token,
+        user_key = EXCLUDED.user_key,
+        private_access = EXCLUDED.private_access
+  `;
+
+  try {
+    await pool.query(insertQuery, [
+      userId,
+      accessToken,
+      userKey,
+      privateAccess,
+    ]);
+  } catch (err) {
+    if (err.code === "42P01") {
+      await createAllTables();
+      await pool.query(insertQuery, [
+        userId,
+        accessToken,
+        userKey,
+        privateAccess,
+      ]);
+    } else {
+      throw err;
+    }
+  }
+}
+
+/**
+ * Stores or updates an Oauth code/userKey pair in the database.
+ * @param {string} code OAuth code
+ * @param {string} userKey userKey to associate
+ */
+/*
+export async function storeCodeKey(code, userKey) {
+  if (!pool) {
+    return;
+  }
+
+  const insertQuery = `
+      INSERT INTO code_key_map (code, user_key)
+      VALUES ($1, $2)
+      ON CONFLICT (code)
+      DO UPDATE SET user_key = EXCLUDED.user_key
+  `;
+  try {
+    await pool.query(insertQuery, [code, userKey]);
+  } catch (err) {
+    if (err.code === "42P01") {
+      await createAllTables();
+      await pool.query(insertQuery, [code, userKey]);
+    } else {
+      throw err;
+    }
+  }
+}
+*/
+
+/**
+ * Retrieves the userKey for a given Oauth code from the database.
+ * @param {string} code OAuth code
+ * @returns {Promise<string|null>} userKey or null if not found
+ */
+/*
+export async function getCodeKey(code) {
+  if (!pool) {
+    return null;
+  }
+
+  const query = `
+      SELECT user_key FROM code_key_map WHERE code = $1
+  `;
+  let rows;
+  try {
+    ({ rows } = await pool.query(query, [code]));
+  } catch (err) {
+    if (err.code === "42P01") {
+      await createAllTables();
+      ({ rows } = await pool.query(query, [code]));
+    } else {
+      throw err;
+    }
+  }
+  return rows.length > 0 ? rows[0].user_key : null;
+}
+*/
