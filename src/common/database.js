@@ -21,7 +21,7 @@ async function createAllTables() {
       requested_at TIMESTAMP NOT NULL DEFAULT now(),
       user_requested_at TIMESTAMP NOT NULL DEFAULT now()
     );
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS authenticated_users (
       user_id TEXT PRIMARY KEY,
       access_token TEXT NOT NULL,
       user_key TEXT,
@@ -140,7 +140,7 @@ export async function storeUser(userId, accessToken, userKey, privateAccess) {
   }
 
   const insertQuery = `
-      INSERT INTO users (user_id, access_token, user_key, private_access)
+      INSERT INTO authenticated_users (user_id, access_token, user_key, private_access)
       VALUES ($1, $2, $3, $4)
       ON CONFLICT (user_id)
       DO UPDATE SET
