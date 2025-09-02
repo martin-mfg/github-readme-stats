@@ -1,7 +1,7 @@
 import pkg from "pg";
 const { Pool } = pkg;
 
-const pool = process.env.POSTGRES_URL
+export const pool = process.env.POSTGRES_URL
   ? new Pool({
       connectionString: process.env.POSTGRES_URL,
     })
