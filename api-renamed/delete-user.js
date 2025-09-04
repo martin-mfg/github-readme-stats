@@ -1,5 +1,5 @@
 import { logger } from "../src/common/utils.js";
-import { logout } from "../src/users.js";
+import { deleteUser } from "../src/common/database.js";
 
 /**
  * @param {any} req The request.
@@ -8,7 +8,7 @@ import { logout } from "../src/users.js";
 export default async (req, res) => {
   const { user_key } = req.query;
   try {
-    await logout(user_key);
+    await deleteUser(user_key);
   } catch (err) {
     logger.error(err);
     res.send("Something went wrong: " + err.message);

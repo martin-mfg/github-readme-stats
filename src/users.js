@@ -1,5 +1,5 @@
 import axios from "axios";
-import { deleteUser, storeUser } from "./common/database.js";
+import { storeUser } from "./common/database.js";
 
 /**
  * Set user key for a given code
@@ -103,13 +103,4 @@ export async function authenticate(code, privateAccess, userKey) {
   const { userId, accessToken } = await githubAuthenticate(code);
   await storeUser(userId, accessToken, userKey, privateAccess);
   return userId;
-}
-
-/**
- * Delete an authenticated user from the database.
- *
- * @param userKey user key of the user which is to be deleted.
- */
-export async function logout(userKey) {
-  await deleteUser(userKey);
 }
