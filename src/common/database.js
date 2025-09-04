@@ -7,8 +7,8 @@ export const pool = process.env.POSTGRES_URL
     })
   : null;
 
-/*
- * Creates all required tables if they do not exist
+/**
+ * Creates all required tables if they do not exist.
  */
 async function createAllTables() {
   if (!pool) {
@@ -27,10 +27,6 @@ async function createAllTables() {
       user_key TEXT,
       private_access BOOLEAN NOT NULL DEFAULT false
     );
-    -- CREATE TABLE IF NOT EXISTS code_key_map (
-    --   code TEXT PRIMARY KEY,
-    --   user_key TEXT NOT NULL
-    -- );
   `);
 }
 
@@ -88,8 +84,7 @@ export async function deleteOldRequests() {
     result = await pool.query(deleteQuery);
   } catch (err) {
     if (err.code === "42P01") {
-      await createAllTables();
-      result = await pool.query(deleteQuery);
+      console.log("Error deleting requests, table doesn't exist");
     } else {
       throw err;
     }
@@ -118,8 +113,7 @@ export async function getRecentRequests() {
     ({ rows } = await pool.query(query));
   } catch (err) {
     if (err.code === "42P01") {
-      await createAllTables();
-      ({ rows } = await pool.query(query));
+      console.log("Error fetching requests, table doesn't exist");
     } else {
       throw err;
     }
@@ -172,60 +166,28 @@ export async function storeUser(userId, accessToken, userKey, privateAccess) {
 }
 
 /**
- * Stores or updates an Oauth code/userKey pair in the database.
- * @param {string} code OAuth code
- * @param {string} userKey userKey to associate
+ * Delete a user from the database.
+ *
+ * @param userKey user key of the user which is to be deleted.
  */
-/*
-export async function storeCodeKey(code, userKey) {
+export async function deleteUser(userKey) {
   if (!pool) {
     return;
   }
 
-  const insertQuery = `
-      INSERT INTO code_key_map (code, user_key)
-      VALUES ($1, $2)
-      ON CONFLICT (code)
-      DO UPDATE SET user_key = EXCLUDED.user_key
-  `;
+  const deleteQuery = `
+      DELETE FROM authenticated_users
+      WHERE user_key = $1
+    `;
+  let result;
   try {
-    await pool.query(insertQuery, [code, userKey]);
+    result = await pool.query(deleteQuery, [userKey]);
   } catch (err) {
     if (err.code === "42P01") {
-      await createAllTables();
-      await pool.query(insertQuery, [code, userKey]);
+      console.log("Error deleting user, table doesn't exist");
     } else {
       throw err;
     }
+    console.log(`Deleted ${result.rowCount} user(s).`);
   }
 }
-*/
-
-/**
- * Retrieves the userKey for a given Oauth code from the database.
- * @param {string} code OAuth code
- * @returns {Promise<string|null>} userKey or null if not found
- */
-/*
-export async function getCodeKey(code) {
-  if (!pool) {
-    return null;
-  }
-
-  const query = `
-      SELECT user_key FROM code_key_map WHERE code = $1
-  `;
-  let rows;
-  try {
-    ({ rows } = await pool.query(query, [code]));
-  } catch (err) {
-    if (err.code === "42P01") {
-      await createAllTables();
-      ({ rows } = await pool.query(query, [code]));
-    } else {
-      throw err;
-    }
-  }
-  return rows.length > 0 ? rows[0].user_key : null;
-}
-*/
