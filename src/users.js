@@ -63,13 +63,11 @@ async function githubAuthenticate(code) {
           "Content-Type": "application/x-www-form-urlencoded",
           Accept: "application/json",
         },
-        // TODO: above headers are not in github-trends, so double check
       },
     );
 
     const body = res.data;
     const accessToken = body && body.access_token ? body.access_token : null;
-    // TODO: verify above parsing logic, as it's new, by ChatGPT
 
     if (!accessToken) {
       throw new Error("OAuth Error: access_token missing from response");

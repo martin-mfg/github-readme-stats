@@ -191,3 +191,35 @@ export async function deleteUser(userKey) {
     console.log(`Deleted ${result.rowCount} user(s).`);
   }
 }
+
+/**
+ * Checks if private_access is true for the given user_key.
+ *
+ * @param {string} userKey user key of the user to be checked
+ * @returns {Promise<boolean>} true if private_access is true, false otherwise
+ */
+export async function hasPrivateAccess(userKey) {
+  if (!pool) {
+    return false;
+  }
+
+  const query = `
+      SELECT private_access
+      FROM authenticated_users
+      WHERE user_key = $1
+      LIMIT 1
+    `;
+  try {
+    const { rows } = await pool.query(query, [userKey]);
+    if (rows.length === 0) {
+      return false;
+    }
+    return rows[0].private_access;
+  } catch (err) {
+    if (err.code === "42P01") {
+      return false;
+    } else {
+      throw err;
+    }
+  }
+}

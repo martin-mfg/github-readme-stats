@@ -8,6 +8,7 @@ import { default as patInfo } from "./api-renamed/status/pat-info.js";
 import { default as statusUp } from "./api-renamed/status/up.js";
 import { default as authenticate } from "./api-renamed/authenticate.js";
 import { default as deleteUser } from "./api-renamed/delete-user.js";
+import { default as privateAccess } from "./api-renamed/private-access.js";
 
 export default async (req, res) => {
   // remaining code expects express.js-like request and response objects
@@ -54,6 +55,9 @@ export default async (req, res) => {
       break;
     case "/api/delete-user":
       deleteUser(req, res);
+      break;
+    case "/api/private-access":
+      privateAccess(req, res);
       break;
     default:
       res.statusCode = 404;
