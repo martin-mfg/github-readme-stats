@@ -406,11 +406,11 @@ You can customize the appearance and behavior of the pinned repository card usin
 
 ![Readme Card](https://github-readme-stats-phi-jet-58.vercel.app/api/pin/?username=anuraghazra\&repo=github-readme-stats)
 
-Use [show\_owner](#options-1) query option to include the repo's owner username:
+Use [show\_owner](#options) query option to include the repo's owner username:
 
 ![Readme Card](https://github-readme-stats-phi-jet-58.vercel.app/api/pin/?username=anuraghazra\&repo=github-readme-stats\&show_owner=true)
 
-Use [show](#options-1) query option to display the user's contributions to the repository:
+Use [show](#options) query option to display the user's contributions to the repository:
 
 ![Readme Card](https://github-readme-stats-phi-jet-58.vercel.app/api/pin/?username=anuraghazra\&repo=github-readme-stats\&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented)
 
@@ -444,7 +444,7 @@ You can customize the appearance and behavior of the gist card using the [common
 
 ![Gist Card](https://github-readme-stats-phi-jet-58.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d)
 
-Use `show_owner` query option to include the gist's owner username
+Use [show\_owner](#options-1) query option to include the gist's owner username
 
 ![Gist Card](https://github-readme-stats-phi-jet-58.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d\&show_owner=true)
 
