@@ -1,8 +1,13 @@
 import axios from "axios";
-import { pool, deleteOldRequests, getRecentRequests } from "./common/database.js";
+import {
+  pool,
+  deleteOldRequests,
+  getRecentRequests,
+} from "./common/database.js";
 
 /**
  * Processes URLs with a thread pool of given size using axios.get.
+ *
  * @param {string[]} urls An array of URLs to process.
  * @param {number} poolSize The number of concurrent requests to process.
  * @returns {Promise<void>} A promise that resolves when all requests are processed.

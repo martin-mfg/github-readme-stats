@@ -79,21 +79,21 @@ export async function deleteOldRequests() {
       DELETE FROM requests
       WHERE user_requested_at < NOW() - INTERVAL '8 days'
     `;
-  let result;
   try {
-    result = await pool.query(deleteQuery);
+    let result = await pool.query(deleteQuery);
+    console.log(`Deleted ${result.rowCount} old requests.`);
   } catch (err) {
     if (err.code === "42P01") {
       console.log("Error deleting requests, table doesn't exist");
     } else {
       throw err;
     }
-    console.log(`Deleted ${result.rowCount} old requests.`);
   }
 }
 
 /**
  * Fetches all requests which are between 11 hours and 8 days old.
+ *
  * @returns {Promise<string[]>} Array of all requests between 11 hours and 8 days old.
  */
 export async function getRecentRequests() {
@@ -123,6 +123,7 @@ export async function getRecentRequests() {
 
 /**
  * Inserts or updates a user in the database.
+ *
  * @param {string} userId GitHub userId (login name)
  * @param {string} accessToken GitHub access token
  * @param {string|null} userKey Optional user key
@@ -179,16 +180,14 @@ export async function deleteUser(userKey) {
       DELETE FROM authenticated_users
       WHERE user_key = $1
     `;
-  let result;
   try {
-    result = await pool.query(deleteQuery, [userKey]);
+    await pool.query(deleteQuery, [userKey]);
   } catch (err) {
     if (err.code === "42P01") {
       console.log("Error deleting user, table doesn't exist");
     } else {
       throw err;
     }
-    console.log(`Deleted ${result.rowCount} user(s).`);
   }
 }
 

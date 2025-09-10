@@ -2,24 +2,12 @@ import axios from "axios";
 import { storeUser } from "./common/database.js";
 
 /**
- * Set user key for a given code
- * @param {string} code GitHub authentication code from OAuth process
- * @param {string} userKey user key to associate with the user
- * @returns {Promise<string>} the user key, unchanged
- */
-/*
-async function setUserKey(code, userKey) {
-  await storeCodeKey(code, userKey);
-  return userKey;
-}
-*/
-
-/**
  * Given an access token, return the GitHub login (userId) or null if invalid
+ *
  * @param {string} accessToken GitHub access token
  * @returns {Promise<string|null>} login name or null if invalid access_token
  */
-async function getUnknownUser(accessToken) {
+async function getUserFromToken(accessToken) {
   const res = await axios.get("https://api.github.com/user", {
     headers: {
       Accept: "application/vnd.github.v3+json",
@@ -32,6 +20,7 @@ async function getUnknownUser(accessToken) {
 
 /**
  * Exchanges OAuth code for access token and returns userId + accessToken
+ *
  * @param {string} code GitHub authentication code from OAuth process
  * @returns {Promise<{userId: string, accessToken: string}>} user_id and access_token of authenticated user
  */
@@ -73,13 +62,13 @@ async function githubAuthenticate(code) {
       throw new Error("OAuth Error: access_token missing from response");
     }
 
-    const userId = await getUnknownUser(accessToken);
+    const userId = await getUserFromToken(accessToken);
 
     if (!userId) {
       throw new Error("OAuth Error: Invalid user_id/access_token");
     }
 
-    console.log("OAuth SignUp", `${Date.now() - start} ms`);
+    console.log("GitHub Authentication", `${Date.now() - start} ms`);
     return { userId, accessToken };
   } catch (err) {
     if (err.response) {
