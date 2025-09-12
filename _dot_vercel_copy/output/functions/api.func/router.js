@@ -9,6 +9,7 @@ import { default as statusUp } from "./api-renamed/status/up.js";
 import { default as authenticate } from "./api-renamed/authenticate.js";
 import { default as deleteUser } from "./api-renamed/delete-user.js";
 import { default as privateAccess } from "./api-renamed/private-access.js";
+import { default as downgrade } from "./api-renamed/downgrade.js";
 
 export default async (req, res) => {
   // remaining code expects express.js-like request and response objects
@@ -58,6 +59,9 @@ export default async (req, res) => {
       break;
     case "/api/private-access":
       privateAccess(req, res);
+      break;
+    case "/api/downgrade":
+      downgrade(req, res);
       break;
     default:
       res.statusCode = 404;

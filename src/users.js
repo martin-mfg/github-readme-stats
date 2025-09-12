@@ -30,7 +30,7 @@ async function githubAuthenticate(code) {
     !process.env.OAUTH_CLIENT_SECRET ||
     !process.env.OAUTH_REDIRECT_URI
   ) {
-    console.error(
+    throw new Error(
       "OAuth Error: One or more required environment variables (OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_REDIRECT_URI) are not set.",
     );
   }

@@ -222,3 +222,35 @@ export async function hasPrivateAccess(userKey) {
     }
   }
 }
+
+/**
+ * Fetches access_token for a given user_key.
+ *
+ * @param {string} userKey user key of the user to fetch token for
+ * @returns Returns user key if found, null otherwise
+ */
+export async function getUserToken(userKey) {
+  if (!pool) {
+    return null;
+  }
+
+  const query = `
+      SELECT access_token
+      FROM authenticated_users
+      WHERE user_key = $1
+      LIMIT 1
+    `;
+  try {
+    const { rows } = await pool.query(query, [userKey]);
+    if (rows.length === 0) {
+      return null;
+    }
+    return rows[0].access_token;
+  } catch (err) {
+    if (err.code === "42P01") {
+      return null;
+    } else {
+      throw err;
+    }
+  }
+}
