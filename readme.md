@@ -373,7 +373,7 @@ If we don't support your language, please consider contributing! You can find mo
 
 # GitHub Extra Pins
 
-GitHub extra pins allow you to pin more than 6 repositories in your profile using a GitHub readme profile.
+GitHub extra pins allow you to pin more than 6 repositories in your profile using a GitHub profile readme.
 
 Yay! You are no longer limited to 6 pinned repositories.
 
@@ -420,7 +420,7 @@ You can also specify the `repo` parameter in the form `<user_or_organization>/<r
 
 # GitHub Gist Pins
 
-GitHub gist pins allow you to pin gists in your GitHub profile using a GitHub readme profile.
+GitHub gist pins allow you to pin gists in your GitHub profile using a GitHub profile readme.
 
 ### Usage
 
@@ -450,7 +450,7 @@ Use [show\_owner](#options-1) query option to include the gist's owner username
 
 # Top Languages Card
 
-The top languages card shows a GitHub user's most frequently used languages.
+The top languages card shows your most frequently used languages.
 
 > [!WARNING]\
 > By default, the language card shows language results only from public repositories. To include languages used in private repositories, you should [deploy your own instance](#deploy-on-your-own) using your own GitHub API token.
