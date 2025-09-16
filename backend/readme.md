@@ -310,6 +310,7 @@ Here is a list of all available locales:
 | `fr` | French |
 | `hu` | Hungarian |
 | `fi` | Finnish |
+| `sr` | Serbian |
 
 </td><td>
 

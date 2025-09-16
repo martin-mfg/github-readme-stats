@@ -427,6 +427,7 @@ const renderStatsCard = (
     "nl",
     "zh-tw",
     "uz",
+    "sr",
   ];
   const isLongLocale = locale ? longLocales.includes(locale) : false;
 
