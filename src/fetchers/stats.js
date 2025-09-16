@@ -107,7 +107,7 @@ const fetcher = (variables, token) => {
  * Fetch stats information for a given username.
  *
  * @param {object} variables Fetcher variables.
- * @param {string} variables.username Github username.
+ * @param {string} variables.username GitHub username.
  * @param {boolean} variables.includeMergedPullRequests Include merged pull requests.
  * @param {boolean} variables.includeDiscussions Include discussions.
  * @param {boolean} variables.includeDiscussionsAnswers Include discussions answers.
@@ -213,6 +213,7 @@ const totalItemsFetcher = async (username, repo, owner, type, filter) => {
 
   const totalCount = res.data.total_count;
   if (isNaN(totalCount)) {
+    logger.error("GitHub error: " + JSON.stringify(res.data));
     throw new CustomError(
       "Could not fetch data from GitHub REST API.",
       CustomError.GITHUB_REST_API_ERROR,

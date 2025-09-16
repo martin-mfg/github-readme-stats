@@ -373,6 +373,12 @@ const UPSTREAM_API_ERRORS = [
  * @param {string} message Main error message.
  * @param {string} secondaryMessage The secondary error message.
  * @param {object} options Function options.
+ * @param {string=} options.title_color Card title color.
+ * @param {string=} options.text_color Card text color.
+ * @param {string=} options.bg_color Card background color.
+ * @param {string=} options.border_color Card border color.
+ * @param {string=} options.theme Card theme.
+ * @param {boolean=} options.show_repo_link Whether to show repo link or not.
  * @returns {string} The SVG markup.
  */
 const renderError = (message, secondaryMessage = "", options = {}) => {
@@ -382,6 +388,7 @@ const renderError = (message, secondaryMessage = "", options = {}) => {
     bg_color,
     border_color,
     theme = "default",
+    show_repo_link = true,
   } = options;
 
   // returns theme based colors with proper overrides and defaults
@@ -406,7 +413,7 @@ const renderError = (message, secondaryMessage = "", options = {}) => {
       ERROR_CARD_LENGTH - 1
     }" height="99%" rx="4.5" fill="${bgColor}" stroke="${borderColor}"/>
     <text x="25" y="45" class="text">Something went wrong!${
-      UPSTREAM_API_ERRORS.includes(secondaryMessage)
+      UPSTREAM_API_ERRORS.includes(secondaryMessage) || !show_repo_link
         ? ""
         : " file an issue at https://tiny.one/readme-stats"
     }</text>
@@ -458,42 +465,33 @@ const noop = () => {};
 const logger =
   process.env.NODE_ENV === "test" ? { log: noop, error: noop } : console;
 
-const ONE_MINUTE = 60;
-const FIVE_MINUTES = 300;
-const TEN_MINUTES = 600;
-const FIFTEEN_MINUTES = 900;
-const THIRTY_MINUTES = 1800;
-const TWO_HOURS = 7200;
-const FOUR_HOURS = 14400;
-const SIX_HOURS = 21600;
-const EIGHT_HOURS = 28800;
-const TEN_HOURS = 36000;
-const TWELVE_HOURS = 43200;
-const ONE_DAY = 86400;
-const TWO_DAY = ONE_DAY * 2;
-const SIX_DAY = ONE_DAY * 6;
-const TEN_DAY = ONE_DAY * 10;
+const MIN = 60;
+const HOUR = 60 * MIN;
+const DAY = 24 * HOUR;
 
 const CONSTANTS = {
-  ONE_MINUTE,
-  FIVE_MINUTES,
-  TEN_MINUTES,
-  FIFTEEN_MINUTES,
-  THIRTY_MINUTES,
-  TWO_HOURS,
-  FOUR_HOURS,
-  SIX_HOURS,
-  EIGHT_HOURS,
-  TEN_HOURS,
-  TWELVE_HOURS,
-  ONE_DAY,
-  TWO_DAY,
-  SIX_DAY,
-  TEN_DAY,
-  CARD_CACHE_SECONDS: TEN_HOURS,
-  TOP_LANGS_CACHE_SECONDS: TEN_HOURS,
-  PIN_CARD_CACHE_SECONDS: TEN_HOURS,
-  ERROR_CACHE_SECONDS: TEN_MINUTES,
+  ONE_MINUTE: MIN,
+  FIVE_MINUTES: 5 * MIN,
+  TEN_MINUTES: 10 * MIN,
+  FIFTEEN_MINUTES: 15 * MIN,
+  THIRTY_MINUTES: 30 * MIN,
+
+  TWO_HOURS: 2 * HOUR,
+  FOUR_HOURS: 4 * HOUR,
+  SIX_HOURS: 6 * HOUR,
+  EIGHT_HOURS: 8 * HOUR,
+  TEN_HOURS: 10 * HOUR,
+  TWELVE_HOURS: 12 * HOUR,
+
+  ONE_DAY: DAY,
+  TWO_DAY: 2 * DAY,
+  SIX_DAY: 6 * DAY,
+  TEN_DAY: 10 * DAY,
+
+  CARD_CACHE_SECONDS: 10 * HOUR,
+  TOP_LANGS_CACHE_SECONDS: 10 * HOUR,
+  PIN_CARD_CACHE_SECONDS: 10 * HOUR,
+  ERROR_CACHE_SECONDS: 10 * MIN,
 };
 
 /**
@@ -607,7 +605,7 @@ const parseEmojis = (str) => {
 /**
  * Parse owner affiliations.
  *
- * @param {string[]} affiliations
+ * @param {string[]} affiliations input affiliations to be parsed.
  * @returns {string[]} Parsed affiliations.
  *
  * @throws {CustomError} If affiliations contains invalid values.

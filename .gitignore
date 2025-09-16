@@ -12,3 +12,5 @@ vercel_token
 !.vscode/extensions.json
 !.vscode/settings.json
 *.code-workspace
+
+.vercel
