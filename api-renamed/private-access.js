@@ -15,4 +15,3 @@ export default async (req, res) => {
     res.send("Something went wrong: " + err.message);
   }
 };
-

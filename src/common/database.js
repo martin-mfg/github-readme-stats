@@ -199,7 +199,7 @@ export async function deleteUser(userKey) {
  */
 export async function hasPrivateAccess(userKey) {
   if (!pool) {
-    return false;
+    return null;
   }
 
   const query = `
@@ -211,12 +211,12 @@ export async function hasPrivateAccess(userKey) {
   try {
     const { rows } = await pool.query(query, [userKey]);
     if (rows.length === 0) {
-      return false;
+      return null;
     }
     return rows[0].private_access;
   } catch (err) {
     if (err.code === "42P01") {
-      return false;
+      return null;
     } else {
       throw err;
     }
