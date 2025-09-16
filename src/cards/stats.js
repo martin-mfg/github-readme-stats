@@ -276,9 +276,7 @@ const renderStatsCard = (
       theme,
     });
 
-  const apostrophe = ["x", "s"].includes(name.slice(-1).toLocaleLowerCase())
-    ? ""
-    : "s";
+  const apostrophe = /s$/i.test(name.trim()) ? "" : "s";
   const i18n = new I18n({
     locale,
     translations: statCardLocales({ name, apostrophe }),
