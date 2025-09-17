@@ -11,7 +11,7 @@ import {
   measureText,
   buildSearchFilter,
 } from "../common/utils.js";
-import { statCardLocales } from "../translations.js";
+import { statCardLocales, wakatimeCardLocales } from "../translations.js";
 
 const CARD_MIN_WIDTH = 287;
 const CARD_DEFAULT_WIDTH = 287;
@@ -199,6 +199,21 @@ const getStyles = ({
 };
 
 /**
+ * Return the label for commits according to the selected options
+ *
+ * @param {boolean} include_all_commits Option to include all years
+ * @param {number|undefined} commits_year Option to include only selected year
+ * @param {I18n} i18n The I18n instance.
+ * @returns {string} The label corresponding to the options.
+ */
+const getTotalCommitsYearLabel = (include_all_commits, commits_year, i18n) =>
+  include_all_commits
+    ? ""
+    : commits_year
+      ? ` (${commits_year})`
+      : ` (${i18n.t("wakatimecard.lastyear")})`;
+
+/**
  * @typedef {import('../fetchers/types').StatsData} StatsData
  * @typedef {import('./types').StatCardOptions} StatCardOptions
  */
@@ -244,6 +259,7 @@ const renderStatsCard = (
     card_width,
     hide_rank = false,
     include_all_commits = false,
+    commits_year,
     line_height = 25,
     title_color,
     ring_color,
@@ -279,7 +295,10 @@ const renderStatsCard = (
   const apostrophe = /s$/i.test(name.trim()) ? "" : "s";
   const i18n = new I18n({
     locale,
-    translations: statCardLocales({ name, apostrophe }),
+    translations: {
+      ...statCardLocales({ name, apostrophe }),
+      ...wakatimeCardLocales,
+    },
   });
 
   // Meta data for creating text nodes with createTextNode function
@@ -293,9 +312,11 @@ const renderStatsCard = (
   };
   STATS.commits = {
     icon: icons.commits,
-    label: `${i18n.t("statcard.commits")}${
-      include_all_commits ? "" : ` (${new Date().getFullYear()})`
-    }`,
+    label: `${i18n.t("statcard.commits")}${getTotalCommitsYearLabel(
+      include_all_commits,
+      commits_year,
+      i18n,
+    )}`,
     value: totalCommits,
     id: "commits",
   };
@@ -588,9 +609,11 @@ const renderStatsCard = (
     .filter((key) => !hide.includes(key))
     .map((key) => {
       if (key === "commits") {
-        return `${i18n.t("statcard.commits")} ${
-          include_all_commits ? "" : `in ${new Date().getFullYear()}`
-        } : ${STATS[key].value}`;
+        return `${i18n.t("statcard.commits")} ${getTotalCommitsYearLabel(
+          include_all_commits,
+          commits_year,
+          i18n,
+        )} : ${STATS[key].value}`;
       }
       return `${STATS[key].label}: ${STATS[key].value}`;
     })
