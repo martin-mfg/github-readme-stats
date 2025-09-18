@@ -322,6 +322,7 @@ Here is a list of all available locales:
 | `hu` | Hungarian |
 | `fi` | Finnish |
 | `sr` | Serbian |
+| `hi` | Hindi |
 
 </td><td>
 
