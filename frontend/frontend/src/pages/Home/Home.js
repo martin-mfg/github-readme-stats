@@ -13,10 +13,12 @@ import {
 
 import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
-import { PROD } from '../../constants';
+import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
 
 const HomeScreen = () => {
+  console.log('new env var:', process.env.VERCEL_RELATED_PROJECTS);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const userId = useSelector((state) => state.user.userId);
@@ -118,8 +120,7 @@ const HomeScreen = () => {
       if (url.includes('code=')) {
         const tempPrivateAccess = url.includes('private');
         const newUrl = url.split('?code=');
-        const subStr = PROD ? 'githubtrends.io' : 'localhost:3000';
-        const redirect = `${url.split(subStr)[0]}${subStr}/user`;
+        const redirect = `${url.split(HOST)[0]}${HOST}/frontend/user`;
         window.history.pushState({}, null, redirect);
         setIsLoading(true);
         const userKey = uuidv4();

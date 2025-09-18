@@ -1,5 +1,6 @@
 {
   "buildCommand": "yarn build-trends",
   "outputDirectory": "build",
-  "installCommand": "yarn install"
+  "installCommand": "yarn install",
+  "relatedProjects": ["prj_ubTjOvYDA9zS24cT9hMARICRm9Vm"]
 }

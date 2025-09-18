@@ -9,12 +9,16 @@ export const CLIENT_ID = PROD
 
 export const MODE = process.env.REACT_APP_MODE;
 
+export const HOST = PROD
+  ? 'monorepo-test-backend-seven.vercel.app'
+  : 'localhost:3000';
+
 export const REDIRECT_URI = PROD
   ? MODE === 'trends'
-    ? 'https://www.githubtrends.io/user'
+    ? `https://${HOST}/frontend/user`
     : 'https://www.githubtrends.io/user/wrapped'
   : MODE === 'trends'
-  ? 'http://localhost:3000/user'
+  ? `http://${HOST}/frontend/user`
   : 'http://localhost:3000/user/wrapped';
 
 export const GITHUB_PRIVATE_AUTH_URL = `https://github.com/login/oauth/authorize?scope=user,repo&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}/private`;

@@ -11,5 +11,6 @@
       "source": "/frontend/:match*",
       "destination": "https://monorepo-test-frontend-neon.vercel.app/:match*"
     }
-  ]
+  ],
+  "relatedProjects": ["prj_emQEOHSrnlodZCgZ1kyzVsiiGSQm"]
 }

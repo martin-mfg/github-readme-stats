@@ -76,7 +76,7 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col">
-      <Router>
+      <Router basename="/frontend">
         <Header mode="trends" />
         <section className="bg-white text-gray-700 flex-grow">
           <Routes>
