@@ -10,6 +10,7 @@ from src.utils import alru_cache
 
 @alru_cache(ttl=timedelta(minutes=15))
 async def get_keys(no_cache: bool = False) -> Tuple[bool, List[str]]:
+    return (False, [])
     secrets: Optional[Dict[str, Any]] = await SECRETS.find_one({"project": "main"})
     if secrets is None:
         return (False, [])

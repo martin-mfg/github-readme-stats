@@ -59,7 +59,7 @@ async def authenticate(
             end_date=None,
         )
 
-    await db_update_user(user_id, raw_user)
+    # await db_update_user(user_id, raw_user)
     return user_id, background_task
 
 

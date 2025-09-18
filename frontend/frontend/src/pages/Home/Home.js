@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { useNavigate } from 'react-router-dom';
 import BounceLoader from 'react-spinners/BounceLoader';
-import { FaGithub as GithubIcon } from 'react-icons/fa';
 
+import { v4 as uuidv4 } from 'uuid';
 import { ProgressBar } from '../../components';
 import {
-  SelectCardStage,
   CustomizeStage,
-  ThemeStage,
   DisplayStage,
+  SelectCardStage,
+  ThemeStage,
 } from './stages';
 
-import { setUserKey, authenticate } from '../../api';
+import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { PROD } from '../../constants';
+import { CardTypes } from '../../utils';
 
 const HomeScreen = () => {
-  const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(false);
 
   const userId = useSelector((state) => state.user.userId);
@@ -35,7 +32,8 @@ const HomeScreen = () => {
   const [stage, setStage] = useState(0);
 
   // for stage one
-  const [selectedCard, setSelectedCard] = useState('langs');
+  const [selectedCard, setSelectedCard] = useState();
+  const [imageSrc, setImageSrc] = useState(`?&username=${userId}`);
 
   // for stage two
   const defaultTimeRange = {
@@ -53,6 +51,10 @@ const HomeScreen = () => {
   const [useLocChanged, setUseLocChanged] = useState(false);
   const [useCompact, setUseCompact] = useState(false);
 
+  const [showTitle, setShowTitle] = useState(true);
+  const [customTitle, setCustomTitle] = useState('');
+  const [langsCount, setLangsCount] = useState();
+
   const resetCustomization = () => {
     setSelectedTimeRange(defaultTimeRange);
     setUsePercent(false);
@@ -66,7 +68,7 @@ const HomeScreen = () => {
   }, [selectedCard]);
 
   const time = selectedTimeRange.value;
-  let fullSuffix = `${selectedCard}?time_range=${time}`;
+  let fullSuffix = `${imageSrc}&time_range=${time}`;
 
   if (usePercent) {
     fullSuffix += '&use_percent=True';
@@ -90,6 +92,19 @@ const HomeScreen = () => {
     fullSuffix += '&compact=True';
   }
 
+  if (!showTitle) {
+    fullSuffix += '&hide_title=true';
+  }
+
+  if (customTitle) {
+    const encodedTitle = encodeURIComponent(customTitle);
+    fullSuffix += `&custom_title=${encodedTitle}`;
+  }
+
+  if (langsCount) {
+    fullSuffix += `&langs_count=${langsCount}`;
+  }
+
   // for stage three
   const [theme, setTheme] = useState('classic');
   const themeSuffix = `${fullSuffix}&theme=${theme}`;
@@ -99,10 +114,6 @@ const HomeScreen = () => {
       // After requesting Github access, Github redirects back to your app with a code parameter
       const url = window.location.href;
 
-      if (url.includes('error=')) {
-        navigate('/');
-      }
-
       // If Github API returns the code parameter
       if (url.includes('code=')) {
         const tempPrivateAccess = url.includes('private');
@@ -111,8 +122,12 @@ const HomeScreen = () => {
         const redirect = `${url.split(subStr)[0]}${subStr}/user`;
         window.history.pushState({}, null, redirect);
         setIsLoading(true);
-        const userKey = await setUserKey(newUrl[1]);
-        const newUserId = await authenticate(newUrl[1], tempPrivateAccess);
+        const userKey = uuidv4();
+        const newUserId = await authenticate(
+          newUrl[1],
+          tempPrivateAccess,
+          userKey,
+        );
         login(newUserId, userKey);
         setIsLoading(false);
       }
@@ -181,11 +196,13 @@ const HomeScreen = () => {
             <SelectCardStage
               selectedCard={selectedCard}
               setSelectedCard={setSelectedCard}
+              setImageSrc={setImageSrc}
             />
           )}
           {stage === 1 && (
             <CustomizeStage
-              selectedCard={selectedCard}
+              selectedCard={selectedCard || CardTypes.STATS}
+              imageSrc={imageSrc}
               selectedTimeRange={selectedTimeRange}
               setSelectedTimeRange={setSelectedTimeRange}
               usePrivate={usePrivate}
@@ -201,6 +218,12 @@ const HomeScreen = () => {
               setUsePercent={setUsePercent}
               useLocChanged={useLocChanged}
               setUseLocChanged={setUseLocChanged}
+              showTitle={showTitle}
+              setShowTitle={setShowTitle}
+              customTitle={customTitle}
+              setCustomTitle={setCustomTitle}
+              langsCount={langsCount}
+              setLangsCount={setLangsCount}
               fullSuffix={fullSuffix}
             />
           )}
@@ -215,21 +238,6 @@ const HomeScreen = () => {
             <DisplayStage userId={userId} themeSuffix={themeSuffix} />
           )}
         </div>
-      </div>
-      <div className="fixed bottom-8 right-8">
-        <a
-          href="https://www.github.com/avgupta456/github-trends"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <button
-            type="button"
-            className="rounded-sm shadow bg-gray-700 hover:bg-gray-800 text-gray-50 px-3 py-2 flex items-center"
-          >
-            Star on
-            <GithubIcon className="ml-1.5 w-5 h-5" />
-          </button>
-        </a>
       </div>
     </div>
   );

@@ -15,15 +15,19 @@ const DisplayStage = ({ userId, themeSuffix }) => {
   const card = themeSuffix.split('?')[0];
 
   const downloadPNG = () => {
-    saveSvgAsPng(document.getElementById('svg-card'), `${userId}_${card}.png`, {
-      scale: 2,
-      encoderOptions: 1,
-    });
+    saveSvgAsPng(
+      document.getElementById('svg-card').firstElementChild,
+      `${userId}_${card}.png`,
+      {
+        scale: 2,
+        encoderOptions: 1,
+      },
+    );
   };
 
   const copyUrl = () => {
     navigator.clipboard.writeText(
-      `https://api.githubtrends.io/user/svg/${userId}/${themeSuffix}`,
+      `https://github-readme-stats-phi-jet-58.vercel.app/api/${themeSuffix}&username=${userId}`,
     );
     toast.info('Copied to Clipboard!', {
       position: 'bottom-right',
@@ -70,7 +74,7 @@ const DisplayStage = ({ userId, themeSuffix }) => {
           <Card
             title="Your Card"
             description="The finished product!"
-            imageSrc={`${themeSuffix}&use_animation=False`}
+            imageSrc={`${themeSuffix}&disable_animations=true`}
             selected
           />
         </div>

@@ -11,6 +11,7 @@ from src.utils import alru_cache
 async def get_public_user(
     user_id: str, no_cache: bool = False
 ) -> Tuple[bool, Optional[PublicUserModel]]:
+    return (False, None)
     user: Optional[Dict[str, Any]] = await USERS.find_one({"user_id": user_id})
     if user is None:
         # flag is false, don't cache

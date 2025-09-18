@@ -4,7 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-import { FaGithub as GithubIcon, FaCheck as CheckIcon } from 'react-icons/fa';
+import { FaCheck as CheckIcon, FaGithub as GithubIcon } from 'react-icons/fa';
 
 import { Button, Preview } from '../../components';
 

@@ -13,10 +13,7 @@ const SvgInline = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [loaded, setLoaded] = useState(false);
 
-  let url = `${props.url.split('?')[0]}?cache=${Date.now()}`;
-  if (props.url.split('?').length > 1) {
-    url += `&${props.url.split('?')[1]}`;
-  }
+  const { url } = props;
 
   useEffect(() => {
     setLoaded(false);
@@ -39,7 +36,7 @@ const SvgInline = (props) => {
       <div
         className={props.className}
         dangerouslySetInnerHTML={{
-          __html: `<svg id="svg-card" viewBox="0 0 300 175">${svg}</svg>`,
+          __html: `<div id="svg-card">${svg}</div>`,
         }}
       />
     );
@@ -49,7 +46,7 @@ const SvgInline = (props) => {
     <div
       className={props.className}
       dangerouslySetInnerHTML={{
-        __html: `<svg id="svg-card" viewBox="0 0 300 285">${svg}</svg>`,
+        __html: `<div id="svg-card">${svg}</div>`,
       }}
     />
   );

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/no-danger */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -17,7 +18,7 @@ const CheckboxSection = ({
 }) => {
   return (
     <Section title={title}>
-      <p>{text}</p>
+      <p dangerouslySetInnerHTML={{ __html: text }} />
       <Checkbox
         question={question}
         variable={variable}

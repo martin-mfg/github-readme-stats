@@ -17,22 +17,22 @@ const setUserKey = async (code) => {
   }
 };
 
-const authenticate = async (code, privateAccess) => {
+const authenticate = async (code, privateAccess, userKey) => {
   try {
-    const fullUrl = `${URL_PREFIX}/auth/web/login/${code}?private_access=${privateAccess}`;
+    const fullUrl = `https://github-readme-stats-phi-jet-58.vercel.app/api/authenticate?code=${code}&private_access=${privateAccess}&user_key=${userKey}`;
     const result = await axios.post(fullUrl);
-    return result.data.data;
+    return result.data;
   } catch (error) {
     console.error(error);
     return '';
   }
 };
 
-const getUserMetadata = async (userId) => {
+const getUserMetadata = async (userKey) => {
   try {
-    const fullUrl = `${URL_PREFIX}/user/db/get/metadata/${userId}`;
+    const fullUrl = `https://github-readme-stats-phi-jet-58.vercel.app/api/private-access?user_key=${userKey}`;
     const result = await axios.get(fullUrl);
-    return result.data.data;
+    return result.data;
   } catch (error) {
     console.error(error);
     return '';
@@ -41,7 +41,7 @@ const getUserMetadata = async (userId) => {
 
 const deleteAccount = async (userId, userKey) => {
   try {
-    const fullUrl = `${URL_PREFIX}/auth/web/delete/${userId}?user_key=${userKey}`;
+    const fullUrl = `https://github-readme-stats-phi-jet-58.vercel.app/api/delete-user?user_key=${userKey}`;
     const result = await axios.get(fullUrl);
     return result.data; // no decorator
   } catch (error) {

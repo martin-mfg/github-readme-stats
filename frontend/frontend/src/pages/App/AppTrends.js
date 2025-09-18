@@ -1,14 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   BrowserRouter as Router,
-  Routes,
   Route,
+  Routes,
   useParams,
 } from 'react-router-dom';
+import {
+  logout as _logout,
+  setPrivateAccess as _setPrivateAccess,
+} from '../../redux/actions/userActions';
 
 import Header from './Header';
 import LandingScreen from '../Landing';
@@ -17,8 +21,6 @@ import { SignUpScreen } from '../Auth';
 import HomeScreen from '../Home';
 import SettingsScreen from '../Settings';
 import { NoMatchScreen, RedirectScreen } from '../Misc';
-
-import { setPrivateAccess as _setPrivateAccess } from '../../redux/actions/userActions';
 import { getUserMetadata } from '../../api';
 import { WRAPPED_URL } from '../../constants';
 import Footer from './Footer';
@@ -52,6 +54,7 @@ function WrappedRedirectScreen() {
 
 function App() {
   const userId = useSelector((state) => state.user.userId);
+  const userKey = useSelector((state) => state.user.userKey);
   const isAuthenticated = userId && userId.length > 0;
 
   const dispatch = useDispatch();
@@ -59,15 +62,17 @@ function App() {
 
   useEffect(() => {
     async function getPrivateAccess() {
-      if (userId && userId.length > 0) {
-        const result = await getUserMetadata(userId);
-        if (result !== null && result.private_access !== undefined) {
-          setPrivateAccess(result.private_access);
+      if (userKey && userKey.length > 0) {
+        const privateAccess = await getUserMetadata(userKey);
+        if (privateAccess === null) {
+          dispatch(_logout());
+        } else {
+          setPrivateAccess(privateAccess);
         }
       }
     }
     getPrivateAccess();
-  }, [userId]);
+  }, [userKey]);
 
   return (
     <div className="h-screen flex flex-col">

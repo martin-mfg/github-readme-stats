@@ -23,6 +23,7 @@ async def check_db_user_exists(user_id: str) -> bool:
 async def check_user_starred_repo(
     user_id: str, owner: str = OWNER, repo: str = REPO
 ) -> bool:
+    return True
     # Checks the repo's starred users (with cache)
     try:
         repo_stargazers = await get_repo_stargazers(owner, repo)

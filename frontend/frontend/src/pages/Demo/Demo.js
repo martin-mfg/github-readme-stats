@@ -33,13 +33,13 @@ const DemoScreen = () => {
 
   const firstCardUrl =
     selectedUserName.length > 0
-      ? `${BACKEND_URL}/user/svg/${selectedUserName}/langs?demo=true`
-      : `${BACKEND_URL}/user/svg/demo?card=langs`;
+      ? `https://github-readme-stats-phi-jet-58.vercel.app/api/?username=${selectedUserName}&client=demo`
+      : `${BACKEND_URL}/user/svg/demo?card=langs`; // TODO: placeholder image
 
   const secondCardUrl =
     selectedUserName.length > 0
-      ? `${BACKEND_URL}/user/svg/${selectedUserName}/repos?demo=true`
-      : `${BACKEND_URL}/user/svg/demo?card=repos`;
+      ? `https://github-readme-stats-phi-jet-58.vercel.app/api/top-langs/?username=${selectedUserName}&client=demo`
+      : `${BACKEND_URL}/user/svg/demo?card=repos`; // TODO: placeholder image
 
   return (
     <div className="h-full py-8 flex flex-col xl:flex-row justify-center items-center">

@@ -2,35 +2,63 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { Card } from '../../../components';
 
-const SelectCardStage = ({ selectedCard, setSelectedCard }) => {
+const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
+  const userId = useSelector((state) => state.user.userId);
   return (
     <div className="w-full flex flex-wrap">
       {[
         {
-          title: 'Language Contributions',
-          description: 'See your overall language breakdown',
-          imageSrc: 'langs',
+          title: 'GitHub Stats Card',
+          description: 'your overall GitHub statistics',
+          imageSrc: `?&username=${userId}`,
+          cardType: 'stats',
         },
         {
-          title: 'Repository Contributions',
-          description: 'See your most contributed repositories',
-          imageSrc: 'repos',
+          title: 'Top Languages Card',
+          description: 'your most frequently used languages',
+          imageSrc: `top-langs/?&username=${userId}&langs_count=4`,
+          cardType: 'top-langs',
+        },
+        {
+          title: 'GitHub Extra Pins',
+          description:
+            'pin more than 6 repositories in your profile using a GitHub profile readme',
+          imageSrc: 'pin/?repo=anuraghazra/github-readme-stats',
+          cardType: 'pin',
+        },
+        {
+          title: 'GitHub Gist Pins',
+          description:
+            'pin gists in your GitHub profile using a GitHub profile readme',
+          imageSrc: 'gist/?id=bbfce31e0217a3689c8d961a356cb10d',
+          cardType: 'gist',
+        },
+        {
+          title: 'WakaTime Stats Card',
+          description: 'your coding activity from WakaTime',
+          imageSrc: 'wakatime/?username=ffflabs&langs_count=6&card_width=450',
+          cardType: 'wakatime',
         },
       ].map((card, index) => (
         <button
-          className="w-full sm:w-1/2 lg:w-1/3 p-2 lg:p-4"
+          className="p-2 lg:p-4"
           key={index}
           type="button"
-          onClick={() => setSelectedCard(card.imageSrc)}
+          onClick={() => {
+            setSelectedCard(card.cardType);
+            setImageSrc(card.imageSrc);
+          }}
         >
           <Card
             title={card.title}
             description={card.description}
             imageSrc={card.imageSrc}
-            selected={selectedCard === card.imageSrc}
+            selected={selectedCard === card.cardType}
+            fixedSize="true"
           />
         </button>
       ))}
@@ -39,8 +67,13 @@ const SelectCardStage = ({ selectedCard, setSelectedCard }) => {
 };
 
 SelectCardStage.propTypes = {
-  selectedCard: PropTypes.string.isRequired,
+  selectedCard: PropTypes.string,
   setSelectedCard: PropTypes.func.isRequired,
+  setImageSrc: PropTypes.func.isRequired,
+};
+
+SelectCardStage.defaultProps = {
+  selectedCard: null,
 };
 
 export default SelectCardStage;

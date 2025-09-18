@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '../../components';
 import { logout as _logout } from '../../redux/actions/userActions';
 import { deleteAccount } from '../../api';
 import { classnames } from '../../utils';
-import { GITHUB_PRIVATE_AUTH_URL, CLIENT_ID } from '../../constants';
+import { CLIENT_ID, GITHUB_PRIVATE_AUTH_URL } from '../../constants';
 
 const SectionButton = ({ name, implemented, isSelected, setSelected }) => {
   return (
@@ -167,9 +167,13 @@ const SettingsScreen = () => {
                 )}
                 <br />
                 {privateAccess ? (
-                  <Button className="bg-gray-200 rounded-sm opacity-50 cursor-not-allowed">
-                    Downgrade to Public Access
-                  </Button>
+                  <a
+                    href={`https://github-readme-stats-phi-jet-58.vercel.app/api/downgrade?user_key=${userKey}`}
+                  >
+                    <Button className="bg-blue-500 text-white rounded-sm">
+                      Downgrade to Public Access
+                    </Button>
+                  </a>
                 ) : (
                   <a href={GITHUB_PRIVATE_AUTH_URL}>
                     <Button className="bg-blue-500 text-white rounded-sm">
