@@ -1,0 +1,21 @@
+steps:
+  - name: node:10.15.1
+    entrypoint: npm
+    args: ["install"]
+    dir: "backend"
+  - name: node:10.15.1
+    entrypoint: npm
+    args: ["run", "create-env"]
+    dir: "backend"
+    env:
+      - "DEV_OAUTH_CLIENT_ID=${_DEV_OAUTH_CLIENT_ID}"
+      - "DEV_OAUTH_CLIENT_SECRET=${_DEV_OAUTH_CLIENT_SECRET}"
+      - "DEV_OAUTH_REDIRECT_URI=${_DEV_OAUTH_REDIRECT_URI}"
+      - "PROD_OAUTH_CLIENT_ID=${_PROD_OAUTH_CLIENT_ID}"
+      - "PROD_OAUTH_CLIENT_SECRET=${_PROD_OAUTH_CLIENT_SECRET}"
+      - "PROD_OAUTH_REDIRECT_URI=${_PROD_OAUTH_REDIRECT_URI}"
+      - "MONGODB_PASSWORD=${_MONGODB_PASSWORD}"
+      - "SENTRY_DSN=${_SENTRY_DSN}"
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["app", "deploy", "--appyaml", "./deploy/app.yaml"]
+    dir: "backend"

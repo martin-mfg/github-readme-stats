@@ -1,0 +1,3 @@
+dispatch:
+  - url: "*/.*"
+    service: default

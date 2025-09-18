@@ -1,0 +1,39 @@
+name: CI-Backend
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Test with unittest
+        run: |
+          cd backend
+          python -m unittest
+        env:
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      - name: Upload coverage to Coveralls
+        run: |
+          cd backend
+          coverage run --source=src -m unittest
+          coveralls
+        env:
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
