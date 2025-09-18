@@ -4,10 +4,12 @@
     {
       "source": "/",
       "destination": "https://github.com/anuraghazra/github-readme-stats"
-    },
+    }
+  ],
+  "rewrites": [
     {
       "source": "/frontend/:match*",
-      "destination": "https://monorepo-test-frontend-neon.vercel.app/frontend/:match*"
+      "destination": "https://monorepo-test-frontend-neon.vercel.app/:match*"
     }
   ]
 }
