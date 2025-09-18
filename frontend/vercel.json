@@ -1,8 +1,5 @@
 {
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "https://github.com/anuraghazra/github-readme-stats"
-    }
-  ]
+  "buildCommand": "yarn build-trends",
+  "outputDirectory": "build",
+  "installCommand": "yarn install"
 }
