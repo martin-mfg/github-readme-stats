@@ -443,6 +443,7 @@ const renderStatsCard = (
     "nl",
     "pl",
     "pt-br",
+    "pt-pt",
     "ru",
     "sr",
     "uk-ua",
