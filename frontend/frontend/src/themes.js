@@ -1,5 +1,7 @@
 // For now this is simply a manual copy of https://github.com/anuraghazra/github-readme-stats/blob/master/themes/index.js .
 // This should be improved later.
+/* eslint-disable prettier/prettier */
+
 export const themes = {
   default: {
     title_color: "2f80ed",
