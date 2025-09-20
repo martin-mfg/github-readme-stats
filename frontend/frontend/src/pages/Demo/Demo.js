@@ -21,7 +21,6 @@ const DemoScreen = () => {
   const [error, setError] = useState('');
 
   const handleSubmit = async () => {
-    const validUser = await getValidUser(userName);
     setLoading(true);
     setSelectedUserName(userName);
     setLoading(false);
