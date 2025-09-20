@@ -167,9 +167,7 @@ const SettingsScreen = () => {
                 )}
                 <br />
                 {privateAccess ? (
-                  <a
-                    href={`https://${HOST}/api/downgrade?user_key=${userKey}`}
-                  >
+                  <a href={`https://${HOST}/api/downgrade?user_key=${userKey}`}>
                     <Button className="bg-blue-500 text-white rounded-sm">
                       Downgrade to Public Access
                     </Button>

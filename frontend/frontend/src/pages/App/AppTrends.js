@@ -3,8 +3,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BrowserRouter as Router, Route, Routes, useParams, } from 'react-router-dom';
-import { logout as _logout, setPrivateAccess as _setPrivateAccess, } from '../../redux/actions/userActions';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useParams,
+} from 'react-router-dom';
+import {
+  logout as _logout,
+  setPrivateAccess as _setPrivateAccess,
+} from '../../redux/actions/userActions';
 
 import Header from './Header';
 import LandingScreen from '../Landing';
