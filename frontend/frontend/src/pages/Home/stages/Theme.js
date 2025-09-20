@@ -4,47 +4,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Card } from '../../../components';
+import themes from '../../../themes';
 
 const ThemeStage = ({ theme, setTheme, fullSuffix }) => {
   return (
     <div className="flex flex-wrap">
-      {[
-        {
-          title: 'Classic',
-          imageSrc: 'classic',
-        },
-        {
-          title: 'Dark',
-          imageSrc: 'dark',
-        },
-        {
-          title: 'Bright Lights',
-          imageSrc: 'bright_lights',
-        },
-        {
-          title: 'Rosettes',
-          imageSrc: 'rosettes',
-        },
-        {
-          title: 'Ferns',
-          imageSrc: 'ferns',
-        },
-        {
-          title: 'Synthwaves',
-          imageSrc: 'synthwaves',
-        },
-      ].map((card, index) => (
+      {Object.keys(themes).map((myTheme, index) => (
         <button
           className="p-2 lg:p-4"
           key={index}
           type="button"
-          onClick={() => setTheme(card.imageSrc)}
+          onClick={() => setTheme(myTheme)}
         >
           <Card
-            title={card.title}
+            title={myTheme}
             description=""
-            imageSrc={`${fullSuffix}&theme=${card.imageSrc}`}
-            selected={theme === card.imageSrc}
+            imageSrc={`${fullSuffix}&theme=${myTheme}`}
+            selected={theme === myTheme}
           />
         </button>
       ))}
