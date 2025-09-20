@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Button, SvgInline } from '../../components';
-import { getValidUser } from '../../api/wrapped';
 import { HOST } from '../../constants';
 import { classnames } from '../../utils';
 
