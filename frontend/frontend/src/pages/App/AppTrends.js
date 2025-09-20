@@ -3,16 +3,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useParams,
-} from 'react-router-dom';
-import {
-  logout as _logout,
-  setPrivateAccess as _setPrivateAccess,
-} from '../../redux/actions/userActions';
+import { BrowserRouter as Router, Route, Routes, useParams, } from 'react-router-dom';
+import { logout as _logout, setPrivateAccess as _setPrivateAccess, } from '../../redux/actions/userActions';
 
 import Header from './Header';
 import LandingScreen from '../Landing';
@@ -20,7 +12,7 @@ import DemoScreen from '../Demo';
 import { SignUpScreen } from '../Auth';
 import HomeScreen from '../Home';
 import SettingsScreen from '../Settings';
-import { NoMatchScreen, RedirectScreen } from '../Misc';
+import { NoMatchScreen } from '../Misc';
 import { getUserMetadata } from '../../api';
 import { WRAPPED_URL } from '../../constants';
 import Footer from './Footer';
@@ -84,7 +76,6 @@ function App() {
               <Route path="/signup" element={<SignUpScreen />} />
             )}
             <Route path="/demo" element={<DemoScreen />} />
-            <Route path="/user/redirect" element={<RedirectScreen />} />
             <Route
               path="/user/wrapped/:rest"
               element={<WrappedAuthRedirectScreen />}

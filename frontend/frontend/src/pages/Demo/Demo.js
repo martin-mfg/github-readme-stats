@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { Button, SvgInline } from '../../components';
 import { getValidUser } from '../../api/wrapped';
-import { BACKEND_URL } from '../../constants';
+import { HOST } from '../../constants';
 import { classnames } from '../../utils';
 
 const DemoScreen = () => {
@@ -33,13 +33,13 @@ const DemoScreen = () => {
 
   const firstCardUrl =
     selectedUserName.length > 0
-      ? `https://github-readme-stats-phi-jet-58.vercel.app/api/?username=${selectedUserName}&client=demo`
-      : `${BACKEND_URL}/user/svg/demo?card=langs`; // TODO: placeholder image
+      ? `https://${HOST}/api/?username=${selectedUserName}&client=demo`
+      : `https://${HOST}/api/?username=anuraghazra&client=demo`;
 
   const secondCardUrl =
     selectedUserName.length > 0
-      ? `https://github-readme-stats-phi-jet-58.vercel.app/api/top-langs/?username=${selectedUserName}&client=demo`
-      : `${BACKEND_URL}/user/svg/demo?card=repos`; // TODO: placeholder image
+      ? `https://${HOST}/api/top-langs/?username=${selectedUserName}&client=demo`
+      : `https://${HOST}/api/top-langs/?username=anuraghazra&client=demo`;
 
   return (
     <div className="h-full py-8 flex flex-col xl:flex-row justify-center items-center">

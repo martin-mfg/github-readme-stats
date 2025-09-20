@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { BACKEND_URL } from '../constants';
+import { BACKEND_URL, HOST } from '../constants';
 
 const URL_PREFIX = BACKEND_URL;
 
@@ -19,7 +19,7 @@ const setUserKey = async (code) => {
 
 const authenticate = async (code, privateAccess, userKey) => {
   try {
-    const fullUrl = `https://github-readme-stats-phi-jet-58.vercel.app/api/authenticate?code=${code}&private_access=${privateAccess}&user_key=${userKey}`;
+    const fullUrl = `https://${HOST}/api/authenticate?code=${code}&private_access=${privateAccess}&user_key=${userKey}`;
     const result = await axios.post(fullUrl);
     return result.data;
   } catch (error) {
@@ -30,7 +30,7 @@ const authenticate = async (code, privateAccess, userKey) => {
 
 const getUserMetadata = async (userKey) => {
   try {
-    const fullUrl = `https://github-readme-stats-phi-jet-58.vercel.app/api/private-access?user_key=${userKey}`;
+    const fullUrl = `https://${HOST}/api/private-access?user_key=${userKey}`;
     const result = await axios.get(fullUrl);
     return result.data;
   } catch (error) {
@@ -41,7 +41,7 @@ const getUserMetadata = async (userKey) => {
 
 const deleteAccount = async (userId, userKey) => {
   try {
-    const fullUrl = `https://github-readme-stats-phi-jet-58.vercel.app/api/delete-user?user_key=${userKey}`;
+    const fullUrl = `https://${HOST}/api/delete-user?user_key=${userKey}`;
     const result = await axios.get(fullUrl);
     return result.data; // no decorator
   } catch (error) {

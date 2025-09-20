@@ -3,13 +3,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { saveSvgAsPng } from 'save-svg-as-png';
 
-import { Card, Button } from '../../../components';
+import { Button, Card } from '../../../components';
 import { classnames } from '../../../utils';
+import { HOST } from '../../../constants';
 
 const DisplayStage = ({ userId, themeSuffix }) => {
   const card = themeSuffix.split('?')[0];
@@ -27,7 +28,7 @@ const DisplayStage = ({ userId, themeSuffix }) => {
 
   const copyUrl = () => {
     navigator.clipboard.writeText(
-      `https://github-readme-stats-phi-jet-58.vercel.app/api/${themeSuffix}&username=${userId}`,
+      `https://${HOST}/api/${themeSuffix}&username=${userId}`,
     );
     toast.info('Copied to Clipboard!', {
       position: 'bottom-right',

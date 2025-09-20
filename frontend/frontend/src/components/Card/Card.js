@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import SVG from './SVG';
 import { classnames } from '../../utils';
+import { HOST } from '../../constants';
 
 export const Image = ({ imageSrc, compact, extraClasses = '' }) => {
-  const fullImageSrc = `https://github-readme-stats-phi-jet-58.vercel.app/api/${imageSrc}&client=wizard`;
+  const fullImageSrc = `https://${HOST}/api/${imageSrc}&client=wizard`;
 
   return (
     <div className={`${extraClasses} relative w-full relative`}>

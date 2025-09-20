@@ -9,7 +9,7 @@ import { Button } from '../../components';
 import { logout as _logout } from '../../redux/actions/userActions';
 import { deleteAccount } from '../../api';
 import { classnames } from '../../utils';
-import { CLIENT_ID, GITHUB_PRIVATE_AUTH_URL } from '../../constants';
+import { CLIENT_ID, GITHUB_PRIVATE_AUTH_URL, HOST } from '../../constants';
 
 const SectionButton = ({ name, implemented, isSelected, setSelected }) => {
   return (
@@ -168,7 +168,7 @@ const SettingsScreen = () => {
                 <br />
                 {privateAccess ? (
                   <a
-                    href={`https://github-readme-stats-phi-jet-58.vercel.app/api/downgrade?user_key=${userKey}`}
+                    href={`https://${HOST}/api/downgrade?user_key=${userKey}`}
                   >
                     <Button className="bg-blue-500 text-white rounded-sm">
                       Downgrade to Public Access
