@@ -22,13 +22,9 @@ const DemoScreen = () => {
 
   const handleSubmit = async () => {
     const validUser = await getValidUser(userName);
-    if (validUser.includes('Valid user') || validUser === 'Repo not starred') {
-      setLoading(true);
-      setSelectedUserName(userName);
-      setLoading(false);
-    } else if (validUser === 'GitHub user not found') {
-      setError('GitHub user not found. Check your spelling and try again.');
-    }
+    setLoading(true);
+    setSelectedUserName(userName);
+    setLoading(false);
   };
 
   const firstCardUrl =
