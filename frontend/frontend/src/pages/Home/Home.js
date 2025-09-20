@@ -17,8 +17,6 @@ import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
 
 const HomeScreen = () => {
-  console.log('new env var:', process.env.VERCEL_RELATED_PROJECTS);
-
   const [isLoading, setIsLoading] = useState(false);
 
   const userId = useSelector((state) => state.user.userId);
