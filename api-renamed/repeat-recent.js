@@ -1,4 +1,4 @@
-import { repeatRecentRequests } from "../src/common/database.js";
+import { repeatRecentRequests } from "../src/repeatRequests.js";
 
 export default async (req, res) => {
   if (req.method !== "POST") {
