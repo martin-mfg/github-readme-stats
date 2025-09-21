@@ -11,7 +11,7 @@ export const Image = ({ imageSrc, compact, extraClasses = '' }) => {
   return (
     <div className={`${extraClasses} relative w-full relative`}>
       <SVG
-        forceLoading={true}
+        forceLoading
         className="object-cover"
         url={fullImageSrc}
         compact={compact}
