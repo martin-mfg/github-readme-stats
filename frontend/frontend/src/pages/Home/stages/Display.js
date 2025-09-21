@@ -17,7 +17,7 @@ const DisplayStage = ({ userId, themeSuffix }) => {
 
   const downloadPNG = () => {
     saveSvgAsPng(
-      document.getElementById('abc').shadowRoot.firstElementChild
+      document.getElementById('svgWrapper').shadowRoot.firstElementChild
         .firstElementChild,
       `${userId}_${card}.png`,
       {

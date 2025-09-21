@@ -33,7 +33,6 @@ const SvgInline = (props) => {
       shadow.innerHTML = '';
       // Insert SVG
       const wrapper = document.createElement('div');
-      wrapper.id = 'svg-card';
       wrapper.innerHTML = svg;
       shadow.appendChild(wrapper);
     }
@@ -47,7 +46,7 @@ const SvgInline = (props) => {
   }
 
   // Render a container div for the shadow DOM
-  return <div ref={containerRef} className={props.className} />;
+  return <div ref={containerRef} id="svgWrapper" className={props.className} />;
 };
 
 SvgInline.propTypes = {
