@@ -42,7 +42,8 @@ const SvgInline = (props) => {
     if (props.compact) {
       return <Skeleton style={{ paddingBottom: '58%' }} />;
     }
-    return <Skeleton style={{ paddingBottom: '95%' }} />;
+    // maximum dimensions of cards in SelectCard stage
+    return <Skeleton className="h-[245px] w-[450px]" />;
   }
 
   // Render a container div for the shadow DOM

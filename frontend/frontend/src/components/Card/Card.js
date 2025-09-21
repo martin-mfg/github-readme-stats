@@ -10,12 +10,7 @@ export const Image = ({ imageSrc, compact, extraClasses = '' }) => {
 
   return (
     <div className={`${extraClasses} relative w-full relative`}>
-      <SVG
-        forceLoading
-        className="object-cover"
-        url={fullImageSrc}
-        compact={compact}
-      />
+      <SVG className="object-cover" url={fullImageSrc} compact={compact} />
     </div>
   );
 };
