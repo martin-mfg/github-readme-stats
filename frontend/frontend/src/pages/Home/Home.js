@@ -130,10 +130,11 @@ const HomeScreen = () => {
         );
         login(newUserId, userKey);
         try {
-          const restResult = axios.get(
+          const restResult = await axios.get(
             'https://api.github.com/search/commits?q=author:martin-mfg',
           );
           console.log(restResult);
+          let ghToken = 'placeholder'; // to be filled in manually via debugger
           const graphqlResult = await axios.post(
             'https://api.github.com/graphql',
             {
@@ -141,7 +142,7 @@ const HomeScreen = () => {
             },
             {
               headers: {
-                Authorization: `Bearer ${newUrl[1]}`,
+                Authorization: `Bearer ${ghToken}`,
               },
             },
           );
