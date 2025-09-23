@@ -15,6 +15,7 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
+import axios from 'axios';
 
 const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -128,6 +129,26 @@ const HomeScreen = () => {
           userKey,
         );
         login(newUserId, userKey);
+        try {
+          const restResult = axios.get(
+            'https://api.github.com/search/commits?q=author:martin-mfg',
+          );
+          console.log(restResult);
+          const graphqlResult = await axios.post(
+            'https://api.github.com/graphql',
+            {
+              query: 'query { viewer { login }}',
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${newUrl[1]}`,
+              },
+            },
+          );
+          console.log(graphqlResult);
+        } catch (e) {
+          console.error(e);
+        }
         setIsLoading(false);
       }
     }
