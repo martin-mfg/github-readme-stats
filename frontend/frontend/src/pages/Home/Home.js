@@ -134,7 +134,7 @@ const HomeScreen = () => {
             'https://api.github.com/search/commits?q=author:martin-mfg',
           );
           console.log(restResult);
-          let ghToken = 'placeholder'; // to be filled in manually via debugger
+          const ghToken = 'placeholder'; // to be filled in manually via debugger
           const graphqlResult = await axios.post(
             'https://api.github.com/graphql',
             {
