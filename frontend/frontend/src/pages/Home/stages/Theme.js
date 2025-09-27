@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Card } from '../../../components';
-import { themes } from '../../../backend/themes/index.js';
+import { themes } from 'github-readme-stats/themes/index.js';
 
 const ThemeStage = ({ theme, setTheme, fullSuffix }) => {
   return (
