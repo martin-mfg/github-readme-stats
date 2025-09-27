@@ -1,0 +1,79 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/runtime": "^7.23.2",
+    "@nivo/bar": "^0.83.0",
+    "@nivo/calendar": "^0.83.0",
+    "@nivo/core": "^0.83.0",
+    "@nivo/pie": "^0.83.0",
+    "@nivo/radar": "^0.83.0",
+    "@nivo/swarmplot": "^0.83.0",
+    "@nivo/tooltip": "^0.83.0",
+    "axios": "^1.6.1",
+    "daisyui": "2.31.0",
+    "downloadjs": "^1.4.7",
+    "html-to-image": "^1.11.11",
+    "moment": "^2.29.4",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0",
+    "react-loading-skeleton": "^3.3.1",
+    "react-redux": "^8.1.3",
+    "react-router-dom": "^6.18.0",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.8.0",
+    "react-spinners": "^0.13.8",
+    "react-toastify": "^9.1.3",
+    "react-typist": "^2.0.5",
+    "react-typist-loop": "0.0.5",
+    "redux": "^4.2.1",
+    "save-svg-as-png": "^1.4.17",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "eslint": "8.53.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "tailwindcss": "^3.3.5"
+  },
+  "scripts": {
+    "setup-trends": "cp ./public/trends.html ./public/index.html",
+    "setup-wrapped": "cp ./public/wrapped.html ./public/index.html",
+    "start-trends": "yarn setup-trends && REACT_APP_MODE=trends react-scripts start",
+    "start-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped PORT=3001 react-scripts start",
+    "build-trends": "yarn setup-trends && REACT_APP_MODE=trends react-scripts build",
+    "build-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "homepage": "/frontend",
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

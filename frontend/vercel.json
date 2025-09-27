@@ -1,0 +1,5 @@
+{
+  "buildCommand": "yarn build-trends",
+  "outputDirectory": "build",
+  "installCommand": "yarn install"
+}

@@ -1,16 +1,15 @@
-.vercel
-.env
-node_modules
-*.lock
-.idea/
-coverage
-benchmarks
-vercel_token
+backend/.vercel
+backend/.env
+backend/node_modules
+backend/*.lock
+backend/coverage
+backend/benchmarks
+backend/vercel_token
+frontend/frontend/.env
 
 # IDE
+.idea/
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
 *.code-workspace
-
-.vercel
