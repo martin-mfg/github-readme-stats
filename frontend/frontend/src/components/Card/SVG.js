@@ -24,14 +24,11 @@ const SvgInline = (props) => {
 
   useEffect(() => {
     if (loaded && svg && containerRef.current) {
-      // Attach shadow root if not already present
       let shadow = containerRef.current.shadowRoot;
       if (!shadow) {
         shadow = containerRef.current.attachShadow({ mode: 'open' });
       }
-      // Clear previous content
       shadow.innerHTML = '';
-      // Insert SVG
       const wrapper = document.createElement('div');
       wrapper.innerHTML = svg;
       shadow.appendChild(wrapper);
@@ -42,11 +39,10 @@ const SvgInline = (props) => {
     if (props.compact) {
       return <Skeleton style={{ paddingBottom: '58%' }} />;
     }
-    // maximum dimensions of cards in SelectCard stage
+    // these are the maximum dimensions of cards in SelectCard stage
     return <Skeleton className="h-[245px] w-[450px]" />;
   }
 
-  // Render a container div for the shadow DOM
   return <div ref={containerRef} id="svgWrapper" className={props.className} />;
 };
 
