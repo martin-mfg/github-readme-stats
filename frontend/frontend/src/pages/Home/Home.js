@@ -106,7 +106,7 @@ const HomeScreen = () => {
   }
 
   // for stage three
-  const [theme, setTheme] = useState('classic');
+  const [theme, setTheme] = useState('default');
   const themeSuffix = `${fullSuffix}&theme=${theme}`;
 
   useEffect(() => {
