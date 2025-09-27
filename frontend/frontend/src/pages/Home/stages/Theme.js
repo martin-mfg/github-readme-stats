@@ -4,7 +4,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Card } from '../../../components';
-import { themes } from 'github-readme-stats/themes/index.js';
+// eslint-disable-next-line import/no-relative-packages
+import { themes } from '../../../backend/themes/index';
 
 const ThemeStage = ({ theme, setTheme, fullSuffix }) => {
   return (
