@@ -1,5 +1,5 @@
 {
   "buildCommand": "pwd && ls -l .. && yarn build-trends",
   "outputDirectory": "build",
-  "installCommand": "yarn install"
+  "installCommand": "pwd && ls -l .. && yarn install"
 }
