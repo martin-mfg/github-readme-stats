@@ -1,5 +1,5 @@
 {
-  "buildCommand": " cp -r ../../backend/ ./src/backend/ && yarn build-trends",
+  "buildCommand": "yarn build-trends",
   "outputDirectory": "build",
-  "installCommand": "yarn install"
+  "installCommand": "cp -r ../../backend/ ./src/backend/ && yarn install"
 }
