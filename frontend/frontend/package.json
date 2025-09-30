@@ -15,10 +15,14 @@
     "axios": "^1.6.1",
     "daisyui": "2.31.0",
     "downloadjs": "^1.4.7",
+    "emoji-name-map": "^2.0.3",
+    "github-username-regex": "^1.0.0",
     "html-to-image": "^1.11.11",
     "module": "^1.2.5",
     "moment": "^2.29.4",
-    "node-mocks-http": "^1.17.2",
+    "node-polyfill-webpack-plugin": "^4.1.0",
+    "path-browserify": "^1.0.1",
+    "pg": "^8.16.3",
     "prop-types": "^15.8.1",
     "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
@@ -35,6 +39,7 @@
     "react-typist-loop": "0.0.5",
     "redux": "^4.2.1",
     "save-svg-as-png": "^1.4.17",
+    "url": "^0.11.4",
     "uuid": "^9.0.1",
     "webpack": "^5.102.0"
   },
@@ -63,9 +68,6 @@
     "eject": "react-scripts eject"
   },
   "homepage": "/frontend",
-  "workspaces": [
-    "src/backend/"
-  ],
   "eslintConfig": {
     "extends": [
       "react-app",
