@@ -34,6 +34,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "autoprefixer": "^10.4.16",
     "eslint": "8.53.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -50,11 +51,11 @@
   "scripts": {
     "setup-trends": "cp ./public/trends.html ./public/index.html",
     "setup-wrapped": "cp ./public/wrapped.html ./public/index.html",
-    "start-trends": "yarn setup-trends && REACT_APP_MODE=trends react-scripts start",
-    "start-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped PORT=3001 react-scripts start",
-    "build-trends": "yarn setup-trends && REACT_APP_MODE=trends react-scripts build",
-    "build-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped react-scripts build",
-    "test": "react-scripts test",
+    "start-trends": "yarn setup-trends && REACT_APP_MODE=trends craco start",
+    "start-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped PORT=3001 craco start",
+    "build-trends": "yarn setup-trends && REACT_APP_MODE=trends craco build",
+    "build-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "homepage": "/frontend",
