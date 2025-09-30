@@ -320,6 +320,7 @@ Here is a list of all available locales:
 | `cs` | Czech |
 | `nl` | Dutch |
 | `en` | English |
+| `fil` | Filipino |
 | `fi` | Finnish |
 | `fr` | French |
 | `de` | German |
