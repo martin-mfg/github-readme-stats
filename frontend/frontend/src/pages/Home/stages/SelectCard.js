@@ -1,12 +1,27 @@
 /* eslint-disable react/no-array-index-key */
 
+import httpMocks from 'node-mocks-http';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { Card } from '../../../components';
 
+// eslint-disable-next-line import/no-relative-packages
+import router from '../../../backend/.vercel/output/functions/api.func/router';
+
 const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
+  const request = httpMocks.createRequest({
+    method: 'GET',
+    url: '/api/status/up',
+    params: {
+      id: 42,
+    },
+  });
+  const response = httpMocks.createResponse();
+  const result = router(request, response);
+  console.log('result: ', result);
+
   const userId = useSelector((state) => state.user.userId);
   return (
     <div className="w-full flex flex-wrap">

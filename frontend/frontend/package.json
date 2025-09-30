@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.23.2",
+    "@craco/craco": "^7.1.0",
     "@nivo/bar": "^0.83.0",
     "@nivo/calendar": "^0.83.0",
     "@nivo/core": "^0.83.0",
@@ -15,8 +16,11 @@
     "daisyui": "2.31.0",
     "downloadjs": "^1.4.7",
     "html-to-image": "^1.11.11",
+    "module": "^1.2.5",
     "moment": "^2.29.4",
+    "node-mocks-http": "^1.17.2",
     "prop-types": "^15.8.1",
+    "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
@@ -31,7 +35,8 @@
     "react-typist-loop": "0.0.5",
     "redux": "^4.2.1",
     "save-svg-as-png": "^1.4.17",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "webpack": "^5.102.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
@@ -50,14 +55,17 @@
   "scripts": {
     "setup-trends": "cp ./public/trends.html ./public/index.html",
     "setup-wrapped": "cp ./public/wrapped.html ./public/index.html",
-    "start-trends": "yarn setup-trends && REACT_APP_MODE=trends react-scripts start",
-    "start-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped PORT=3001 react-scripts start",
-    "build-trends": "yarn setup-trends && REACT_APP_MODE=trends react-scripts build",
-    "build-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped react-scripts build",
-    "test": "react-scripts test",
+    "start-trends": "yarn setup-trends && REACT_APP_MODE=trends craco start",
+    "start-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped PORT=3001 craco start",
+    "build-trends": "yarn setup-trends && REACT_APP_MODE=trends craco build",
+    "build-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "homepage": "/frontend",
+  "workspaces": [
+    "src/backend/"
+  ],
   "eslintConfig": {
     "extends": [
       "react-app",

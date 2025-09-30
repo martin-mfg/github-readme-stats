@@ -13,6 +13,8 @@ module.exports = {
   },
   plugins: ['react', 'prettier'],
   rules: {
+    'import/no-named-default': 'off',
+    'import/extensions': 'off',
     'react/jsx-filename-extension': 'off',
     'react/forbid-prop-types': 'off',
     'react/destructuring-assignment': 'off',
