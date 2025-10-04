@@ -29,4 +29,12 @@ module.exports = {
       },
     ],
   },
+  overrides: [
+    {
+      files: ['./src/backend/**/*'],
+      rules: {
+        'prettier/prettier': 'off',
+      },
+    },
+  ],
 };
