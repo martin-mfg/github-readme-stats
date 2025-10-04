@@ -1,27 +1,26 @@
-import webpack from 'webpack';
+const path = require('path');
+const webpack = require('webpack');
 
-export default {
+module.exports = {
   webpack: {
-    configure: (webpackConfig) => {
-      /*
-      // Add fallback for Node.js core modules
-      webpackConfig.resolve = {
-        ...(webpackConfig.resolve || {}),
-        fallback: {
-          ...(webpackConfig.resolve?.fallback || {}),
-          querystring: require.resolve('querystring-es3'),
-        },
-      };
-      */
+    alias: {
+      dotenv: path.resolve(__dirname, 'src/dotenv-browser-stub.js'),
+    },
 
-      // Inject process.env so server code can access PAT_1
-      webpackConfig.plugins.push(
-        new webpack.DefinePlugin({
-          'process.env': {
-            PAT_1: JSON.stringify('BrowserPAT'), // <-- your env var
-          },
-        }),
-      );
+    configure: (webpackConfig) => {
+      webpackConfig.resolve.fallback = {
+        ...webpackConfig.resolve.fallback,
+        pg: false,
+      };
+
+      // Turn { KEY: "value" } into { "process.env.KEY": JSON.stringify("value") }
+      const env = {};
+      const envKeys = Object.keys(env).reduce((prev, next) => {
+        prev[`process.env.${next}`] = JSON.stringify(env[next]);
+        return prev;
+      }, {});
+      webpackConfig.plugins.push(new webpack.DefinePlugin(envKeys));
+
       return webpackConfig;
     },
   },
