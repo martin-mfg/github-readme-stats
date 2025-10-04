@@ -1,5 +1,5 @@
 {
   "buildCommand": "yarn build-trends",
   "outputDirectory": "build",
-  "installCommand": "cp -r ../../backend/ ./src/backend/ && yarn install"
+  "installCommand": "chmod +x ../vercel-preparation.sh && ../vercel-preparation.sh && yarn install"
 }
