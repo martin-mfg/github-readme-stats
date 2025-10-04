@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm install && ../vercel-preparation.sh",
+  "buildCommand": "npm install && chmod +x ../vercel-preparation.sh && ../vercel-preparation.sh",
   "redirects": [
     {
       "source": "/",
