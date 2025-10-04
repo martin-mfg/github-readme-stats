@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { default as router } from "../../backend/.vercel/output/functions/api.func/router";
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BounceLoader from 'react-spinners/BounceLoader';
@@ -130,6 +132,8 @@ const HomeScreen = () => {
         );
         login(newUserId, userKey);
         try {
+          console.log(router);
+/*
           const restResult = await axios.get(
             'https://api.github.com/search/commits?q=author:martin-mfg',
           );
@@ -147,6 +151,7 @@ const HomeScreen = () => {
             },
           );
           console.log(graphqlResult);
+*/
         } catch (e) {
           console.error(e);
         }
