@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { default as router } from "../../backend/.vercel/output/functions/api.func/router";
+import { default as router } from "../../backend/.vercel/output/functions/api.func/router.js";
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
