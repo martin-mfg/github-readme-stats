@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { default as router } from "../../backend/.vercel/output/functions/api.func/router.js";
+import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -133,7 +133,7 @@ const HomeScreen = () => {
         login(newUserId, userKey);
         try {
           console.log(router);
-/*
+          /*
           const restResult = await axios.get(
             'https://api.github.com/search/commits?q=author:martin-mfg',
           );

@@ -18,8 +18,8 @@ const BarGraph = ({ data, labels, xTitle, type, getLabel, legendText }) => {
     return d.value === maxData
       ? '#2BA02C'
       : d.value === minData
-      ? '#D62728'
-      : '#468CBF';
+        ? '#D62728'
+        : '#468CBF';
   };
 
   if (!(Array.isArray(data) && data.length > 0)) {
