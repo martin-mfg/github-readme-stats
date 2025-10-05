@@ -18,7 +18,7 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
-import { createRequest, createResponse } from 'node-mocks-http';
+import { createMockReq, createMockRes } from '../../mock-http';
 
 const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -133,11 +133,11 @@ const HomeScreen = () => {
         );
         login(newUserId, userKey);
         try {
-          const req = createRequest({
+          const req = createMockReq({
             method: 'GET',
             url: '/test',
           });
-          const res = createResponse();
+          const res = createMockRes();
           router(req, res);
           const body = res._getData();
           const status = res._getStatusCode();

@@ -19,7 +19,6 @@
     "github-username-regex": "^1.0.0",
     "html-to-image": "^1.11.11",
     "moment": "^2.29.4",
-    "node-mocks-http": "^1.17.2",
     "path-browserify": "^1.0.1",
     "prop-types": "^15.8.1",
     "querystring-es3": "^0.2.1",
