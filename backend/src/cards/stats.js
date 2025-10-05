@@ -449,6 +449,7 @@ const renderStatsCard = (
     "ru",
     "sr",
     "sr-latn",
+    "ta",
     "uk-ua",
     "uz",
     "zh-tw",
