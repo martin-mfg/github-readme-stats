@@ -22,6 +22,7 @@ export function createMockRes() {
 
   const res = {
     statusCode,
+    chunks,
 
     setHeader(name, value) {
       headers[name.toLowerCase()] = value;
