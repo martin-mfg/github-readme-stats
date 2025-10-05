@@ -135,7 +135,7 @@ const HomeScreen = () => {
         try {
           const req = createMockReq({
             method: 'GET',
-            url: '/test',
+            url: '/api/gist?id=bbfce31e0217a3689c8d961a356cb10d',
           });
           const res = createMockRes();
           router(req, res);
