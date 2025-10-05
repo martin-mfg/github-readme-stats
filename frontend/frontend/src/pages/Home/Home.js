@@ -138,7 +138,7 @@ const HomeScreen = () => {
             url: '/api/gist?id=bbfce31e0217a3689c8d961a356cb10d',
           });
           const res = createMockRes();
-          router(req, res);
+          await router(req, res);
           const body = res._getBody();
           const status = res._getStatusCode();
           console.log('mock results: ', { status, body });
