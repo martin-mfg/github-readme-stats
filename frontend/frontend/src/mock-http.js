@@ -53,10 +53,7 @@ export function createMockRes() {
       return { ...headers };
     },
     _getBody() {
-      return Buffer.concat(chunks).toString('utf8');
-    },
-    _getBuffer() {
-      return Buffer.concat(chunks);
+      return chunks.join('');
     },
   };
 

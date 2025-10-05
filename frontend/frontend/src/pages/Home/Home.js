@@ -139,7 +139,7 @@ const HomeScreen = () => {
           });
           const res = createMockRes();
           router(req, res);
-          const body = res._getBuffer();
+          const body = res._getBody();
           const status = res._getStatusCode();
           console.log('mock results: ', { status, body });
           // console.log(router);
