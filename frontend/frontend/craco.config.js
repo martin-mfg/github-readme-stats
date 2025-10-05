@@ -11,6 +11,15 @@ module.exports = {
       webpackConfig.resolve.fallback = {
         ...webpackConfig.resolve.fallback,
         pg: false,
+        path: require.resolve('path-browserify'),
+        querystring: require.resolve('querystring-es3'),
+        url: require.resolve('url/'),
+        http: require.resolve('stream-http'),
+        util: require.resolve('util/'),
+        stream: require.resolve('stream-browserify'),
+        buffer: require.resolve('buffer/'),
+        fs: false,
+        net: false,
       };
 
       // Turn { KEY: "value" } into { "process.env.KEY": JSON.stringify("value") }

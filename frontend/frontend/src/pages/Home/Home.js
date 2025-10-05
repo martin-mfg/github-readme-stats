@@ -18,6 +18,7 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
+import { createRequest, createResponse } from 'node-mocks-http';
 
 const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -132,7 +133,16 @@ const HomeScreen = () => {
         );
         login(newUserId, userKey);
         try {
-          console.log(router);
+          const req = createRequest({
+            method: 'GET',
+            url: '/test',
+          });
+          const res = createResponse();
+          router(req, res);
+          const body = res._getData();
+          const status = res._getStatusCode();
+          console.log('mock results: ', { status, body });
+          // console.log(router);
           /*
           const restResult = await axios.get(
             'https://api.github.com/search/commits?q=author:martin-mfg',
