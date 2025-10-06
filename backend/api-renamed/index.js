@@ -2,9 +2,9 @@
 
 import { renderStatsCard } from "../src/cards/stats.js";
 import { blacklist } from "../src/common/blacklist.js";
+import { resolveCacheSeconds } from "../src/common/cache.js";
 import { whitelist } from "../src/common/envs.js";
 import {
-  clampValue,
   CONSTANTS,
   parseArray,
   parseBoolean,
@@ -143,15 +143,12 @@ export default async (req, res) => {
       showStats.includes("issues_commented"),
       parseArray(role),
     );
-
-    let cacheSeconds = clampValue(
-      parseInt(cache_seconds || CONSTANTS.CARD_CACHE_SECONDS, 10),
-      CONSTANTS.FOUR_HOURS,
-      CONSTANTS.TWO_DAY,
-    );
-    cacheSeconds = process.env.CACHE_SECONDS
-      ? parseInt(process.env.CACHE_SECONDS, 10) || cacheSeconds
-      : cacheSeconds;
+    const cacheSeconds = resolveCacheSeconds({
+      requested: cache_seconds,
+      def: CONSTANTS.CARD_CACHE_SECONDS,
+      min: CONSTANTS.FOUR_HOURS,
+      max: CONSTANTS.TWO_DAY,
+    });
 
     res.setHeader(
       "Cache-Control",

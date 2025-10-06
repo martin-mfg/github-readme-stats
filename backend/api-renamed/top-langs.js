@@ -2,9 +2,9 @@
 
 import { renderTopLanguages } from "../src/cards/top-languages.js";
 import { blacklist } from "../src/common/blacklist.js";
+import { resolveCacheSeconds } from "../src/common/cache.js";
 import { whitelist } from "../src/common/envs.js";
 import {
-  clampValue,
   CONSTANTS,
   parseArray,
   parseBoolean,
@@ -109,15 +109,12 @@ export default async (req, res) => {
       count_weight,
       parseArray(role),
     );
-
-    let cacheSeconds = clampValue(
-      parseInt(cache_seconds || CONSTANTS.TOP_LANGS_CACHE_SECONDS, 10),
-      CONSTANTS.FOUR_HOURS,
-      CONSTANTS.TEN_DAY,
-    );
-    cacheSeconds = process.env.CACHE_SECONDS
-      ? parseInt(process.env.CACHE_SECONDS, 10) || cacheSeconds
-      : cacheSeconds;
+    const cacheSeconds = resolveCacheSeconds({
+      requested: cache_seconds,
+      def: CONSTANTS.TOP_LANGS_CACHE_SECONDS,
+      min: CONSTANTS.FOUR_HOURS,
+      max: CONSTANTS.TEN_DAY,
+    });
 
     res.setHeader(
       "Cache-Control",
