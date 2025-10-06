@@ -6,7 +6,11 @@ import { isLocaleAvailable } from "../src/translations.js";
 import { renderGistCard } from "../src/cards/gist.js";
 import { fetchGist } from "../src/fetchers/gist.js";
 import { storeRequest } from "../src/common/database.js";
-import { resolveCacheSeconds } from "../src/common/cache.js";
+import {
+  resolveCacheSeconds,
+  setCacheHeaders,
+  setErrorCacheHeaders,
+} from "../src/common/cache.js";
 
 export default async (req, res) => {
   const {
@@ -59,16 +63,13 @@ export default async (req, res) => {
     await storeRequest(req);
     const gistData = await fetchGist(id);
     const cacheSeconds = resolveCacheSeconds({
-      requested: cache_seconds,
+      requested: parseInt(cache_seconds, 10),
       def: CONSTANTS.TEN_HOURS,
       min: CONSTANTS.FOUR_HOURS,
       max: CONSTANTS.SIX_DAY,
     });
 
-    res.setHeader(
-      "Cache-Control",
-      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}`,
-    );
+    setCacheHeaders(res, cacheSeconds);
 
     return res.send(
       renderGistCard(gistData, {
@@ -85,12 +86,7 @@ export default async (req, res) => {
       }),
     );
   } catch (err) {
-    res.setHeader(
-      "Cache-Control",
-      `max-age=${CONSTANTS.ERROR_CACHE_SECONDS / 2}, s-maxage=${
-        CONSTANTS.ERROR_CACHE_SECONDS
-      }, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
-    ); // Use lower cache period for errors.
+    setErrorCacheHeaders(res);
     return res.send(
       renderError(err.message, err.secondaryMessage, {
         title_color,
