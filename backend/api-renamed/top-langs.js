@@ -66,6 +66,13 @@ export default async (req, res) => {
       renderError({
         message: "Something went wrong",
         secondaryMessage: "Locale not found",
+        renderOptions: {
+          title_color,
+          text_color,
+          bg_color,
+          border_color,
+          theme,
+        },
       }),
     );
   }
@@ -79,6 +86,13 @@ export default async (req, res) => {
       renderError({
         message: "Something went wrong",
         secondaryMessage: "Incorrect layout input",
+        renderOptions: {
+          title_color,
+          text_color,
+          bg_color,
+          border_color,
+          theme,
+        },
       }),
     );
   }
@@ -92,6 +106,13 @@ export default async (req, res) => {
       renderError({
         message: "Something went wrong",
         secondaryMessage: "Incorrect stats_format input",
+        renderOptions: {
+          title_color,
+          text_color,
+          bg_color,
+          border_color,
+          theme,
+        },
       }),
     );
   }
