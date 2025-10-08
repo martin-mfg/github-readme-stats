@@ -161,7 +161,7 @@ const HomeScreen = () => {
             '/api/top-langs/?username=anuraghazra&langs_count=4',
           );
           await testEndpoint('/api/wakatime/?username=ffflabs');
-          console.log("PAT_1: ", process.env.PAT_1);
+          console.log('PAT_1: ', process.env.PAT_1);
           // console.log(router);
           /*
           const restResult = await axios.get(
