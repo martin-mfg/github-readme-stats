@@ -22,14 +22,16 @@ module.exports = {
         net: false,
       };
 
-      // Inject process.env so server code can access PAT_1
-      webpackConfig.plugins.push(
-        new webpack.DefinePlugin({
-          'process.env': {
-            myDummyKey: JSON.stringify('myDummyPAT'), // <-- your env var
-          },
-        }),
-      );
+      // Turn { KEY: "value" } into { "process.env.KEY": JSON.stringify("value") }
+      const env = {
+        PAT_1: 'myDummyPAT',
+      };
+      const envKeys = Object.keys(env).reduce((prev, next) => {
+        prev[`process.env.${next}`] = JSON.stringify(env[next]);
+        return prev;
+      }, {});
+      webpackConfig.plugins.push(new webpack.DefinePlugin(envKeys));
+
       return webpackConfig;
     },
   },
