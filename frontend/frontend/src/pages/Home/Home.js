@@ -133,19 +133,34 @@ const HomeScreen = () => {
         );
         login(newUserId, userKey);
         try {
-          const req = createMockReq({
-            method: 'GET',
-            url: '/api/status/pat-info',
-          });
-          const res = createMockRes();
-          try {
-            await router(req, res);
-            const body = res._getBody();
-            const status = res._getStatusCode();
-            console.log('mock results: ', { status, body });
-          } catch (e) {
-            console.log('mock http error: ', e);
-          }
+          let testEndpoint = async (path) => {
+            const req = createMockReq({
+              method: 'GET',
+              url: path,
+            });
+            const res = createMockRes();
+            try {
+              await router(req, res);
+              const body = res._getBody();
+              const status = res._getStatusCode();
+              console.log('mock results: ', { status, body });
+            } catch (e) {
+              console.log('mock http error: ', e);
+            }
+          };
+          const ghToken = prompt('input GitHub token:');
+          process.env['PAT_1'] = ghToken;
+          await testEndpoint('/api/status/pat-info');
+          await testEndpoint('/api/status/up');
+          await testEndpoint('/api?username=martin-mfg');
+          await testEndpoint('/api/gist?id=bbfce31e0217a3689c8d961a356cb10d');
+          await testEndpoint(
+            '/api/pin/?username=martin-mfg&repo=openapi-generator',
+          );
+          await testEndpoint(
+            '/api/top-langs/?username=anuraghazra&langs_count=4',
+          );
+          // TODO: wakatime
           // console.log(router);
           /*
           const restResult = await axios.get(
