@@ -28,40 +28,40 @@ export default async (req, res) => {
 
   switch (url.pathname) {
     case "/api":
-      api(req, res);
+      await api(req, res);
       break;
     case "/api/gist":
-      gist(req, res);
+      await gist(req, res);
       break;
     case "/api/pin":
-      pin(req, res);
+      await pin(req, res);
       break;
     case "/api/top-langs":
-      topLangs(req, res);
+      await topLangs(req, res);
       break;
     case "/api/wakatime":
-      wakatime(req, res);
+      await wakatime(req, res);
       break;
     case "/api/repeat-recent":
-      repeatRecent(req, res);
+      await repeatRecent(req, res);
       break;
     case "/api/status/pat-info":
-      patInfo(req, res);
+      await patInfo(req, res);
       break;
     case "/api/status/up":
-      statusUp(req, res);
+      await statusUp(req, res);
       break;
     case "/api/authenticate":
-      authenticate(req, res);
+      await authenticate(req, res);
       break;
     case "/api/delete-user":
-      deleteUser(req, res);
+      await deleteUser(req, res);
       break;
     case "/api/private-access":
-      privateAccess(req, res);
+      await privateAccess(req, res);
       break;
     case "/api/downgrade":
-      downgrade(req, res);
+      await downgrade(req, res);
       break;
     default:
       res.statusCode = 404;
