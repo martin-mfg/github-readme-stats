@@ -470,35 +470,6 @@ const noop = () => {};
 const logger =
   process.env.NODE_ENV === "test" ? { log: noop, error: noop } : console;
 
-const MIN = 60;
-const HOUR = 60 * MIN;
-const DAY = 24 * HOUR;
-
-const CONSTANTS = {
-  ONE_MINUTE: MIN,
-  FIVE_MINUTES: 5 * MIN,
-  TEN_MINUTES: 10 * MIN,
-  FIFTEEN_MINUTES: 15 * MIN,
-  THIRTY_MINUTES: 30 * MIN,
-
-  TWO_HOURS: 2 * HOUR,
-  FOUR_HOURS: 4 * HOUR,
-  SIX_HOURS: 6 * HOUR,
-  EIGHT_HOURS: 8 * HOUR,
-  TEN_HOURS: 10 * HOUR,
-  TWELVE_HOURS: 12 * HOUR,
-
-  ONE_DAY: DAY,
-  TWO_DAY: 2 * DAY,
-  SIX_DAY: 6 * DAY,
-  TEN_DAY: 10 * DAY,
-
-  CARD_CACHE_SECONDS: 10 * HOUR,
-  TOP_LANGS_CACHE_SECONDS: 10 * HOUR,
-  PIN_CARD_CACHE_SECONDS: 10 * HOUR,
-  ERROR_CACHE_SECONDS: 10 * MIN,
-};
-
 /**
  * Missing query parameter class.
  */
@@ -698,7 +669,6 @@ export {
   getCardColors,
   wrapTextMultiline,
   logger,
-  CONSTANTS,
   OWNER_AFFILIATIONS,
   CustomError,
   MissingParamError,

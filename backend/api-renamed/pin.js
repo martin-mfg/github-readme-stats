@@ -3,16 +3,12 @@
 import { renderRepoCard } from "../src/cards/repo.js";
 import { guardAccess } from "../src/common/access.js";
 import {
+  CACHE_TTL,
   resolveCacheSeconds,
   setCacheHeaders,
   setErrorCacheHeaders,
 } from "../src/common/cache.js";
-import {
-  CONSTANTS,
-  parseArray,
-  parseBoolean,
-  renderError,
-} from "../src/common/utils.js";
+import { parseArray, parseBoolean, renderError } from "../src/common/utils.js";
 import { fetchRepo } from "../src/fetchers/repo.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { storeRequest } from "../src/common/database.js";

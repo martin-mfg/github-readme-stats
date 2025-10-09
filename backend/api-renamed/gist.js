@@ -1,11 +1,12 @@
 // @ts-check
 
-import { CONSTANTS, renderError, parseBoolean } from "../src/common/utils.js";
+import { renderError, parseBoolean } from "../src/common/utils.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { renderGistCard } from "../src/cards/gist.js";
 import { fetchGist } from "../src/fetchers/gist.js";
 import { storeRequest } from "../src/common/database.js";
 import {
+  CACHE_TTL,
   resolveCacheSeconds,
   setCacheHeaders,
   setErrorCacheHeaders,
@@ -67,9 +68,9 @@ export default async (req, res) => {
     const gistData = await fetchGist(id);
     const cacheSeconds = resolveCacheSeconds({
       requested: parseInt(cache_seconds, 10),
-      def: CONSTANTS.TEN_HOURS,
-      min: CONSTANTS.FOUR_HOURS,
-      max: CONSTANTS.SIX_DAY,
+      def: CACHE_TTL.GIST_CARD.DEFAULT,
+      min: CACHE_TTL.GIST_CARD.MIN,
+      max: CACHE_TTL.GIST_CARD.MAX,
     });
 
     setCacheHeaders(res, cacheSeconds);
