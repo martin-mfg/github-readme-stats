@@ -7,14 +7,13 @@ import { calculateRank } from "../calculateRank.js";
 import { retryer } from "../common/retryer.js";
 import {
   buildSearchFilter,
-  CustomError,
   logger,
-  MissingParamError,
   request,
   wrapTextMultiline,
   parseOwnerAffiliations,
 } from "../common/utils.js";
 import { excludeRepositories } from "../common/envs.js";
+import { CustomError, MissingParamError } from "../common/error.js";
 
 dotenv.config();
 
