@@ -248,7 +248,7 @@ const buildSearchFilter = (repos = [], owners = []) => {
  * @returns {Promise<any>} Request response.
  */
 const request = (data, headers) => {
-  console.log("making request with: " + headers + " | " + data);
+  console.log("making request with: " + JSON.stringify(headers) + " | " + JSON.stringify(data));
   try {
     let response = axios({
       url: "https://api.github.com/graphql",
