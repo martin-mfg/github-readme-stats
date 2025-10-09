@@ -1,13 +1,11 @@
 /* eslint-disable no-nested-ternary */
-export const PROD = process.env.REACT_APP_PROD === 'true';
+export const PROD = true;
 
 export const USE_LOGGER = true;
 
-export const CLIENT_ID = PROD
-  ? process.env.REACT_APP_PROD_CLIENT_ID
-  : process.env.REACT_APP_DEV_CLIENT_ID;
+export const CLIENT_ID = 'Ov23liZSweT9LJrck9i8';
 
-export const MODE = process.env.REACT_APP_MODE;
+export const MODE = 'trends';
 
 export const HOST = PROD
   ? 'monorepo-test-backend-seven.vercel.app'
