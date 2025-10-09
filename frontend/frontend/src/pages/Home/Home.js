@@ -149,7 +149,7 @@ const HomeScreen = () => {
             }
           };
           const ghToken = prompt('input GitHub token:');
-          // process.env['PAT_1'] = ghToken;
+          process.env['PAT_1'] = ghToken;
           await testEndpoint('/api/status/pat-info');
           await testEndpoint('/api/status/up');
           await testEndpoint('/api?username=martin-mfg');

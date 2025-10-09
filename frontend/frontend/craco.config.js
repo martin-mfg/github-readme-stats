@@ -22,15 +22,16 @@ module.exports = {
         net: false,
       };
 
-      // Turn { KEY: "value" } into { "process.env.KEY": JSON.stringify("value") }
-      const env = {
-        PAT_1: 'myDummyPAT',
-      };
-      const envKeys = Object.keys(env).reduce((prev, next) => {
-        prev[`process.env.${next}`] = JSON.stringify(env[next]);
-        return prev;
-      }, {});
-      webpackConfig.plugins.push(new webpack.DefinePlugin(envKeys));
+      // remove the DefinePlugin, which (only) replaces process.env in code
+      webpackConfig.plugins = webpackConfig.plugins.filter(
+        function (plugin) {
+          let isDefinePlugin = plugin instanceof webpack.DefinePlugin;
+          if (isDefinePlugin) {
+            console.log("filtered plugin:", plugin);
+          }
+          return !isDefinePlugin;
+        }
+      );
 
       return webpackConfig;
     },

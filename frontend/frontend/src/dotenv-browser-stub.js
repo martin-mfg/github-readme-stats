@@ -1,5 +1,10 @@
 // Safe browser stub for dotenv
 export function config() {
-  console.warn('dotenv.config() is a no-op in the browser.');
+  window.process = {
+    env: {
+      PAT_1: 'myDummyPAT',
+    }
+  };
+  console.log("env var has been set");
   return { parsed: {} };
 }
