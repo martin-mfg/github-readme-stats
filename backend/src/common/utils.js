@@ -248,12 +248,20 @@ const buildSearchFilter = (repos = [], owners = []) => {
  * @returns {Promise<any>} Request response.
  */
 const request = (data, headers) => {
-  return axios({
-    url: "https://api.github.com/graphql",
-    method: "post",
-    headers,
-    data,
-  });
+  console.log("making request with: " + headers + " | " + data);
+  try {
+    let response = axios({
+      url: "https://api.github.com/graphql",
+      method: "post",
+      headers,
+      data,
+    });
+    console.log("response: ", response);
+    return response;
+  } catch (e) {
+    console.log("request exception:", e);
+    return null;
+  }
 };
 
 /**
