@@ -141,19 +141,14 @@ export default async (_, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
     // Add header to prevent abuse.
-    try {
-      const PATsInfo = await getPATInfo(uptimeFetcher, {});
-      if (PATsInfo) {
-        res.setHeader(
-          "Cache-Control",
-          `max-age=0, s-maxage=${RATE_LIMIT_SECONDS}`,
-        );
-      }
-      res.send(JSON.stringify(PATsInfo, null, 2));
-      console.log("pat-info done");
-    } catch (e) {
-      console.log("pat-info exception:", e);
+    const PATsInfo = await getPATInfo(uptimeFetcher, {});
+    if (PATsInfo) {
+      res.setHeader(
+        "Cache-Control",
+        `max-age=0, s-maxage=${RATE_LIMIT_SECONDS}`,
+      );
     }
+    res.send(JSON.stringify(PATsInfo, null, 2));
   } catch (err) {
     // Throw error if something went wrong.
     logger.error(err);

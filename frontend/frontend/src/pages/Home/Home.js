@@ -155,12 +155,12 @@ const HomeScreen = () => {
           await testEndpoint('/api?username=martin-mfg');
           await testEndpoint('/api/gist?id=bbfce31e0217a3689c8d961a356cb10d');
           await testEndpoint(
-            '/api/pin/?username=martin-mfg&repo=openapi-generator',
+            '/api/pin?username=martin-mfg&repo=openapi-generator',
           );
           await testEndpoint(
-            '/api/top-langs/?username=anuraghazra&langs_count=4',
+            '/api/top-langs?username=anuraghazra&langs_count=4',
           );
-          await testEndpoint('/api/wakatime/?username=ffflabs');
+          await testEndpoint('/api/wakatime?username=ffflabs');
           console.log('PAT_1: ', process.env.PAT_1);
           // console.log(router);
           /*
