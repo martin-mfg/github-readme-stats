@@ -140,6 +140,11 @@ const HomeScreen = () => {
             });
             const res = createMockRes();
             try {
+              window.process = {
+                env: {
+                  PAT_1: 'myDummyPAT',
+                },
+              };
               await router(req, res);
               const body = res._getBody();
               const status = res._getStatusCode();
