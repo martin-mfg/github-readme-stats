@@ -31,3 +31,9 @@ export const BACKEND_URL = PROD
   : 'http://localhost:8000';
 
 export const CURR_YEAR = 2024;
+
+window.process = {
+  env: {
+    PAT_1: 'myDummyPAT',
+  },
+};
