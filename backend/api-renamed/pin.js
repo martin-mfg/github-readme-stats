@@ -8,11 +8,13 @@ import {
   setCacheHeaders,
   setErrorCacheHeaders,
 } from "../src/common/cache.js";
+import { retrieveSecondaryMessage } from "../src/common/error.js";
 import { parseArray, parseBoolean, renderError } from "../src/common/utils.js";
 import { fetchRepo } from "../src/fetchers/repo.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { storeRequest } from "../src/common/database.js";
 
+// @ts-ignore
 export default async (req, res) => {
   const {
     username,
@@ -138,10 +140,24 @@ export default async (req, res) => {
     );
   } catch (err) {
     setErrorCacheHeaders(res);
+    if (err instanceof Error) {
+      return res.send(
+        renderError({
+          message: err.message,
+          secondaryMessage: retrieveSecondaryMessage(err),
+          renderOptions: {
+            title_color,
+            text_color,
+            bg_color,
+            border_color,
+            theme,
+          },
+        }),
+      );
+    }
     return res.send(
       renderError({
-        message: err.message,
-        secondaryMessage: err.secondaryMessage,
+        message: "An unknown error occurred",
         renderOptions: {
           title_color,
           text_color,
