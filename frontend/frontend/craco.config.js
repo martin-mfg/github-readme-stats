@@ -5,6 +5,7 @@ module.exports = {
   webpack: {
     alias: {
       dotenv: path.resolve(__dirname, 'src/dotenv-browser-stub.js'),
+      '../src/fetchers/wakatime.js': path.resolve(__dirname, 'src/wakatime-override.js'),
     },
 
     configure: (webpackConfig) => {

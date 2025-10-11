@@ -3,6 +3,7 @@ import { default as gist } from "./api-renamed/gist.js";
 import { default as pin } from "./api-renamed/pin.js";
 import { default as topLangs } from "./api-renamed/top-langs.js";
 import { default as wakatime } from "./api-renamed/wakatime.js";
+import { default as wakatimeProxy } from "./api-renamed/wakatime-proxy.js";
 import { default as repeatRecent } from "./api-renamed/repeat-recent.js";
 import { default as patInfo } from "./api-renamed/status/pat-info.js";
 import { default as statusUp } from "./api-renamed/status/up.js";
@@ -41,6 +42,9 @@ export default async (req, res) => {
       break;
     case "/api/wakatime":
       await wakatime(req, res);
+      break;
+    case "/api/wakatime-proxy":
+      await wakatimeProxy(req, res);
       break;
     case "/api/repeat-recent":
       await repeatRecent(req, res);
