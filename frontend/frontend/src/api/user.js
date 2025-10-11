@@ -36,7 +36,7 @@ const getUserMetadata = async (userKey) => {
     return result.data;
   } catch (error) {
     console.error(error);
-    return '';
+    return null;
   }
 };
 
