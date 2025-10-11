@@ -30,7 +30,8 @@ const authenticate = async (code, privateAccess, userKey) => {
 
 const getUserMetadata = async (userKey) => {
   try {
-    const fullUrl = `https://${HOST}/api/private-access?user_key=${userKey}`;
+    const fullUrl = `https://${HOST}/api/user-access?user_key=${userKey}`;
+    // if this returns a 404/400, will the _logout() in AppTrends.js be triggered successfully?
     const result = await axios.get(fullUrl);
     return result.data;
   } catch (error) {

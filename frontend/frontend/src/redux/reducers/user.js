@@ -22,11 +22,13 @@ export default (state = initialState, action) => {
       return {
         userId: null,
         userKey: null,
+        token: null,
         privateAccess: null,
       };
-    case types.SET_PRIVATE_ACCESS:
+    case types.SET_USER_ACCESS:
       return {
         ...state,
+        token: action.payload.token,
         privateAccess: action.payload.privateAccess,
       };
     default:
