@@ -151,6 +151,7 @@ const HomeScreen = () => {
           const ghToken = prompt('input GitHub token:');
           process.env['PAT_1'] = ghToken;
           await testEndpoint('/api/wakatime?username=ffflabs');
+          await testEndpoint('/api/wakatime?username=ffflabsASDF');
           console.log('PAT_1: ', process.env.PAT_1);
           // console.log(router);
           /*

@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import {
   logout as _logout,
-  setPrivateAccess as _setPrivateAccess,
+  setUserAccess as _setUserAccess,
 } from '../../redux/actions/userActions';
 
 import Header from './Header';
@@ -56,16 +56,17 @@ function App() {
   const isAuthenticated = userId && userId.length > 0;
 
   const dispatch = useDispatch();
-  const setPrivateAccess = (access) => dispatch(_setPrivateAccess(access));
+  const setUserAccess = (access) =>
+    dispatch(_setUserAccess(access.token, access.privateAccess));
 
   useEffect(() => {
     async function getPrivateAccess() {
       if (userKey && userKey.length > 0) {
-        const privateAccess = await getUserMetadata(userKey);
-        if (privateAccess === null) {
+        const userAccess = await getUserMetadata(userKey);
+        if (userAccess === null) {
           dispatch(_logout());
         } else {
-          setPrivateAccess(privateAccess);
+          setUserAccess(userAccess);
         }
       }
     }

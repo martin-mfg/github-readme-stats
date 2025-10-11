@@ -10,7 +10,7 @@ const fetchWakatimeStats = async ({ username, api_domain }) => {
     `https://${HOST}/api/wakatime-proxy?username=${username}`,
   );
 
-  return data.data;
+  return data;
 };
 
 export { fetchWakatimeStats };

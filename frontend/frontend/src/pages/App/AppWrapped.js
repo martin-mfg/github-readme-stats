@@ -8,7 +8,7 @@ import { SignUpScreen } from '../Auth';
 import { SelectUserScreen, WrappedScreen } from '../Wrapped';
 import { NoMatchScreen } from '../Misc';
 
-import { setPrivateAccess as _setPrivateAccess } from '../../redux/actions/userActions';
+import { setUserAccess as _setPrivateAccess } from '../../redux/actions/userActions';
 import { getUserMetadata } from '../../api';
 import Footer from './Footer';
 

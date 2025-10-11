@@ -192,18 +192,18 @@ export async function deleteUser(userKey) {
 }
 
 /**
- * Checks if private_access is true for the given user_key.
+ * Fetches token and private access status for a given user_key.
  *
- * @param {string} userKey user key of the user to be checked
- * @returns {Promise<boolean>} true if private_access is true, false otherwise
+ * @param {string} userKey user key of the user to fetch information for
+ * @returns {Promise<{token: string, privateAccess: boolean} | null>} token and private access status, or null if user not found
  */
-export async function hasPrivateAccess(userKey) {
+export async function getUserAccess(userKey) {
   if (!pool) {
     return null;
   }
 
   const query = `
-      SELECT private_access
+      SELECT access_token, private_access
       FROM authenticated_users
       WHERE user_key = $1
       LIMIT 1
@@ -213,39 +213,10 @@ export async function hasPrivateAccess(userKey) {
     if (rows.length === 0) {
       return null;
     }
-    return rows[0].private_access;
-  } catch (err) {
-    if (err.code === "42P01") {
-      return null;
-    } else {
-      throw err;
-    }
-  }
-}
-
-/**
- * Fetches access_token for a given user_key.
- *
- * @param {string} userKey user key of the user to fetch token for
- * @returns Returns user key if found, null otherwise
- */
-export async function getUserToken(userKey) {
-  if (!pool) {
-    return null;
-  }
-
-  const query = `
-      SELECT access_token
-      FROM authenticated_users
-      WHERE user_key = $1
-      LIMIT 1
-    `;
-  try {
-    const { rows } = await pool.query(query, [userKey]);
-    if (rows.length === 0) {
-      return null;
-    }
-    return rows[0].access_token;
+    return {
+      token: rows[0].access_token,
+      privateAccess: rows[0].private_access
+    };
   } catch (err) {
     if (err.code === "42P01") {
       return null;
