@@ -34,6 +34,7 @@ export const CURR_YEAR = 2024;
 
 window.process = {
   env: {
-    PAT_1: 'myDummyPAT',
+    FETCH_MULTI_PAGE_STARS: 'true',
+    PAT_1: 'placeholderPAT',
   },
 };
