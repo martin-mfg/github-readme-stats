@@ -8,7 +8,10 @@ import {
   setCacheHeaders,
   setErrorCacheHeaders,
 } from "../src/common/cache.js";
-import { retrieveSecondaryMessage } from "../src/common/error.js";
+import {
+  MissingParamError,
+  retrieveSecondaryMessage,
+} from "../src/common/error.js";
 import { parseArray, parseBoolean, renderError } from "../src/common/utils.js";
 import { fetchRepo } from "../src/fetchers/repo.js";
 import { isLocaleAvailable } from "../src/translations.js";
@@ -151,6 +154,7 @@ export default async (req, res) => {
             bg_color,
             border_color,
             theme,
+            show_repo_link: !(err instanceof MissingParamError),
           },
         }),
       );
