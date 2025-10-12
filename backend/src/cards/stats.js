@@ -435,6 +435,7 @@ const renderStatsCard = (
   };
 
   const longLocales = [
+    "az",
     "bg",
     "de",
     "es",
