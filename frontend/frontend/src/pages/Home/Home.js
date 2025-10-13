@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
 
 import React, { useEffect, useState } from 'react';
@@ -148,31 +147,9 @@ const HomeScreen = () => {
               console.log('mock http error: ', e);
             }
           };
-          const ghToken = prompt('input GitHub token:');
-          process.env['PAT_1'] = ghToken;
           await testEndpoint('/api/wakatime?username=ffflabs');
           await testEndpoint('/api/wakatime?username=ffflabsASDF');
           console.log('PAT_1: ', process.env.PAT_1);
-          // console.log(router);
-          /*
-          const restResult = await axios.get(
-            'https://api.github.com/search/commits?q=author:martin-mfg',
-          );
-          console.log(restResult);
-          const ghToken = prompt('input GitHub token:');
-          const graphqlResult = await axios.post(
-            'https://api.github.com/graphql',
-            {
-              query: 'query { viewer { login }}',
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${ghToken}`,
-              },
-            },
-          );
-          console.log(graphqlResult);
-*/
         } catch (e) {
           console.error(e);
         }
