@@ -3,12 +3,12 @@
 import { Card } from "../common/Card.js";
 import { getCardColors } from "../common/color.js";
 import { CustomError } from "../common/error.js";
+import { kFormatter } from "../common/fmt.js";
 import { I18n } from "../common/I18n.js";
 import { icons, rankIcon } from "../common/icons.js";
 import {
   clampValue,
   flexLayout,
-  kFormatter,
   measureText,
   buildSearchFilter,
 } from "../common/utils.js";
