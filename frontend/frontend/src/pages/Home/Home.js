@@ -18,6 +18,7 @@ import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
 import { createMockReq, createMockRes } from '../../mock-http';
+import axios from 'axios';
 
 const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -132,24 +133,14 @@ const HomeScreen = () => {
         );
         login(newUserId, userKey);
         try {
-          let testEndpoint = async (path) => {
-            const req = createMockReq({
-              method: 'GET',
-              url: path,
-            });
-            const res = createMockRes();
-            try {
-              await router(req, res);
-              const body = res._getBody();
-              const status = res._getStatusCode();
-              console.log('mock results: ', { status, body });
-            } catch (e) {
-              console.log('mock http error: ', e);
-            }
-          };
-          await testEndpoint('/api/wakatime?username=ffflabs');
-          await testEndpoint('/api/wakatime?username=ffflabsASDF');
-          console.log('PAT_1: ', process.env.PAT_1);
+          let res1 = await axios.get(
+            `https://${HOST}/api/wakatime-proxy?username=ffflabs`,
+          );
+          console.log(res1);
+          let res2 = await axios.get(
+            `https://${HOST}/api/wakatime-proxy?username=ffflabs`,
+          );
+          console.log(res2);
         } catch (e) {
           console.error(e);
         }
