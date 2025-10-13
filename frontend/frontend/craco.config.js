@@ -6,6 +6,7 @@ module.exports = {
     alias: {
       dotenv: path.resolve(__dirname, 'src/dotenv-browser-stub.js'),
       axios: path.resolve(__dirname, 'src/axios-override.js'),
+      'axios-original': path.resolve(__dirname, 'node_modules/axios/index.js'),
       '../src/fetchers/wakatime.js': path.resolve(__dirname, 'src/wakatime-override.js'),
     },
 
