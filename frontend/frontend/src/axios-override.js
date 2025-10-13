@@ -1,4 +1,5 @@
-import axios from 'axios';
+// Use require to bypass webpack alias and get the real axios
+const axios = require('axios');
 import { setupCache } from 'axios-cache-interceptor';
 
 const cachedAxios = setupCache(axios, {
