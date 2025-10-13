@@ -1,4 +1,4 @@
-import axios from 'axios-original';
+import axios from 'axios';
 import { setupCache } from 'axios-cache-interceptor';
 
 const cachedAxios = setupCache(axios, {
@@ -6,6 +6,9 @@ const cachedAxios = setupCache(axios, {
   ttl: 30 * 60 * 1000,
   methods: ['get', 'post'],
 });
+
+axios.get = cachedAxios.get.bind(cachedAxios);
+axios.post = cachedAxios.post.bind(cachedAxios);
 
 export default cachedAxios;
 export const { get, post } = cachedAxios;

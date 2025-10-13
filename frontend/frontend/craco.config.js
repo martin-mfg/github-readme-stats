@@ -5,8 +5,10 @@ module.exports = {
   webpack: {
     alias: {
       dotenv: path.resolve(__dirname, 'src/dotenv-browser-stub.js'),
+/*
       axios: path.resolve(__dirname, 'src/axios-override.js'),
       'axios-original': require.resolve('axios'),
+*/
       '../src/fetchers/wakatime.js': path.resolve(__dirname, 'src/wakatime-override.js'),
     },
 
