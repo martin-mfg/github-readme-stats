@@ -9,11 +9,11 @@ import {
   buildSearchFilter,
   logger,
   request,
-  wrapTextMultiline,
   parseOwnerAffiliations,
 } from "../common/utils.js";
 import { excludeRepositories } from "../common/envs.js";
 import { CustomError, MissingParamError } from "../common/error.js";
+import { wrapTextMultiline } from "../common/fmt.js";
 
 dotenv.config();
 
