@@ -83,15 +83,11 @@ const GRAPHQL_STATS_QUERY = `
 `;
 
 /**
- * @typedef {import('axios').AxiosResponse} AxiosResponse Axios response.
- */
-
-/**
  * Stats fetcher object.
  *
- * @param {object} variables Fetcher variables.
+ * @param {object & { after: string | null }} variables Fetcher variables.
  * @param {string} token GitHub token.
- * @returns {Promise<AxiosResponse>} Axios response.
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response.
  */
 const fetcher = (variables, token) => {
   const query = variables.after ? GRAPHQL_REPOS_QUERY : GRAPHQL_STATS_QUERY;
@@ -116,7 +112,7 @@ const fetcher = (variables, token) => {
  * @param {boolean} variables.includeDiscussionsAnswers Include discussions answers.
  * @param {string|undefined} variables.startTime Time to start the count of total commits.
  * @param {string[]} ownerAffiliations The owner affiliations to filter by. Default: OWNER.
- * @returns {Promise<AxiosResponse>} Axios response.
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response.
  *
  * @description This function supports multi-page fetching if the 'FETCH_MULTI_PAGE_STARS' environment variable is set to true.
  */
@@ -170,6 +166,35 @@ const statsFetcher = async ({
 };
 
 /**
+ * Fetch total commits using the REST API.
+ *
+ * @param {object} variables Fetcher variables.
+ * @param {string} token GitHub token.
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response.
+ *
+ * @see https://developer.github.com/v3/search/#search-commits
+ */
+const fetchTotalItems = (variables, token) => {
+  return axios({
+    method: "get",
+    url:
+      `https://api.github.com/search/` +
+      type +
+      `?per_page=1&q=` +
+      buildSearchFilter(variables.repo, variables.owner).replaceAll(
+        " ",
+        "+",
+      ) +
+      filter,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/vnd.github.cloak-preview",
+      Authorization: `token ${token}`,
+    },
+  });
+};
+
+/**
  * Fetch all the commits for all the repositories of a given username.
  *
  * @param {string} username GitHub username.
@@ -183,27 +208,6 @@ const totalItemsFetcher = async (username, repo, owner, type, filter) => {
     logger.log("Invalid username provided.");
     throw new Error("Invalid username provided.");
   }
-
-  // https://developer.github.com/v3/search/#search-commits
-  const fetchTotalItems = (variables, token) => {
-    return axios({
-      method: "get",
-      url:
-        `https://api.github.com/search/` +
-        type +
-        `?per_page=1&q=` +
-        buildSearchFilter(variables.repo, variables.owner).replaceAll(
-          " ",
-          "+",
-        ) +
-        filter,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/vnd.github.cloak-preview",
-        Authorization: `token ${token}`,
-      },
-    });
-  };
 
   let res;
   try {
@@ -288,10 +292,6 @@ const fetchRepoUserStats = async (
 };
 
 /**
- * @typedef {import("./types").StatsData} StatsData Stats data.
- */
-
-/**
  * Fetch stats for a given username.
  *
  * @param {string} username GitHub username.
@@ -303,7 +303,7 @@ const fetchRepoUserStats = async (
  * @param {string[]} ownerAffiliations Owner affiliations. Default: OWNER.
  * @param {number|undefined} commits_year Year to count total commits
  * @param {string[]} ownerAffiliations Owner affiliations. Default: OWNER.
- * @returns {Promise<StatsData>} Stats data.
+ * @returns {Promise<import("./types").StatsData>} Stats data.
  */
 const fetchStats = async (
   username,
