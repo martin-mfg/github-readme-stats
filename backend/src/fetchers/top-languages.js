@@ -3,12 +3,12 @@
 import { retryer } from "../common/retryer.js";
 import {
   logger,
-  request,
   parseOwnerAffiliations,
 } from "../common/utils.js";
 import { excludeRepositories } from "../common/envs.js";
 import { CustomError, MissingParamError } from "../common/error.js";
 import { wrapTextMultiline } from "../common/fmt.js";
+import { request } from "../common/http.js";
 
 /**
  * @typedef {import("axios").AxiosRequestHeaders} AxiosRequestHeaders Axios request headers.
