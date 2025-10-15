@@ -225,11 +225,6 @@ const renderError = ({
   `;
 };
 
-const noop = () => {};
-// return console instance based on the environment
-const logger =
-  process.env.NODE_ENV === "test" ? { log: noop, error: noop } : console;
-
 /**
  * Retrieve text length.
  *
@@ -374,7 +369,6 @@ export {
   clampValue,
   buildSearchFilter,
   flexLayout,
-  logger,
   OWNER_AFFILIATIONS,
   measureText,
   lowercaseTrim,
