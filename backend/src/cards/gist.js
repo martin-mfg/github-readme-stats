@@ -1,7 +1,6 @@
 // @ts-check
 
 import {
-  parseEmojis,
   encodeHTML,
   measureText,
   flexLayout,
@@ -13,6 +12,7 @@ import { getCardColors } from "../common/color.js";
 import { kFormatter, wrapTextMultiline } from "../common/fmt.js";
 import { icons } from "../common/icons.js";
 import languageColors from "../common/languageColors.json" with { type: "json" };
+import { parseEmojis } from "../common/ops.js";
 
 
 const ICON_SIZE = 16;
