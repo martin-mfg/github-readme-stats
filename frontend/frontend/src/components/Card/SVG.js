@@ -3,6 +3,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -15,8 +16,9 @@ const SvgInline = (props) => {
 
   useEffect(() => {
     setLoaded(false);
-    fetch(url)
-      .then((res) => res.text())
+    axios
+      .get(url)
+      .then((res) => res.data)
       .then(setSvg)
       .then(() => setLoaded(true))
       .catch((e) => console.error(e));
