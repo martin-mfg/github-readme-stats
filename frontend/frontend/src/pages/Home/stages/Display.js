@@ -29,7 +29,7 @@ const DisplayStage = ({ userId, themeSuffix }) => {
 
   const copyUrl = () => {
     navigator.clipboard.writeText(
-      `https://${HOST}/api/${themeSuffix}&username=${userId}`,
+      `https://${HOST}/api${themeSuffix}&username=${userId}`,
     );
     toast.info('Copied to Clipboard!', {
       position: 'bottom-right',

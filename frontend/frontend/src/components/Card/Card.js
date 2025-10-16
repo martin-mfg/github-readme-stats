@@ -6,7 +6,7 @@ import { classnames } from '../../utils';
 import { HOST } from '../../constants';
 
 export const Image = ({ imageSrc, compact, extraClasses = '' }) => {
-  const fullImageSrc = `https://${HOST}/api/${imageSrc}&client=wizard`;
+  const fullImageSrc = `https://${HOST}/api${imageSrc}&client=wizard`;
 
   return (
     <div className={`${extraClasses} relative w-full relative`}>
