@@ -129,18 +129,6 @@ const HomeScreen = () => {
           userKey,
         );
         login(newUserId, userKey);
-        try {
-          let res1 = await axios.get(
-            `https://${HOST}/api/wakatime-proxy?username=ffflabs`,
-          );
-          console.log(res1);
-          let res2 = await axios.get(
-            `https://${HOST}/api/wakatime-proxy?username=ffflabs`,
-          );
-          console.log(res2);
-        } catch (e) {
-          console.error(e);
-        }
         setIsLoading(false);
       }
     }
