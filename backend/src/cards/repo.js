@@ -6,14 +6,14 @@ import { kFormatter, wrapTextMultiline } from "../common/fmt.js";
 import { I18n } from "../common/I18n.js";
 import { icons } from "../common/icons.js";
 import { clampValue, parseEmojis } from "../common/ops.js";
+import { buildSearchFilter } from "../common/utils.js";
 import {
   encodeHTML,
   flexLayout,
   measureText,
   iconWithLabel,
   createLanguageNode,
-  buildSearchFilter,
-} from "../common/utils.js";
+} from "../common/render.js";
 import { repoCardLocales } from "../translations.js";
 import { createTextNode } from "./stats.js";
 
