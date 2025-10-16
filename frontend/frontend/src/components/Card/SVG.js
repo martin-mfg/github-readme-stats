@@ -12,7 +12,7 @@ import { default as router } from '../../backend/.vercel/output/functions/api.fu
 
 const waitForPat = async (interval = 100) => {
   while (true) {
-    if (process.env.PAT_1 !== 'placeholderPAT') return;
+    if (process.env.PAT_1 && process.env.PAT_1 !== 'placeholderPAT') return;
     await new Promise((resolve) => setTimeout(resolve, interval));
   }
 };
