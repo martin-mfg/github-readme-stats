@@ -28,6 +28,7 @@ const LONG_LOCALES = [
   "bg",
   "cs",
   "de",
+  "el",
   "es",
   "fil",
   "fi",
