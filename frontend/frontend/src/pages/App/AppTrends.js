@@ -53,7 +53,6 @@ function WrappedRedirectScreen() {
 function App() {
   const userId = useSelector((state) => state.user.userId);
   const userKey = useSelector((state) => state.user.userKey);
-  const userToken = useSelector((state) => state.user.token);
   const isAuthenticated = userId && userId.length > 0;
 
   const dispatch = useDispatch();
@@ -73,10 +72,6 @@ function App() {
     }
     getPrivateAccess();
   }, [userKey]);
-
-  useEffect(() => {
-    process.env.PAT_1 = userToken;
-  }, [userToken]);
 
   return (
     <div className="h-screen flex flex-col">

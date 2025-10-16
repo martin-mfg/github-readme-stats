@@ -1,5 +1,3 @@
-import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BounceLoader from 'react-spinners/BounceLoader';
@@ -17,7 +15,6 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
-import { createMockReq, createMockRes } from '../../mock-http';
 import axios from 'axios';
 
 const HomeScreen = () => {

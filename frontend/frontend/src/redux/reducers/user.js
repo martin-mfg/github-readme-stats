@@ -3,6 +3,7 @@ import * as types from '../actions/userActions';
 const initialState = {
   userId: JSON.parse(localStorage.getItem('userId')) || null,
   userKey: JSON.parse(localStorage.getItem('userKey')) || null,
+  token: null,
   privateAccess: null,
 };
 

@@ -4,48 +4,60 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { useSelector } from 'react-redux';
+
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 import { createMockReq, createMockRes } from '../../mock-http';
 import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
-
-const waitForPat = async (interval = 100) => {
-  while (true) {
-    if (process.env.PAT_1 && process.env.PAT_1 !== 'placeholderPAT') return;
-    await new Promise((resolve) => setTimeout(resolve, interval));
-  }
-};
+import axios from 'axios';
 
 const SvgInline = (props) => {
   const [svg, setSvg] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const containerRef = useRef(null);
+  const userToken = useSelector((state) => state.user.token);
+  const userId = useSelector((state) => state.user.userId);
   const { url } = props;
 
   useEffect(() => {
-    setLoaded(false);
+    const loadSvg = async () => {
+      process.env.PAT_1 = userToken;
 
-    const req = createMockReq({
-      method: 'GET',
-      url: url,
-    });
-    const res = createMockRes();
+      setLoaded(false);
+      const isAuthenticated = userId && userId.length > 0;
+      if (isAuthenticated && (!userToken || userToken === 'placeholderPAT')) {
+        // waiting for backend call to private-access
+        return;
+      }
 
-    waitForPat()
-      .then(() => router(req, res))
-      .then(() => {
-        const body = res._getBody();
-        const status = res._getStatusCode();
-        if (status >= 300) {
-          throw new Error('failed to generate SVG');
-        }
-        return body;
-      })
-      .then(setSvg)
-      .then(() => setLoaded(true))
-      .catch((e) => console.error(e));
-  }, [props.url]);
+      let body;
+      let status;
+      if (isAuthenticated) {
+        const req = createMockReq({
+          method: 'GET',
+          url: url,
+        });
+        const res = createMockRes();
+        await router(req, res);
+        body = res._getBody();
+        status = res._getStatusCode();
+      } else {
+        let res = await axios.get(url);
+        body = res.data;
+        status = res.status;
+      }
+
+      if (status >= 300) {
+        console.error('failed to fetch/generate SVG');
+        return;
+      }
+      setSvg(body);
+      setLoaded(true);
+    };
+    loadSvg();
+  }, [userToken, userId, props.url]);
 
   useEffect(() => {
     if (loaded && svg && containerRef.current) {
