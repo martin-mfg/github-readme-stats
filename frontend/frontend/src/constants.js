@@ -35,5 +35,6 @@ export const CURR_YEAR = 2024;
 window.process = {
   env: {
     FETCH_MULTI_PAGE_STARS: 'true',
+    PAT_1: 'placeholderPAT', // so the backend's retryer.js sees there is 1 PAT and sets `RETRIES` accordingly
   },
 };
