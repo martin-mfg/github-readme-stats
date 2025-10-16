@@ -3,10 +3,12 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+
+import { createMockReq, createMockRes } from '../../mock-http';
+import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
 
 const SvgInline = (props) => {
   const [svg, setSvg] = useState(null);
@@ -16,9 +18,22 @@ const SvgInline = (props) => {
 
   useEffect(() => {
     setLoaded(false);
-    axios
-      .get(url)
-      .then((res) => res.data)
+
+    const req = createMockReq({
+      method: 'GET',
+      url: url,
+    });
+    const res = createMockRes();
+
+    router(req, res)
+      .then(() => {
+        const body = res._getBody();
+        const status = res._getStatusCode();
+        if (status >= 300) {
+          throw new Error('failed to generate SVG');
+        }
+        return body;
+      })
       .then(setSvg)
       .then(() => setLoaded(true))
       .catch((e) => console.error(e));
