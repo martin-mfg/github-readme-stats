@@ -10,6 +10,14 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { createMockReq, createMockRes } from '../../mock-http';
 import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
 
+const waitForPat = async (interval = 100) => {
+  while (true) {
+    const val = process?.env?.['PAT_1'];
+    if (val) return;
+    await new Promise((resolve) => setTimeout(resolve, interval));
+  }
+};
+
 const SvgInline = (props) => {
   const [svg, setSvg] = useState(null);
   const [loaded, setLoaded] = useState(false);
@@ -25,7 +33,8 @@ const SvgInline = (props) => {
     });
     const res = createMockRes();
 
-    router(req, res)
+    waitForPat()
+      .then(() => router(req, res))
       .then(() => {
         const body = res._getBody();
         const status = res._getStatusCode();
