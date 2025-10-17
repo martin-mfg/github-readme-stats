@@ -2,6 +2,7 @@
 
 import { SECONDARY_ERROR_MESSAGES, TRY_AGAIN_LATER } from "./error.js";
 import { getCardColors } from "./color.js";
+import { encodeHTML } from "./html.js";
 
 const OWNER_AFFILIATIONS = ["OWNER", "COLLABORATOR", "ORGANIZATION_MEMBER"];
 
@@ -89,22 +90,6 @@ const buildSearchFilter = (repos = [], owners = []) => {
 
 // Script parameters.
 const ERROR_CARD_LENGTH = 576.5;
-
-/**
- * Encode string as HTML.
- *
- * @see https://stackoverflow.com/a/48073476/10629172
- *
- * @param {string} str String to encode.
- * @returns {string} Encoded string.
- */
-const encodeHTML = (str) => {
-  return str
-    .replace(/[\u00A0-\u9999<>&](?!#)/gim, (i) => {
-      return "&#" + i.charCodeAt(0) + ";";
-    })
-    .replace(/\u0008/gim, "");
-};
 
 const UPSTREAM_API_ERRORS = [
   TRY_AGAIN_LATER,
@@ -252,7 +237,6 @@ export {
   renderError,
   createLanguageNode,
   iconWithLabel,
-  encodeHTML,
   buildSearchFilter,
   flexLayout,
   OWNER_AFFILIATIONS,
