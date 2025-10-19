@@ -35,6 +35,7 @@ const LONG_LOCALES = [
   "fr",
   "hu",
   "id",
+  "ja",
   "ml",
   "my",
   "nl",
