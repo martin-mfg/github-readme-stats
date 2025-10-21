@@ -8,7 +8,7 @@ export const CLIENT_ID = 'Ov23liZSweT9LJrck9i8';
 export const MODE = 'trends';
 
 export const HOST = PROD
-  ? process.env.REACT_APP_BACKEND_HOST
+  ? 'monorepo-test-backend-git-backendvar-martin-mfgs-projects.vercel.app'
   : 'localhost:3000';
 
 export const REDIRECT_URI = PROD
