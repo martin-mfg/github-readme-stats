@@ -9,7 +9,7 @@
   "rewrites": [
     {
       "source": "/frontend/:match*",
-      "destination": "https://monorepo-test-frontend-neon.vercel.app/:match*"
+      "destination": "https://monorepo-test-frontend-git-backendvar-martin-mfgs-projects.vercel.app/:match*"
     }
   ]
 }
