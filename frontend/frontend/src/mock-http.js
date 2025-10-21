@@ -11,9 +11,6 @@ export function createMockReq({
     body,
   };
 }
-// searchParams
-// req.query = Object.fromEntries(url.searchParams.entries());
-// const { code, private_access, user_key } = req.query;
 
 export function createMockRes() {
   let statusCode = 200;
@@ -36,7 +33,6 @@ export function createMockRes() {
 
     write(chunk) {
       if (typeof chunk !== 'string') {
-        // Convert to string if it's something else
         chunk = String(chunk);
       }
       chunks.push(chunk);
