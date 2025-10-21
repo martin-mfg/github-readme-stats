@@ -3,7 +3,7 @@ export const PROD = true;
 
 export const USE_LOGGER = true;
 
-export const CLIENT_ID = 'Ov23liZSweT9LJrck9i8';
+export const CLIENT_ID = 'Ov23liQ3fIXNFoF8kbkD';
 
 export const MODE = 'trends';
 
