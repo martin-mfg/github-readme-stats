@@ -67,6 +67,10 @@ const HomeScreen = () => {
     resetCustomization();
   }, [selectedCard]);
 
+  useEffect(() => {
+      setImageSrc(`?&username=${userId}`);
+  }, [userId]);
+
   const time = selectedTimeRange.value;
   let fullSuffix = `${imageSrc}&time_range=${time}`;
 
