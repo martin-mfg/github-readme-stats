@@ -68,7 +68,7 @@ const HomeScreen = () => {
   }, [selectedCard]);
 
   useEffect(() => {
-      setImageSrc(`?&username=${userId}`);
+    setImageSrc(`?&username=${userId}`);
   }, [userId]);
 
   const time = selectedTimeRange.value;
