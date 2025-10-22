@@ -29,7 +29,7 @@ const NumericSection = ({
     }
     debounceTimeout.current = setTimeout(() => {
       setValue(internalValue);
-    }, 1000);
+    }, 700);
     return () => clearTimeout(debounceTimeout.current);
   }, [internalValue]);
 
