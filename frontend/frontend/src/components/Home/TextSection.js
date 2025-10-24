@@ -26,7 +26,7 @@ const TextSection = ({
     }
     debounceTimeout.current = setTimeout(() => {
       setValue(internalValue);
-    }, 1500);
+    }, 700);
     // return cleanup function:
     return () => clearTimeout(debounceTimeout.current);
   }, [internalValue]);

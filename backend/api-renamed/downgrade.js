@@ -1,9 +1,9 @@
-import { hasPrivateAccess, getUserToken, deleteUser } from "../src/common/database.js";
+import { getUserAccess, deleteUser } from "../src/common/database.js";
 import axios from "axios";
 import { logger } from "../src/index.js";
 
 export default async (req, res) => {
-  // We could optimize this method by doing all 3 database operations in one statement, using "DELETE ... RETURNING ..."
+  // We could optimize this method by doing both database operations in one statement, using "DELETE ... RETURNING ..."
 
   const { user_key } = req.query;
   if (!user_key) {
@@ -22,19 +22,18 @@ export default async (req, res) => {
     );
   }
 
-  // verify that user has private access
-  const privateAccess = await hasPrivateAccess(user_key);
-  if (!privateAccess) {
-    res.statusCode = 400;
-    res.send("user does not have private access");
+  // get token and private access status
+  const userAccess = await getUserAccess(user_key);
+  if (!userAccess) {
+    res.statusCode = 404;
+    res.send("user not found");
     return;
   }
 
-  // get access token for user
-  const token = await getUserToken(user_key);
-  if (!token) {
-    res.statusCode = 404;
-    res.send("user not found");
+  // verify that user has private access
+  if (!userAccess.privateAccess) {
+    res.statusCode = 400;
+    res.send("user does not have private access");
     return;
   }
 
@@ -47,7 +46,7 @@ export default async (req, res) => {
           username: process.env.OAUTH_CLIENT_ID,
           password: process.env.OAUTH_CLIENT_SECRET,
         },
-        data: { access_token: token },
+        data: { access_token: userAccess.token },
         headers: {
           Accept: "application/vnd.github+json",
         },

@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -10,7 +8,7 @@ import { SignUpScreen } from '../Auth';
 import { SelectUserScreen, WrappedScreen } from '../Wrapped';
 import { NoMatchScreen } from '../Misc';
 
-import { setPrivateAccess as _setPrivateAccess } from '../../redux/actions/userActions';
+import { setUserAccess as _setPrivateAccess } from '../../redux/actions/userActions';
 import { getUserMetadata } from '../../api';
 import Footer from './Footer';
 

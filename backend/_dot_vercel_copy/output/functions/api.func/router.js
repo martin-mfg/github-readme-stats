@@ -3,12 +3,13 @@ import { default as gist } from "./api-renamed/gist.js";
 import { default as pin } from "./api-renamed/pin.js";
 import { default as topLangs } from "./api-renamed/top-langs.js";
 import { default as wakatime } from "./api-renamed/wakatime.js";
+import { default as wakatimeProxy } from "./api-renamed/wakatime-proxy.js";
 import { default as repeatRecent } from "./api-renamed/repeat-recent.js";
 import { default as patInfo } from "./api-renamed/status/pat-info.js";
 import { default as statusUp } from "./api-renamed/status/up.js";
 import { default as authenticate } from "./api-renamed/authenticate.js";
 import { default as deleteUser } from "./api-renamed/delete-user.js";
-import { default as privateAccess } from "./api-renamed/private-access.js";
+import { default as userAccess } from "./api-renamed/user-access.js";
 import { default as downgrade } from "./api-renamed/downgrade.js";
 
 export default async (req, res) => {
@@ -28,40 +29,43 @@ export default async (req, res) => {
 
   switch (url.pathname) {
     case "/api":
-      api(req, res);
+      await api(req, res);
       break;
     case "/api/gist":
-      gist(req, res);
+      await gist(req, res);
       break;
     case "/api/pin":
-      pin(req, res);
+      await pin(req, res);
       break;
     case "/api/top-langs":
-      topLangs(req, res);
+      await topLangs(req, res);
       break;
     case "/api/wakatime":
-      wakatime(req, res);
+      await wakatime(req, res);
+      break;
+    case "/api/wakatime-proxy":
+      await wakatimeProxy(req, res);
       break;
     case "/api/repeat-recent":
-      repeatRecent(req, res);
+      await repeatRecent(req, res);
       break;
     case "/api/status/pat-info":
-      patInfo(req, res);
+      await patInfo(req, res);
       break;
     case "/api/status/up":
-      statusUp(req, res);
+      await statusUp(req, res);
       break;
     case "/api/authenticate":
-      authenticate(req, res);
+      await authenticate(req, res);
       break;
     case "/api/delete-user":
-      deleteUser(req, res);
+      await deleteUser(req, res);
       break;
-    case "/api/private-access":
-      privateAccess(req, res);
+    case "/api/user-access":
+      await userAccess(req, res);
       break;
     case "/api/downgrade":
-      downgrade(req, res);
+      await downgrade(req, res);
       break;
     default:
       res.statusCode = 404;

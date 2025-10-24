@@ -6,6 +6,7 @@ backend/coverage
 backend/benchmarks
 backend/vercel_token
 frontend/frontend/.env
+frontend/frontend/src/backend
 
 # IDE
 .idea/

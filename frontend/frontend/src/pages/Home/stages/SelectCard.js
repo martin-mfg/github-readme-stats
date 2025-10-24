@@ -20,27 +20,27 @@ const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
         {
           title: 'Top Languages Card',
           description: 'your most frequently used languages',
-          imageSrc: `top-langs/?&username=${userId}&langs_count=4`,
+          imageSrc: `/top-langs?&username=${userId}&langs_count=4`,
           cardType: 'top-langs',
         },
         {
           title: 'GitHub Extra Pins',
           description:
             'pin more than 6 repositories in your profile using a GitHub profile readme',
-          imageSrc: 'pin/?repo=anuraghazra/github-readme-stats',
+          imageSrc: '/pin?repo=anuraghazra/github-readme-stats',
           cardType: 'pin',
         },
         {
           title: 'GitHub Gist Pins',
           description:
             'pin gists in your GitHub profile using a GitHub profile readme',
-          imageSrc: 'gist/?id=bbfce31e0217a3689c8d961a356cb10d',
+          imageSrc: '/gist?id=bbfce31e0217a3689c8d961a356cb10d',
           cardType: 'gist',
         },
         {
           title: 'WakaTime Stats Card',
           description: 'your coding activity from WakaTime',
-          imageSrc: 'wakatime/?username=ffflabs&langs_count=6&card_width=450',
+          imageSrc: '/wakatime?username=ffflabs&langs_count=6&card_width=450',
           cardType: 'wakatime',
         },
       ].map((card, index) => (

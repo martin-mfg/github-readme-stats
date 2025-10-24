@@ -1,15 +1,16 @@
+import { fetchWakatimeStats } from "../src/fetchers/wakatime.js";
 import { logger } from "../src/common/utils.js";
-import { hasPrivateAccess } from "../src/common/database.js";
 
 /**
  * @param {any} req The request.
  * @param {any} res The response.
  */
 export default async (req, res) => {
-  const { user_key } = req.query;
+  const { username } = req.query;
+  res.setHeader("Content-Type", "application/json");
   try {
-    const result = await hasPrivateAccess(user_key);
-    res.send(result);
+    const stats = await fetchWakatimeStats({ username });
+    res.send(stats);
   } catch (err) {
     logger.error(err);
     res.send("Something went wrong: " + err.message);

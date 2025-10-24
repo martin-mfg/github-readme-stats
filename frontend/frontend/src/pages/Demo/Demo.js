@@ -27,13 +27,13 @@ const DemoScreen = () => {
 
   const firstCardUrl =
     selectedUserName.length > 0
-      ? `https://${HOST}/api/?username=${selectedUserName}&client=demo`
-      : `https://${HOST}/api/?username=anuraghazra&client=demo`;
+      ? `https://${HOST}/api?username=${selectedUserName}&client=demo`
+      : `https://${HOST}/api?username=anuraghazra&client=demo`;
 
   const secondCardUrl =
     selectedUserName.length > 0
-      ? `https://${HOST}/api/top-langs/?username=${selectedUserName}&client=demo`
-      : `https://${HOST}/api/top-langs/?username=anuraghazra&client=demo`;
+      ? `https://${HOST}/api/top-langs?username=${selectedUserName}&client=demo`
+      : `https://${HOST}/api/top-langs?username=anuraghazra&client=demo`;
 
   return (
     <div className="h-full py-8 flex flex-col xl:flex-row justify-center items-center">

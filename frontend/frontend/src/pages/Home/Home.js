@@ -32,7 +32,7 @@ const HomeScreen = () => {
   const [stage, setStage] = useState(0);
 
   // for stage one
-  const [selectedCard, setSelectedCard] = useState();
+  const [selectedCard, setSelectedCard] = useState('stats');
   const [imageSrc, setImageSrc] = useState(`?&username=${userId}`);
 
   // for stage two
@@ -66,6 +66,10 @@ const HomeScreen = () => {
   useEffect(() => {
     resetCustomization();
   }, [selectedCard]);
+
+  useEffect(() => {
+    setImageSrc(`?&username=${userId}`);
+  }, [userId]);
 
   const time = selectedTimeRange.value;
   let fullSuffix = `${imageSrc}&time_range=${time}`;
