@@ -300,7 +300,6 @@ const fetchRepoUserStats = async (
  * @param {boolean} include_merged_pull_requests Include merged pull requests.
  * @param {boolean} include_discussions Include discussions.
  * @param {boolean} include_discussions_answers Include discussions answers.
- * @param {string[]} ownerAffiliations Owner affiliations. Default: OWNER.
  * @param {number|undefined} commits_year Year to count total commits
  * @param {string[]} ownerAffiliations Owner affiliations. Default: OWNER.
  * @returns {Promise<import("./types").StatsData>} Stats data.
