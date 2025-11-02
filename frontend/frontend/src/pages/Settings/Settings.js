@@ -203,7 +203,7 @@ const SettingsScreen = () => {
                   className="bg-gray-200 rounded-sm text-red-600 border-2"
                   onClick={openDeleteModal}
                 >
-                  Permenantly Delete Account
+                  Permanently Delete Account
                 </Button>
               </div>
             )}
