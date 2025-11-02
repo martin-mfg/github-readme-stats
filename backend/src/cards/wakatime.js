@@ -235,7 +235,7 @@ const normalizeCardWidth = ({ value, layout }) => {
  */
 const renderWakatimeCard = (stats = {}, options = { hide: [] }) => {
   let { languages = [] } = stats;
-  let {
+  const {
     hide_title = false,
     hide_border = false,
     card_width,

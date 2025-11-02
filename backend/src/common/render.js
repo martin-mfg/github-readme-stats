@@ -117,26 +117,6 @@ const iconWithLabel = (icon, label, testid, iconSize) => {
   return flexLayout({ items: [iconSvg, text], gap: 20 }).join("");
 };
 
-const buildSearchFilter = (repos = [], owners = []) => {
-  let repoFilter =
-    Array.isArray(repos) && repos.length > 0
-      ? repos.map((r) => `repo:${r} `).join("")
-      : "";
-  let orgFilter =
-    Array.isArray(owners) && owners.length > 0
-      ? owners.map((o) => `owner:${o} `).join("")
-      : "";
-  return repoFilter + orgFilter;
-};
-
-// Script parameters.
-const ERROR_CARD_LENGTH = 576.5;
-
-const UPSTREAM_API_ERRORS = [
-  TRY_AGAIN_LATER,
-  SECONDARY_ERROR_MESSAGES.MAX_RETRY,
-];
-
 /**
  * Renders error message on the card.
  *
@@ -242,36 +222,13 @@ const measureText = (str, fontSize = 10) => {
   );
 };
 
-/**
- * Parse owner affiliations.
- *
- * @param {string[]} affiliations input affiliations to be parsed.
- * @returns {string[]} Parsed affiliations.
- *
- * @throws {CustomError} If affiliations contains invalid values.
- */
-const parseOwnerAffiliations = (affiliations) => {
-  // Set default value for ownerAffiliations.
-  // NOTE: Done here since parseArray() will always return an empty array even nothing
-  //was specified.
-  affiliations =
-    affiliations && affiliations.length > 0
-      ? affiliations.map((affiliation) => affiliation.toUpperCase())
-      : ["OWNER"];
+// Script parameters.
+const ERROR_CARD_LENGTH = 576.5;
 
-  // Check if ownerAffiliations contains valid values.
-  if (
-    affiliations.some(
-      (affiliation) => !OWNER_AFFILIATIONS.includes(affiliation),
-    )
-  ) {
-    throw new CustomError(
-      "Invalid query parameter",
-      CustomError.INVALID_AFFILIATION,
-    );
-  }
-  return affiliations;
-};
+const UPSTREAM_API_ERRORS = [
+  TRY_AGAIN_LATER,
+  SECONDARY_ERROR_MESSAGES.MAX_RETRY,
+];
 
 export {
   ERROR_CARD_LENGTH,
@@ -279,9 +236,7 @@ export {
   createLanguageNode,
   createProgressNode,
   iconWithLabel,
-  buildSearchFilter,
   flexLayout,
   OWNER_AFFILIATIONS,
   measureText,
-  parseOwnerAffiliations,
 };

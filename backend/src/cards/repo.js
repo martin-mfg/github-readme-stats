@@ -7,7 +7,7 @@ import { encodeHTML } from "../common/html.js";
 import { I18n } from "../common/I18n.js";
 import { icons } from "../common/icons.js";
 import { clampValue, parseEmojis } from "../common/ops.js";
-import { buildSearchFilter } from "../common/utils.js";
+import { buildSearchFilter } from "../common/ops.js";
 import {
   flexLayout,
   measureText,

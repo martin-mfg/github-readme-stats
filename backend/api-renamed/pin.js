@@ -13,7 +13,7 @@ import {
   retrieveSecondaryMessage,
 } from "../src/common/error.js";
 import { parseBoolean } from "../src/common/ops.js";
-import { parseArray } from "../src/common/utils.js";
+import { parseArray } from "../src/common/ops.js";
 import { renderError } from "../src/common/render.js";
 import { fetchRepo } from "../src/fetchers/repo.js";
 import { isLocaleAvailable } from "../src/translations.js";
@@ -110,13 +110,12 @@ export default async (req, res) => {
       showStats.includes("issues_authored"),
       showStats.includes("issues_commented"),
     );
-    const repoData = await fetchRepo(username, repo);
 
     const cacheSeconds = resolveCacheSeconds({
       requested: parseInt(cache_seconds, 10),
-      def: CONSTANTS.PIN_CARD_CACHE_SECONDS,
-      min: CONSTANTS.FOUR_HOURS,
-      max: CONSTANTS.TEN_DAY,
+      def: CACHE_TTL.PIN_CARD.DEFAULT,
+      min: CACHE_TTL.PIN_CARD.MIN,
+      max: CACHE_TTL.PIN_CARD.MAX,
     });
 
     setCacheHeaders(res, cacheSeconds);

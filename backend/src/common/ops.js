@@ -1,6 +1,7 @@
 // @ts-check
 
 import toEmoji from "emoji-name-map";
+import { SECONDARY_ERROR_MESSAGES, TRY_AGAIN_LATER } from "./error.js";
 
 /**
  * Returns boolean if value is either "true" or "false" else the value as it is.
@@ -113,6 +114,49 @@ const dateDiff = (d1, d2) => {
   return Math.round(diff / (1000 * 60));
 };
 
+/**
+ * Parse owner affiliations.
+ *
+ * @param {string[]} affiliations input affiliations to be parsed.
+ * @returns {string[]} Parsed affiliations.
+ *
+ * @throws {CustomError} If affiliations contains invalid values.
+ */
+const parseOwnerAffiliations = (affiliations) => {
+  // Set default value for ownerAffiliations.
+  // NOTE: Done here since parseArray() will always return an empty array even nothing
+  //was specified.
+  affiliations =
+    affiliations && affiliations.length > 0
+      ? affiliations.map((affiliation) => affiliation.toUpperCase())
+      : ["OWNER"];
+
+  // Check if ownerAffiliations contains valid values.
+  if (
+    affiliations.some(
+      (affiliation) => !OWNER_AFFILIATIONS.includes(affiliation),
+    )
+  ) {
+    throw new CustomError(
+      "Invalid query parameter",
+      CustomError.INVALID_AFFILIATION,
+    );
+  }
+  return affiliations;
+};
+
+const buildSearchFilter = (repos = [], owners = []) => {
+  let repoFilter =
+    Array.isArray(repos) && repos.length > 0
+      ? repos.map((r) => `repo:${r} `).join("")
+      : "";
+  let orgFilter =
+    Array.isArray(owners) && owners.length > 0
+      ? owners.map((o) => `owner:${o} `).join("")
+      : "";
+  return repoFilter + orgFilter;
+};
+
 export {
   parseBoolean,
   parseArray,
@@ -121,4 +165,6 @@ export {
   chunkArray,
   parseEmojis,
   dateDiff,
+  parseOwnerAffiliations,
+  buildSearchFilter,
 };

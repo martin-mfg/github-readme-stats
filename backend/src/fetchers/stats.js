@@ -8,7 +8,7 @@ import { retryer } from "../common/retryer.js";
 import {
   buildSearchFilter,
   parseOwnerAffiliations,
-} from "../common/utils.js";
+} from "../common/ops.js";
 import { logger } from "../common/log.js";
 import { excludeRepositories } from "../common/envs.js";
 import { CustomError, MissingParamError } from "../common/error.js";
