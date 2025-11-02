@@ -117,6 +117,14 @@ const iconWithLabel = (icon, label, testid, iconSize) => {
   return flexLayout({ items: [iconSvg, text], gap: 20 }).join("");
 };
 
+// Script parameters.
+const ERROR_CARD_LENGTH = 576.5;
+
+const UPSTREAM_API_ERRORS = [
+  TRY_AGAIN_LATER,
+  SECONDARY_ERROR_MESSAGES.MAX_RETRY,
+];
+
 /**
  * Renders error message on the card.
  *
@@ -221,14 +229,6 @@ const measureText = (str, fontSize = 10) => {
       .reduce((cur, acc) => acc + cur) * fontSize
   );
 };
-
-// Script parameters.
-const ERROR_CARD_LENGTH = 576.5;
-
-const UPSTREAM_API_ERRORS = [
-  TRY_AGAIN_LATER,
-  SECONDARY_ERROR_MESSAGES.MAX_RETRY,
-];
 
 export {
   ERROR_CARD_LENGTH,

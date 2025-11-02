@@ -1,6 +1,6 @@
 import { getUserAccess, deleteUser } from "../src/common/database.js";
 import axios from "axios";
-import { logger } from "../src/index.js";
+import { logger } from "../src/common/log.js";
 
 export default async (req, res) => {
   // We could optimize this method by doing both database operations in one statement, using "DELETE ... RETURNING ..."
