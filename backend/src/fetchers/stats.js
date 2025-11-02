@@ -1,4 +1,5 @@
 // @ts-check
+
 import axios from "axios";
 import * as dotenv from "dotenv";
 import githubUsernameRegex from "github-username-regex";
@@ -6,13 +7,13 @@ import { calculateRank } from "../calculateRank.js";
 import { retryer } from "../common/retryer.js";
 import {
   buildSearchFilter,
-  CustomError,
-  logger,
-  MissingParamError,
-  request,
-  wrapTextMultiline,
   parseOwnerAffiliations,
-} from "../common/utils.js";
+} from "../common/ops.js";
+import { logger } from "../common/log.js";
+import { excludeRepositories } from "../common/envs.js";
+import { CustomError, MissingParamError } from "../common/error.js";
+import { wrapTextMultiline } from "../common/fmt.js";
+import { request } from "../common/http.js";
 
 dotenv.config();
 
@@ -42,12 +43,14 @@ const GRAPHQL_REPOS_QUERY = `
 `;
 
 const GRAPHQL_STATS_QUERY = `
-  query userInfo($login: String!, $after: String, $includeMergedPullRequests: Boolean!, $includeDiscussions: Boolean!, $includeDiscussionsAnswers: Boolean!, $ownerAffiliations: [RepositoryAffiliation]) {
+  query userInfo($login: String!, $after: String, $includeMergedPullRequests: Boolean!, $includeDiscussions: Boolean!, $includeDiscussionsAnswers: Boolean!, $startTime: DateTime = null, $ownerAffiliations: [RepositoryAffiliation]) {
     user(login: $login) {
       name
       login
-      contributionsCollection {
+      commits: contributionsCollection (from: $startTime) {
         totalCommitContributions,
+      }
+      reviews: contributionsCollection {
         totalPullRequestReviewContributions
       }
       repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
@@ -80,15 +83,11 @@ const GRAPHQL_STATS_QUERY = `
 `;
 
 /**
- * @typedef {import('axios').AxiosResponse} AxiosResponse Axios response.
- */
-
-/**
  * Stats fetcher object.
  *
- * @param {object} variables Fetcher variables.
+ * @param {object & { after: string | null }} variables Fetcher variables.
  * @param {string} token GitHub token.
- * @returns {Promise<AxiosResponse>} Axios response.
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response.
  */
 const fetcher = (variables, token) => {
   const query = variables.after ? GRAPHQL_REPOS_QUERY : GRAPHQL_STATS_QUERY;
@@ -111,8 +110,9 @@ const fetcher = (variables, token) => {
  * @param {boolean} variables.includeMergedPullRequests Include merged pull requests.
  * @param {boolean} variables.includeDiscussions Include discussions.
  * @param {boolean} variables.includeDiscussionsAnswers Include discussions answers.
+ * @param {string|undefined} variables.startTime Time to start the count of total commits.
  * @param {string[]} ownerAffiliations The owner affiliations to filter by. Default: OWNER.
- * @returns {Promise<AxiosResponse>} Axios response.
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response.
  *
  * @description This function supports multi-page fetching if the 'FETCH_MULTI_PAGE_STARS' environment variable is set to true.
  */
@@ -121,6 +121,7 @@ const statsFetcher = async ({
   includeMergedPullRequests,
   includeDiscussions,
   includeDiscussionsAnswers,
+  startTime,
   ownerAffiliations,
 }) => {
   let stats;
@@ -134,6 +135,7 @@ const statsFetcher = async ({
       includeMergedPullRequests,
       includeDiscussions,
       includeDiscussionsAnswers,
+      startTime,
       ownerAffiliations,
     };
     let res = await retryer(fetcher, variables);
@@ -164,6 +166,35 @@ const statsFetcher = async ({
 };
 
 /**
+ * Fetch total commits using the REST API.
+ *
+ * @param {object} variables Fetcher variables.
+ * @param {string} token GitHub token.
+ * @returns {Promise<import('axios').AxiosResponse>} Axios response.
+ *
+ * @see https://developer.github.com/v3/search/#search-commits
+ */
+const fetchTotalItems = (variables, token) => {
+  return axios({
+    method: "get",
+    url:
+      `https://api.github.com/search/` +
+      type +
+      `?per_page=1&q=` +
+      buildSearchFilter(variables.repo, variables.owner).replaceAll(
+        " ",
+        "+",
+      ) +
+      filter,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/vnd.github.cloak-preview",
+      Authorization: `token ${token}`,
+    },
+  });
+};
+
+/**
  * Fetch all the commits for all the repositories of a given username.
  *
  * @param {string} username GitHub username.
@@ -177,27 +208,6 @@ const totalItemsFetcher = async (username, repo, owner, type, filter) => {
     logger.log("Invalid username provided.");
     throw new Error("Invalid username provided.");
   }
-
-  // https://developer.github.com/v3/search/#search-commits
-  const fetchTotalItems = (variables, token) => {
-    return axios({
-      method: "get",
-      url:
-        `https://api.github.com/search/` +
-        type +
-        `?per_page=1&q=` +
-        buildSearchFilter(variables.repo, variables.owner).replaceAll(
-          " ",
-          "+",
-        ) +
-        filter,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/vnd.github.cloak-preview",
-        Authorization: `token ${token}`,
-      },
-    });
-  };
 
   let res;
   try {
@@ -282,10 +292,6 @@ const fetchRepoUserStats = async (
 };
 
 /**
- * @typedef {import("./types").StatsData} StatsData Stats data.
- */
-
-/**
  * Fetch stats for a given username.
  *
  * @param {string} username GitHub username.
@@ -294,8 +300,9 @@ const fetchRepoUserStats = async (
  * @param {boolean} include_merged_pull_requests Include merged pull requests.
  * @param {boolean} include_discussions Include discussions.
  * @param {boolean} include_discussions_answers Include discussions answers.
+ * @param {number|undefined} commits_year Year to count total commits
  * @param {string[]} ownerAffiliations Owner affiliations. Default: OWNER.
- * @returns {Promise<StatsData>} Stats data.
+ * @returns {Promise<import("./types").StatsData>} Stats data.
  */
 const fetchStats = async (
   username,
@@ -304,6 +311,7 @@ const fetchStats = async (
   include_merged_pull_requests = false,
   include_discussions = false,
   include_discussions_answers = false,
+  commits_year,
   repo = [],
   owner = [],
   include_prs_authored = false,
@@ -343,6 +351,7 @@ const fetchStats = async (
     includeMergedPullRequests: include_merged_pull_requests,
     includeDiscussions: include_discussions,
     includeDiscussionsAnswers: include_discussions_answers,
+    startTime: commits_year ? `${commits_year}-01-01T00:00:00Z` : undefined,
     ownerAffiliations,
   });
 
@@ -381,7 +390,7 @@ const fetchStats = async (
       `author:${username}`,
     );
   } else {
-    stats.totalCommits = user.contributionsCollection.totalCommitContributions;
+    stats.totalCommits = user.commits.totalCommitContributions;
   }
   let repoUserStats = await fetchRepoUserStats(
     username,
@@ -399,10 +408,10 @@ const fetchStats = async (
   if (include_merged_pull_requests) {
     stats.totalPRsMerged = user.mergedPullRequests.totalCount;
     stats.mergedPRsPercentage =
-      (user.mergedPullRequests.totalCount / user.pullRequests.totalCount) * 100;
+      (user.mergedPullRequests.totalCount / user.pullRequests.totalCount) *
+        100 || 0;
   }
-  stats.totalReviews =
-    user.contributionsCollection.totalPullRequestReviewContributions;
+  stats.totalReviews = user.reviews.totalPullRequestReviewContributions;
   stats.totalIssues = user.openIssues.totalCount + user.closedIssues.totalCount;
   if (include_discussions) {
     stats.totalDiscussionsStarted = user.repositoryDiscussions.totalCount;
@@ -414,7 +423,8 @@ const fetchStats = async (
   stats.contributedTo = user.repositoriesContributedTo.totalCount;
 
   // Retrieve stars while filtering out repositories to be hidden.
-  let repoToHide = new Set(exclude_repo);
+  const allExcludedRepos = [...exclude_repo, ...excludeRepositories];
+  let repoToHide = new Set(allExcludedRepos);
 
   stats.totalStars = user.repositories.nodes
     .filter((data) => {

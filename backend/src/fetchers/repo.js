@@ -1,19 +1,16 @@
 // @ts-check
-import { retryer } from "../common/retryer.js";
-import { MissingParamError, request } from "../common/utils.js";
-import { fetchRepoUserStats } from "./stats.js";
 
-/**
- * @typedef {import('axios').AxiosRequestHeaders} AxiosRequestHeaders Axios request headers.
- * @typedef {import('axios').AxiosResponse} AxiosResponse Axios response.
- */
+import { MissingParamError } from "../common/error.js";
+import { request } from "../common/http.js";
+import { retryer } from "../common/retryer.js";
+import { fetchRepoUserStats } from "./stats.js";
 
 /**
  * Repo data fetcher.
  *
- * @param {AxiosRequestHeaders} variables Fetcher variables.
+ * @param {object} variables Fetcher variables.
  * @param {string} token GitHub token.
- * @returns {Promise<AxiosResponse>} The response.
+ * @returns {Promise<import('axios').AxiosResponse>} The response.
  */
 const fetcher = (variables, token) => {
   return request(

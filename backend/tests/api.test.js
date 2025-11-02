@@ -1,12 +1,24 @@
-import { jest } from "@jest/globals";
+// @ts-check
+
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  jest,
+} from "@jest/globals";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import api from "../api-renamed/index.js";
 import { calculateRank } from "../src/calculateRank.js";
 import { renderStatsCard } from "../src/cards/stats.js";
-import { CONSTANTS, renderError } from "../src/common/utils.js";
-import { expect, it, describe, afterEach } from "@jest/globals";
+import { renderError } from "../src/common/render.js";
+import { CACHE_TTL, DURATIONS } from "../src/common/cache.js";
 
+/**
+ * @type {import("../src/fetchers/stats").StatsData}
+ */
 const stats = {
   name: "Anurag Hazra",
   totalStars: 100,
@@ -19,7 +31,7 @@ const stats = {
   totalDiscussionsStarted: 10,
   totalDiscussionsAnswered: 40,
   contributedTo: 50,
-  rank: null,
+  rank: { level: "DEV", percentile: 0 },
 };
 
 stats.rank = calculateRank({
@@ -38,8 +50,10 @@ const data_stats = {
     user: {
       name: stats.name,
       repositoriesContributedTo: { totalCount: stats.contributedTo },
-      contributionsCollection: {
+      commits: {
         totalCommitContributions: stats.totalCommits,
+      },
+      reviews: {
         totalPullRequestReviewContributions: stats.totalReviews,
       },
       pullRequests: { totalCount: stats.totalPRs },
@@ -76,6 +90,7 @@ const error = {
 
 const mock = new MockAdapter(axios);
 
+// @ts-ignore
 const faker = (query, data) => {
   const req = {
     query: {
@@ -92,6 +107,10 @@ const faker = (query, data) => {
   return { req, res };
 };
 
+beforeEach(() => {
+  process.env.CACHE_SECONDS = undefined;
+});
+
 afterEach(() => {
   mock.reset();
 });
@@ -102,8 +121,10 @@ describe("Test /api/", () => {
 
     await api(req, res);
 
-    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
-    expect(res.send).toBeCalledWith(renderStatsCard(stats, { ...req.query }));
+    expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toHaveBeenCalledWith(
+      renderStatsCard(stats, { ...req.query }),
+    );
   });
 
   it("should render error card on error", async () => {
@@ -111,12 +132,13 @@ describe("Test /api/", () => {
 
     await api(req, res);
 
-    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
-    expect(res.send).toBeCalledWith(
-      renderError(
-        error.errors[0].message,
-        "Make sure the provided username is not an organization",
-      ),
+    expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toHaveBeenCalledWith(
+      renderError({
+        message: error.errors[0].message,
+        secondaryMessage:
+          "Make sure the provided username is not an organization",
+      }),
     );
   });
 
@@ -125,13 +147,14 @@ describe("Test /api/", () => {
 
     await api(req, res);
 
-    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
-    expect(res.send).toBeCalledWith(
-      renderError(
-        error.errors[0].message,
-        "Make sure the provided username is not an organization",
-        { theme: "merko" },
-      ),
+    expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toHaveBeenCalledWith(
+      renderError({
+        message: error.errors[0].message,
+        secondaryMessage:
+          "Make sure the provided username is not an organization",
+        renderOptions: { theme: "merko" },
+      }),
     );
   });
 
@@ -153,8 +176,8 @@ describe("Test /api/", () => {
 
     await api(req, res);
 
-    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
-    expect(res.send).toBeCalledWith(
+    expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toHaveBeenCalledWith(
       renderStatsCard(stats, {
         hide: ["issues", "prs", "contribs"],
         show_icons: true,
@@ -177,15 +200,15 @@ describe("Test /api/", () => {
       ["Content-Type", "image/svg+xml"],
       [
         "Cache-Control",
-        `max-age=${CONSTANTS.CARD_CACHE_SECONDS}, s-maxage=${
-          CONSTANTS.CARD_CACHE_SECONDS
-        }, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
+        `max-age=${CACHE_TTL.STATS_CARD.DEFAULT}, ` +
+          `s-maxage=${CACHE_TTL.STATS_CARD.DEFAULT}, ` +
+          `stale-while-revalidate=${DURATIONS.ONE_DAY}`,
       ],
     ]);
   });
 
   it("should set proper cache", async () => {
-    const cache_seconds = CONSTANTS.TWELVE_HOURS;
+    const cache_seconds = DURATIONS.TWELVE_HOURS;
     const { req, res } = faker({ cache_seconds }, data_stats);
     await api(req, res);
 
@@ -193,11 +216,9 @@ describe("Test /api/", () => {
       ["Content-Type", "image/svg+xml"],
       [
         "Cache-Control",
-        `max-age=${
-          cache_seconds
-        }, s-maxage=${cache_seconds}, stale-while-revalidate=${
-          CONSTANTS.ONE_DAY
-        }`,
+        `max-age=${cache_seconds}, ` +
+          `s-maxage=${cache_seconds}, ` +
+          `stale-while-revalidate=${DURATIONS.ONE_DAY}`,
       ],
     ]);
   });
@@ -210,25 +231,60 @@ describe("Test /api/", () => {
       ["Content-Type", "image/svg+xml"],
       [
         "Cache-Control",
-        `max-age=${CONSTANTS.ERROR_CACHE_SECONDS / 2}, s-maxage=${
-          CONSTANTS.ERROR_CACHE_SECONDS
-        }, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
+        `max-age=${CACHE_TTL.ERROR}, ` +
+          `s-maxage=${CACHE_TTL.ERROR}, ` +
+          `stale-while-revalidate=${DURATIONS.ONE_DAY}`,
       ],
+    ]);
+  });
+
+  it("should properly set cache using CACHE_SECONDS env variable", async () => {
+    const cacheSeconds = "10000";
+    process.env.CACHE_SECONDS = cacheSeconds;
+
+    const { req, res } = faker({}, data_stats);
+    await api(req, res);
+
+    expect(res.setHeader.mock.calls).toEqual([
+      ["Content-Type", "image/svg+xml"],
+      [
+        "Cache-Control",
+        `max-age=${cacheSeconds}, ` +
+          `s-maxage=${cacheSeconds}, ` +
+          `stale-while-revalidate=${DURATIONS.ONE_DAY}`,
+      ],
+    ]);
+  });
+
+  it("should disable cache when CACHE_SECONDS is set to 0", async () => {
+    process.env.CACHE_SECONDS = "0";
+
+    const { req, res } = faker({}, data_stats);
+    await api(req, res);
+
+    expect(res.setHeader.mock.calls).toEqual([
+      ["Content-Type", "image/svg+xml"],
+      [
+        "Cache-Control",
+        "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0",
+      ],
+      ["Pragma", "no-cache"],
+      ["Expires", "0"],
     ]);
   });
 
   it("should set proper cache with clamped values", async () => {
     {
-      let { req, res } = faker({ cache_seconds: 200000 }, data_stats);
+      let { req, res } = faker({ cache_seconds: 200_000 }, data_stats);
       await api(req, res);
 
       expect(res.setHeader.mock.calls).toEqual([
         ["Content-Type", "image/svg+xml"],
         [
           "Cache-Control",
-          `max-age=${CONSTANTS.TWO_DAY}, s-maxage=${
-            CONSTANTS.TWO_DAY
-          }, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
+          `max-age=${CACHE_TTL.STATS_CARD.MAX}, ` +
+            `s-maxage=${CACHE_TTL.STATS_CARD.MAX}, ` +
+            `stale-while-revalidate=${DURATIONS.ONE_DAY}`,
         ],
       ]);
     }
@@ -242,24 +298,24 @@ describe("Test /api/", () => {
         ["Content-Type", "image/svg+xml"],
         [
           "Cache-Control",
-          `max-age=${CONSTANTS.CARD_CACHE_SECONDS}, s-maxage=${
-            CONSTANTS.CARD_CACHE_SECONDS
-          }, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
+          `max-age=${CACHE_TTL.STATS_CARD.MIN}, ` +
+            `s-maxage=${CACHE_TTL.STATS_CARD.MIN}, ` +
+            `stale-while-revalidate=${DURATIONS.ONE_DAY}`,
         ],
       ]);
     }
 
     {
-      let { req, res } = faker({ cache_seconds: -10000 }, data_stats);
+      let { req, res } = faker({ cache_seconds: -10_000 }, data_stats);
       await api(req, res);
 
       expect(res.setHeader.mock.calls).toEqual([
         ["Content-Type", "image/svg+xml"],
         [
           "Cache-Control",
-          `max-age=${CONSTANTS.FOUR_HOURS}, s-maxage=${
-            CONSTANTS.FOUR_HOURS
-          }, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
+          `max-age=${CACHE_TTL.STATS_CARD.MIN}, ` +
+            `s-maxage=${CACHE_TTL.STATS_CARD.MIN}, ` +
+            `stale-while-revalidate=${DURATIONS.ONE_DAY}`,
         ],
       ]);
     }
@@ -284,8 +340,8 @@ describe("Test /api/", () => {
 
     await api(req, res);
 
-    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
-    expect(res.send).toBeCalledWith(
+    expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toHaveBeenCalledWith(
       renderStatsCard(stats, {
         hide: ["issues", "prs", "contribs"],
         show_icons: true,
@@ -305,13 +361,13 @@ describe("Test /api/", () => {
 
     await api(req, res);
 
-    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
-    expect(res.send).toBeCalledWith(
-      renderError(
-        "This username is blacklisted",
-        "Please deploy your own instance",
-        { show_repo_link: false },
-      ),
+    expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toHaveBeenCalledWith(
+      renderError({
+        message: "This username is blacklisted",
+        secondaryMessage: "Please deploy your own instance",
+        renderOptions: { show_repo_link: false },
+      }),
     );
   });
 
@@ -320,9 +376,12 @@ describe("Test /api/", () => {
 
     await api(req, res);
 
-    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
-    expect(res.send).toBeCalledWith(
-      renderError("Something went wrong", "Language not found"),
+    expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toHaveBeenCalledWith(
+      renderError({
+        message: "Something went wrong",
+        secondaryMessage: "Language not found",
+      }),
     );
   });
 
@@ -340,12 +399,12 @@ describe("Test /api/", () => {
 
     await api(req, res);
 
-    expect(res.setHeader).toBeCalledWith("Content-Type", "image/svg+xml");
-    expect(res.send).toBeCalledWith(
-      renderError(
-        "Could not fetch data from GitHub REST API.",
-        "Please try again later",
-      ),
+    expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
+    expect(res.send).toHaveBeenCalledWith(
+      renderError({
+        message: "Could not fetch data from GitHub REST API.",
+        secondaryMessage: "Please try again later",
+      }),
     );
     // Received SVG output should not contain string "https://tiny.one/readme-stats"
     expect(res.send.mock.calls[0][0]).not.toContain(

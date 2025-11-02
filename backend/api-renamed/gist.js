@@ -1,15 +1,24 @@
-import {
-  clampValue,
-  CONSTANTS,
-  renderError,
-  parseBoolean,
-} from "../src/common/utils.js";
-import { gistWhitelist } from "../src/common/whitelist.js";
+// @ts-check
+
+import { renderError } from "../src/common/render.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import { renderGistCard } from "../src/cards/gist.js";
 import { fetchGist } from "../src/fetchers/gist.js";
 import { storeRequest } from "../src/common/database.js";
+import {
+  CACHE_TTL,
+  resolveCacheSeconds,
+  setCacheHeaders,
+  setErrorCacheHeaders,
+} from "../src/common/cache.js";
+import { guardAccess } from "../src/common/access.js";
+import {
+  MissingParamError,
+  retrieveSecondaryMessage,
+} from "../src/common/error.js";
+import { parseBoolean } from "../src/common/ops.js";
 
+// @ts-ignore
 export default async (req, res) => {
   const {
     id,
@@ -28,31 +37,34 @@ export default async (req, res) => {
 
   res.setHeader("Content-Type", "image/svg+xml");
 
-  if (gistWhitelist && !gistWhitelist.includes(id)) {
+  const access = guardAccess({
+    res,
+    id,
+    type: "gist",
+    colors: {
+      title_color,
+      text_color,
+      bg_color,
+      border_color,
+      theme,
+    },
+  });
+  if (!access.isPassed) {
+    return access.result;
+  }
+
+  if (locale && !isLocaleAvailable(locale)) {
     return res.send(
-      renderError(
-        "This gist ID is not whitelisted",
-        "Please deploy your own instance",
-        {
+      renderError({
+        message: "Something went wrong",
+        secondaryMessage: "Language not found",
+        renderOptions: {
           title_color,
           text_color,
           bg_color,
           border_color,
           theme,
-          show_repo_link: false,
         },
-      ),
-    );
-  }
-
-  if (locale && !isLocaleAvailable(locale)) {
-    return res.send(
-      renderError("Something went wrong", "Language not found", {
-        title_color,
-        text_color,
-        bg_color,
-        border_color,
-        theme,
       }),
     );
   }
@@ -60,20 +72,14 @@ export default async (req, res) => {
   try {
     await storeRequest(req);
     const gistData = await fetchGist(id);
+    const cacheSeconds = resolveCacheSeconds({
+      requested: parseInt(cache_seconds, 10),
+      def: CACHE_TTL.GIST_CARD.DEFAULT,
+      min: CACHE_TTL.GIST_CARD.MIN,
+      max: CACHE_TTL.GIST_CARD.MAX,
+    });
 
-    let cacheSeconds = clampValue(
-      parseInt(cache_seconds || CONSTANTS.TEN_HOURS, 10),
-      CONSTANTS.FOUR_HOURS,
-      CONSTANTS.SIX_DAY,
-    );
-    cacheSeconds = process.env.CACHE_SECONDS
-      ? parseInt(process.env.CACHE_SECONDS, 10) || cacheSeconds
-      : cacheSeconds;
-
-    res.setHeader(
-      "Cache-Control",
-      `max-age=${cacheSeconds}, s-maxage=${cacheSeconds}`,
-    );
+    setCacheHeaders(res, cacheSeconds);
 
     return res.send(
       renderGistCard(gistData, {
@@ -90,19 +96,33 @@ export default async (req, res) => {
       }),
     );
   } catch (err) {
-    res.setHeader(
-      "Cache-Control",
-      `max-age=${CONSTANTS.ERROR_CACHE_SECONDS / 2}, s-maxage=${
-        CONSTANTS.ERROR_CACHE_SECONDS
-      }, stale-while-revalidate=${CONSTANTS.ONE_DAY}`,
-    ); // Use lower cache period for errors.
+    setErrorCacheHeaders(res);
+    if (err instanceof Error) {
+      return res.send(
+        renderError({
+          message: err.message,
+          secondaryMessage: retrieveSecondaryMessage(err),
+          renderOptions: {
+            title_color,
+            text_color,
+            bg_color,
+            border_color,
+            theme,
+            show_repo_link: !(err instanceof MissingParamError),
+          },
+        }),
+      );
+    }
     return res.send(
-      renderError(err.message, err.secondaryMessage, {
-        title_color,
-        text_color,
-        bg_color,
-        border_color,
-        theme,
+      renderError({
+        message: "An unknown error occurred",
+        renderOptions: {
+          title_color,
+          text_color,
+          bg_color,
+          border_color,
+          theme,
+        },
       }),
     );
   }

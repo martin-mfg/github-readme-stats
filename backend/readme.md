@@ -1,8 +1,8 @@
-<p align="center">
- <img width="100px" src="https://res.cloudinary.com/anuraghazra/image/upload/v1594908242/logo_ccswme.svg" align="center" alt="GitHub Readme Stats" />
- <h2 align="center">GitHub Readme Stats</h2>
- <p align="center">Get dynamically generated GitHub stats on your READMEs!</p>
-</p>
+<div align="center">
+  <img src="https://res.cloudinary.com/anuraghazra/image/upload/v1594908242/logo_ccswme.svg" width="100px" alt="GitHub Readme Stats" />
+  <h1 style="font-size: 28px; margin: 10px 0;">GitHub Readme Stats</h1>
+  <p>Get dynamically generated GitHub stats on your READMEs!</p>
+</div>
 
 <p align="center">
   <a href="https://github.com/anuraghazra/github-readme-stats/actions">
@@ -53,6 +53,7 @@
     - [Showing additional individual stats](#showing-additional-individual-stats)
     - [Showing icons](#showing-icons)
     - [Filtering by repository and owner](#filtering-by-repository-and-owner)
+    - [Showing commits count for specified year](#showing-commits-count-for-specified-year)
     - [Themes](#themes)
     - [Customization](#customization)
 - [GitHub Extra Pins](#github-extra-pins)
@@ -75,6 +76,7 @@
     - [Donut Vertical Chart Language Card Layout](#donut-vertical-chart-language-card-layout)
     - [Pie Chart Language Card Layout](#pie-chart-language-card-layout)
     - [Hide Progress Bars](#hide-progress-bars)
+    - [Change format of language's stats](#change-format-of-languages-stats)
     - [Demo](#demo-2)
 - [WakaTime Stats Card](#wakatime-stats-card)
     - [Options](#options-3)
@@ -84,6 +86,9 @@
     - [Stats and top languages cards](#stats-and-top-languages-cards)
     - [Pinning repositories](#pinning-repositories)
 - [Deploy on your own](#deploy-on-your-own)
+  - [First step: get your Personal Access Token (PAT)](#first-step-get-your-personal-access-token-pat)
+    - [Classic token](#classic-token)
+    - [Fine-grained token](#fine-grained-token)
   - [On Vercel](#on-vercel)
     - [:film\_projector: Check Out Step By Step Video Tutorial By @codeSTACKr](#film_projector-check-out-step-by-step-video-tutorial-by-codestackr)
   - [On other platforms](#on-other-platforms)
@@ -94,12 +99,15 @@
 
 # Important Notices <!-- omit in toc -->
 
-> [!IMPORTANT]\
-> Since the GitHub API only [allows 5k requests per hour per user account](https://docs.github.com/en/graphql/overview/resource-limitations), the public Vercel instance hosted on `https://github-readme-stats-phi-jet-58.vercel.app/api` could possibly hit the rate limiter (see [#1471](https://github.com/anuraghazra/github-readme-stats/issues/1471)). We use caching to prevent this from happening (see https://github.com/anuraghazra/github-readme-stats#common-options). You can turn off these rate limit protections by deploying [your own Vercel instance](#disable-rate-limit-protections).
+> [!IMPORTANT]
+> Please note that we are NOT participating in Hacktoberfest this year. As a small team, we cannot handle the increased volume of PRs and issues that the event brings. We appreciate your understanding.
+
+> [!IMPORTANT]
+> Since the GitHub API only [allows 5k requests per hour per user account](https://docs.github.com/en/graphql/overview/resource-limitations), the public Vercel instance hosted on `https://github-readme-stats-phi-jet-58.vercel.app/api` could possibly hit the rate limiter (see [#1471](https://github.com/anuraghazra/github-readme-stats/issues/1471)). We use caching to prevent this from happening (see https://github.com/anuraghazra/github-readme-stats#common-options). You can turn off these rate limit protections by [deploying your own Vercel instance](#deploy-on-your-own).
 
 <img alt="Uptime Badge" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fgithub-readme-stats-git-monitoring-github-readme-stats-team.vercel.app%2Fapi%2Fstatus%2Fup%3Ftype%3Dshields">
 
-> [!IMPORTANT]\
+> [!IMPORTANT]
 > We're a small team, and to prioritize, we rely on upvotes :+1:. We use the Top Issues dashboard for tracking community demand (see [#1935](https://github.com/anuraghazra/github-readme-stats/issues/1935)). Do not hesitate to upvote the issues and pull requests you are interested in. We will work on the most upvoted first.
 
 # GitHub Stats Card
@@ -112,10 +120,10 @@ Change the `?username=` value to your GitHub username.
 [![Anurag's GitHub stats](https://github-readme-stats-phi-jet-58.vercel.app/api?username=anuraghazra)](https://github.com/anuraghazra/github-readme-stats)
 ```
 
-> [!WARNING]\
+> [!WARNING]
 > By default, the stats card only shows statistics like stars, commits, and pull requests from public repositories. To show private statistics on the stats card, you should [deploy your own instance](#deploy-on-your-own) using your own GitHub API token.
 
-> [!NOTE]\
+> [!NOTE]
 > Available ranks are S (top 1%), A+ (12.5%), A (25%), A- (37.5%), B+ (50%), B (62.5%), B- (75%), C+ (87.5%) and C (everyone). This ranking scheme is based on the [Japanese academic grading](https://wikipedia.org/wiki/Academic_grading_in_Japan) system. The global percentile is calculated as a weighted sum of percentiles for each statistic (number of commits, pull requests, reviews, issues, stars, and followers), based on the cumulative distribution function of the [exponential](https://wikipedia.org/wiki/exponential_distribution) and the [log-normal](https://wikipedia.org/wiki/Log-normal_distribution) distributions. The implementation can be investigated at [src/calculateRank.js](https://github.com/anuraghazra/github-readme-stats/blob/master/src/calculateRank.js). The circle around the rank shows 100 minus the global percentile.
 
 ### Hiding individual stats
@@ -153,6 +161,13 @@ To compute your stats for only a specific repository, you can pass a query param
 (Some of these mentioned items are similar to other items which are included by default, e.g. `issues_authored` is similar to `issues`. The difference is how these values are fetched - [via GraphQL or via REST API](https://github.com/anuraghazra/github-readme-stats/discussions/1770#number-of-commits-is-incorrect). The default items use GraphQL, but filtering by repository works better via REST API.)
 
 Alternatively, you can use the `role` parameter to specify a comma-separated list of [roles](https://docs.github.com/en/graphql/reference/enums#repositoryaffiliation). The stats will include all repositories in which the user has the specified role. By default, only repositories where the user is OWNER will be included, but you could e.g. set `&role=OWNER,ORGANIZATION_MEMBER,COLLABORATOR`. The `role` parameter is supported by all items except the following: `commits` (when used with `&include_all_commits=true`), `prs_authored`, `prs_commented`, `prs_reviewed`, `issues_authored` and `issues_commented`.
+### Showing commits count for specified year
+
+You can specify a year and fetch only the commits that were made in that year by passing `&commits_year=YYYY` to the parameter.
+
+```md
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=anuraghazra&commits_year=2020)
+```
 
 ### Themes
 
@@ -280,8 +295,8 @@ You can customize the appearance of all your cards however you wish with URL par
 | `locale` | Sets the language in the card, you can check full list of available locales [here](#available-locales). | enum | `en` |
 | `border_radius` | Corner rounding on the card. | number | `4.5` |
 
-> [!WARNING]\
-> We use caching to decrease the load on our servers (see <https://github.com/anuraghazra/github-readme-stats/issues/1471#issuecomment-1271551425>). Our cards have the following default cache hours: stats card - 24 hours, top languages card - 144 hours (6 days), pin card - 240 hours (10 days), gist card - 48 hours (2 days). If you want the data on your statistics card to be updated more often you can [deploy your own instance](#deploy-on-your-own) and set [environment variable](#disable-rate-limit-protections) `CACHE_SECONDS` to a value of your choosing.
+> [!WARNING]
+> We use caching to decrease the load on our servers (see <https://github.com/anuraghazra/github-readme-stats/issues/1471#issuecomment-1271551425>). Our cards have the following default cache hours: stats card - 24 hours, top languages card - 144 hours (6 days), pin card - 240 hours (10 days), gist card - 48 hours (2 days), and wakatime card - 24 hours. If you want the data on your cards to be updated more often you can [deploy your own instance](#deploy-on-your-own) and set [environment variable](#available-environment-variables) `CACHE_SECONDS` to a value of your choosing.
 
 ##### Gradient in bg\_color
 
@@ -298,48 +313,62 @@ Here is a list of all available locales:
 
 | Code | Locale |
 | --- | --- |
+| `ar` | Arabic |
+| `az` | Azerbaijani |
+| `bn` | Bengali |
+| `bg` | Bulgarian |
+| `my` | Burmese |
+| `ca` | Catalan |
 | `cn` | Chinese |
 | `zh-tw` | Chinese (Taiwan) |
-| `ar` | Arabic |
 | `cs` | Czech |
-| `de` | German |
+| `nl` | Dutch |
 | `en` | English |
-| `bn` | Bengali |
-| `es` | Spanish |
-| `fr` | French |
-| `hu` | Hungarian |
+| `fil` | Filipino |
 | `fi` | Finnish |
+| `fr` | French |
+| `de` | German |
+| `el` | Greek |
 
 </td><td>
 
 | Code | Locale |
 | --- | --- |
+| `he` | Hebrew |
+| `hi` | Hindi |
+| `hu` | Hungarian |
+| `id` | Indonesian |
 | `it` | Italian |
 | `ja` | Japanese |
 | `kr` | Korean |
-| `nl` | Dutch |
-| `pt-pt` | Portuguese (Portugal) |
-| `pt-br` | Portuguese (Brazil) |
+| `ml` | Malayalam |
 | `np` | Nepali |
-| `el` | Greek |
-| `ru` | Russian |
-| `uk-ua` | Ukrainian |
+| `no` | Norwegian |
+| `fa` | Persian (Farsi) |
+| `pl` | Polish |
+| `pt-br` | Portuguese (Brazil) |
+| `pt-pt` | Portuguese (Portugal) |
 | `ro` | Romanian |
 
 </td><td>
 
 | Code | Locale |
 | --- | --- |
-| `id` | Indonesian |
-| `ml` | Malayalam |
-| `my` | Burmese |
+| `ru` | Russian |
+| `sa` | Sanskrit |
+| `sr` | Serbian (Cyrillic) |
+| `sr-latn` | Serbian (Latin) |
 | `sk` | Slovak |
+| `es` | Spanish |
+| `sw` | Swahili |
+| `se` | Swedish |
+| `ta` | Tamil |
+| `th` | Thai |
 | `tr` | Turkish |
-| `pl` | Polish |
+| `uk-ua` | Ukrainian |
+| `ur` | Urdu |
 | `uz` | Uzbek |
 | `vi` | Vietnamese |
-| `se` | Swedish |
-| `az` | Azerbaijani |
 
 </td></tr>
 </table>
@@ -367,9 +396,14 @@ If we don't support your language, please consider contributing! You can find mo
 | `disable_animations` | Disables all animations in the card. | boolean | `false` |
 | `ring_color` | Color of the rank circle. | string (hex color) | `2f80ed` |
 | `number_format` | Switches between two available formats for displaying the card values: `short` (i.e. `6.6k`) and `long` (i.e. `6626`). | enum | `short` |
+| `number_precision` | Enforce the number of digits after the decimal point for `short` number format. Must be an integer between 0 and 2. Will be ignored for `long` number format. | integer (0, 1 or 2) | `null` |
 | `show` | Shows [additional items](#showing-additional-individual-stats) on stats card (i.e. `reviews`, `discussions_started`, `discussions_answered`, `prs_merged` or `prs_merged_percentage`. And the following, which support the `repo` and `owner` filters: `prs_authored`, `prs_commented`, `prs_reviewed`, `issues_authored` or `issues_commented`). | string (comma-separated values) | `null` |
+| `commits_year` | Filters and counts only commits made in the specified year. | integer _(YYYY)_ | `<current year> (one year to date)` |
 
-> [!NOTE]\
+> [!WARNING]
+> Custom title should be URI-escaped, as specified in [Percent Encoding](https://en.wikipedia.org/wiki/Percent-encoding) (i.e: `Anurag's GitHub Stats` should become `Anurag%27s%20GitHub%20Stats`). You can use [urlencoder.org](https://www.urlencoder.org/) to help you do this automatically.
+
+> [!NOTE]
 > When hide\_rank=`true`, the minimum card width is 270 px + the title length and padding.
 
 ***
@@ -455,16 +489,16 @@ Use [show\_owner](#options-1) query option to include the gist's owner username
 
 The top languages card shows your most frequently used languages.
 
-> [!WARNING]\
+> [!WARNING]
 > By default, the language card shows language results only from public repositories. To include languages used in private repositories, you should [deploy your own instance](#deploy-on-your-own) using your own GitHub API token.
 
-> [!NOTE]\
+> [!NOTE]
 > Top Languages does not indicate the user's skill level or anything like that; it's a GitHub metric to determine which languages have the most code on GitHub. It is a new feature of github-readme-stats.
 
-> [!WARNING]\
+> [!WARNING]
 > This card shows language usage only inside your own non-forked repositories, not depending on who the author of the commits is. It does not include your contributions into another users/organizations repositories. Currently there are no way to get this data from GitHub API. If you want this behavior to be improved you can support [this feature request](https://github.com/orgs/community/discussions/18230) created by [@rickstaa](https://github.com/rickstaa) inside GitHub Community.
 
-> [!WARNING]\
+> [!WARNING]
 > Currently this card shows data only about first 100 repositories. This is because GitHub API limitations which cause downtimes of public instances (see [#1471](https://github.com/anuraghazra/github-readme-stats/issues/1471)). In future this behavior will be improved by releasing GitHub action or providing environment variables for user's own instances.
 
 ### Usage
@@ -495,11 +529,10 @@ You can customize the appearance and behavior of the top languages card using th
 | `hide_progress` | Uses the compact layout option, hides percentages, and removes the bars. | boolean | `false` |
 | `size_weight` | Configures language stats algorithm (see [Language stats algorithm](#language-stats-algorithm)). | integer | `1` |
 | `count_weight` | Configures language stats algorithm (see [Language stats algorithm](#language-stats-algorithm)). | integer | `0` |
+| `stats_format` | Switches between two available formats for language's stats `percentages` and `bytes`. | enum | `percentages` |
 
-> [!WARNING]\
-> Language names should be URI-escaped, as specified in [Percent Encoding](https://en.wikipedia.org/wiki/Percent-encoding)
-> (i.e: `c++` should become `c%2B%2B`, `jupyter notebook` should become `jupyter%20notebook`, etc.) You can use
-> [urlencoder.org](https://www.urlencoder.org/) to help you do this automatically.
+> [!WARNING]
+> Language names and custom title should be URI-escaped, as specified in [Percent Encoding](https://en.wikipedia.org/wiki/Percent-encoding) (i.e: `c++` should become `c%2B%2B`, `jupyter notebook` should become `jupyter%20notebook`, `Most Used Languages` should become `Most%20Used%20Languages`, etc.) You can use [urlencoder.org](https://www.urlencoder.org/) to help you do this automatically.
 
 ### Language stats algorithm
 
@@ -583,6 +616,15 @@ You can use the `&hide_progress=true` option to hide the percentages and the pro
 ![Top Langs](https://github-readme-stats-phi-jet-58.vercel.app/api/top-langs/?username=anuraghazra&hide_progress=true)
 ```
 
+### Change format of language's stats
+
+You can use the `&stats_format=bytes` option to display the stats in bytes instead of percentage.
+
+```md
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=anuraghazra&stats_format=bytes)
+```
+
+
 ### Demo
 
 ![Top Langs](https://github-readme-stats-phi-jet-58.vercel.app/api/top-langs/?username=anuraghazra)
@@ -607,10 +649,18 @@ You can use the `&hide_progress=true` option to hide the percentages and the pro
 
 ![Top Langs](https://github-readme-stats-phi-jet-58.vercel.app/api/top-langs/?username=anuraghazra\&hide_progress=true)
 
+
+*  Display bytes instead of percentage
+
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=anuraghazra\&stats_format=bytes)
+
 # WakaTime Stats Card
 
-> [!WARNING]\
+> [!WARNING]
 > Please be aware that we currently only show data from WakaTime profiles that are public. You therefore have to make sure that **BOTH** `Display code time publicly` and `Display languages, editors, os, categories publicly` are enabled.
+
+> [!WARNING]
+> In case you just created a new WakaTime account, then it might take up to 24 hours until your stats will become visible on the WakaTime stats card.
 
 Change the `?username=` value to your [WakaTime](https://wakatime.com) username.
 
@@ -635,6 +685,9 @@ You can customize the appearance and behavior of the WakaTime stats card using t
 | `api_domain` | Sets a custom API domain for the card, e.g. to use services like [Hakatime](https://github.com/mujx/hakatime) or [Wakapi](https://github.com/muety/wakapi) | string | `wakatime.com` |
 | `display_format` | Sets the WakaTime stats display format. Choose `time` to display time-based stats or `percent` to show percentages. | enum | `time` |
 | `disable_animations` | Disables all animations in the card. | boolean | `false` |
+
+> [!WARNING]
+> Custom title should be URI-escaped, as specified in [Percent Encoding](https://en.wikipedia.org/wiki/Percent-encoding) (i.e: `WakaTime Stats` should become `WakaTime%20Stats`). You can use [urlencoder.org](https://www.urlencoder.org/) to help you do this automatically.
 
 ### Demo
 
@@ -782,16 +835,48 @@ By default, GitHub does not lay out the cards side by side. To do that, you can 
 
 # Deploy on your own
 
+## First step: get your Personal Access Token (PAT)
+
+For deploying your own instance of GitHub Readme Stats, you will need to create a GitHub Personal Access Token (PAT). Below are the steps to create one and the scopes you need to select for both classic and fine-grained tokens.
+
+Selecting the right scopes for your token is important in case you want to display private contributions on your cards.
+
+### Classic token
+
+* Go to [Account -> Settings -> Developer Settings -> Personal access tokens -> Tokens (classic)](https://github.com/settings/tokens).
+* Click on `Generate new token -> Generate new token (classic)`.
+* Scopes to select:
+  * repo
+  * read:user
+* Click on `Generate token` and copy it.
+
+### Fine-grained token
+
+> [!WARNING]\
+> This limits the number of issues to the number of issues on your repositories only and only takes public commits into account.
+
+* Go to [Account -> Settings -> Developer Settings -> Personal access tokens -> Fine-grained tokens](https://github.com/settings/tokens).
+* Click on `Generate new token -> Generate new token`.
+* Select an expiration date
+* Select `All repositories`
+* Scopes to select in `Repository permission`:
+  * Commit statuses: read-only
+  * Contents: read-only
+  * Issues: read-only
+  * Metadata: read-only
+  * Pull requests: read-only
+* Click on `Generate token` and copy it.
+
 ## On Vercel
 
 ### :film\_projector: [Check Out Step By Step Video Tutorial By @codeSTACKr](https://youtu.be/n6d4KHSKqGk?t=107)
 
 Since the GitHub API only allows 5k requests per hour, my `https://github-readme-stats-phi-jet-58.vercel.app/api` could possibly hit the rate limiter. If you host it on your own Vercel server, then you do not have to worry about anything. Click on the deploy button to get started!
 
-> [!NOTE]\
+> [!NOTE]
 > Since [#58](https://github.com/anuraghazra/github-readme-stats/pull/58), we should be able to handle more than 5k requests and have fewer issues with downtime :grin:.
 
-> [!NOTE]\
+> [!NOTE]
 > If you are on the [Pro (i.e. paid)](https://vercel.com/pricing) Vercel plan, the [maxDuration](https://vercel.com/docs/concepts/projects/project-configuration#value-definition) value found in the [vercel.json](https://github.com/anuraghazra/github-readme-stats/blob/master/vercel.json) can be increased when your Vercel instance frequently times out during the card request. You are advised to keep this value lower than `30` seconds to prevent high memory usage.
 
 [![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/anuraghazra/github-readme-stats)
@@ -811,7 +896,7 @@ Since the GitHub API only allows 5k requests per hour, my `https://github-readme
     ![](https://files.catbox.moe/3n76fh.png)
 8.  Click the `Continue with GitHub` button, search for the required Git Repository and import it by clicking the `Import` button. Alternatively, you can import a Third-Party Git Repository using the `Import Third-Party Git Repository ->` link at the bottom of the page.
     ![](https://files.catbox.moe/mg5p04.png)
-9.  Create a personal access token (PAT) [here](https://github.com/settings/tokens/new) and enable the `repo` and `user` permissions (this allows access to see private repo and user stats).
+9.  Create a Personal Access Token (PAT) as described in the [previous section](#first-step-get-your-personal-access-token-pat).
 10. Add the PAT as an environment variable named `PAT_1` (as shown).
     ![](https://files.catbox.moe/0yclio.png)
 11. Click deploy, and you're good to go. See your domains to use the API!
@@ -820,14 +905,14 @@ Since the GitHub API only allows 5k requests per hour, my `https://github-readme
 
 ## On other platforms
 
-> [!WARNING]\
+> [!WARNING]
 > This way of using GRS is not officially supported and was added to cater to some particular use cases where Vercel could not be used (e.g. [#2341](https://github.com/anuraghazra/github-readme-stats/discussions/2341)). The support for this method, therefore, is limited.
 
 <details>
 <summary><b>:hammer_and_wrench: Step-by-step guide for deploying on other platforms</b></summary>
 
 1.  Fork or clone this repo as per your needs
-2.  Add `express` to the dependencies section of `package.json`
+2.  Move `express` from the devDependencies to the dependencies section of `package.json`
     <https://github.com/anuraghazra/github-readme-stats/blob/ba7c2f8b55eac8452e479c8bd38b044d204d0424/package.json#L54-L61>
 3.  Run `npm i` if needed (initial setup)
 4.  Run `node express.js` to start the server, or set the entry point to `express.js` in `package.json` if you're deploying on a managed service
@@ -839,11 +924,47 @@ Since the GitHub API only allows 5k requests per hour, my `https://github-readme
 
 GitHub Readme Stats provides several environment variables that can be used to customize the behavior of your self-hosted instance. These include:
 
-*   `CACHE_SECONDS`: This takes precedence over our cache minimum and maximum values and can circumvent these values for self-hosted instances.
-*   `WHITELIST`: A comma-separated list of GitHub usernames that are allowed to access your instance. If this variable is not set, all usernames are allowed.
-*   `GIST_WHITELIST`: A comma-separated list of GitHub gist IDs that are allowed to be accessed on your instance. If this variable is not set, all gist IDs are allowed.
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Supported values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>CACHE_SECONDS</code></td>
+      <td>Sets the cache duration in seconds for the generated cards. This variable takes precedence over the default cache timings for the public instance. If this variable is not set, the default cache duration is 24 hours (86,400 seconds).</td>
+      <td>Any positive integer or <code>0</code> to disable caching</td>
+    </tr>
+    <tr>
+      <td><code>WHITELIST</code></td>
+      <td>A comma-separated list of GitHub usernames that are allowed to access your instance. If this variable is not set, all usernames are allowed.</td>
+      <td>Comma-separated GitHub usernames</td>
+    </tr>
+    <tr>
+      <td><code>GIST_WHITELIST</code></td>
+      <td>A comma-separated list of GitHub Gist IDs that are allowed to be accessed on your instance. If this variable is not set, all Gist IDs are allowed.</td>
+      <td>Comma-separated GitHub Gist IDs</td>
+    </tr>
+    <tr>
+      <td><code>EXCLUDE_REPO</code></td>
+      <td>A comma-separated list of repositories that will be excluded from stats and top languages cards on your instance. This allows repository exclusion without exposing repository names in public URLs. This enhances privacy for self-hosted instances that include private repositories in stats cards.</td>
+      <td>Comma-separated repository names</td>
+    </tr>
+    <tr>
+      <td><code>FETCH_MULTI_PAGE_STARS</code></td>
+      <td>Enables fetching all starred repositories for accurate star counts, especially for users with more than 100 repositories. This may increase response times and API points usage, so it is disabled on the public instance.</td>
+      <td><code>true</code> or <code>false</code></td>
+    </tr>
+  </tbody>
+</table>
 
 See [the Vercel documentation](https://vercel.com/docs/concepts/projects/environment-variables) on adding these environment variables to your Vercel instance.
+
+> [!WARNING]
+> Please remember to redeploy your instance after making any changes to the environment variables so that the updates take effect. The changes will not be applied to the previous deployments.
 
 ## Keep your fork up to date
 

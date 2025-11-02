@@ -1,16 +1,13 @@
+import { describe, expect, it } from "@jest/globals";
 import {
   getByTestId,
   queryAllByTestId,
   queryByTestId,
 } from "@testing-library/dom";
+import "@testing-library/jest-dom";
 import { cssToObject } from "@uppercod/css-to-object";
 import { renderStatsCard } from "../src/cards/stats.js";
-import { expect, it, describe } from "@jest/globals";
-import { CustomError } from "../src/common/utils.js";
-
-// adds special assertions like toHaveTextContent
-import "@testing-library/jest-dom";
-
+import { CustomError } from "../src/common/error.js";
 import { themes } from "../themes/index.js";
 
 const stats = {
@@ -381,7 +378,7 @@ describe("Test renderStatsCard", () => {
       document.querySelector(
         'g[transform="translate(0, 25)"]>.stagger>.stat.bold',
       ).textContent,
-    ).toMatchInlineSnapshot(`"累计提交总数 (${new Date().getFullYear()}):"`);
+    ).toMatchInlineSnapshot(`"累计提交总数 (去年):"`);
     expect(
       document.querySelector(
         'g[transform="translate(0, 50)"]>.stagger>.stat.bold',
@@ -412,6 +409,13 @@ describe("Test renderStatsCard", () => {
     document.body.innerHTML = renderStatsCard(stats);
     expect(getByTestId(document.body, "commits").textContent).toBe("2k");
     document.body.innerHTML = renderStatsCard(stats, { number_format: "long" });
+    expect(getByTestId(document.body, "commits").textContent).toBe("1999");
+    document.body.innerHTML = renderStatsCard(stats, { number_precision: 2 });
+    expect(getByTestId(document.body, "commits").textContent).toBe("2.00k");
+    document.body.innerHTML = renderStatsCard(stats, {
+      number_format: "long",
+      number_precision: 2,
+    });
     expect(getByTestId(document.body, "commits").textContent).toBe("1999");
   });
 

@@ -1,4 +1,4 @@
-import { logger } from "../src/common/utils.js";
+import { logger } from "../src/common/log.js";
 import { deleteUser } from "../src/common/database.js";
 
 /**
