@@ -95,14 +95,16 @@ export default async (req, res) => {
   ) {
     return res.send(
       renderError(
-        "Something went wrong",
-        "Username, repository or owner contains unsafe characters",
         {
-          title_color,
-          text_color,
-          bg_color,
-          border_color,
-          theme,
+          message: "Something went wrong",
+          secondaryMessage: "Username, repository or owner contains unsafe characters",
+          renderOptions: {
+            title_color,
+            text_color,
+            bg_color,
+            border_color,
+            theme,
+          },
         },
       ),
     );
