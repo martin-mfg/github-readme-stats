@@ -1,6 +1,6 @@
 // @ts-check
 
-import { OWNER_AFFILIATIONS } from "./render.js";
+import { OWNER_AFFILIATIONS } from "./ops.js";
 
 /**
  * @type {string} A general message to ask user to try again later.

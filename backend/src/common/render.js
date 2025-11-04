@@ -5,8 +5,6 @@ import { getCardColors } from "./color.js";
 import { encodeHTML } from "./html.js";
 import { clampValue } from "./ops.js";
 
-const OWNER_AFFILIATIONS = ["OWNER", "COLLABORATOR", "ORGANIZATION_MEMBER"];
-
 /**
  * Auto layout utility, allows us to layout things vertically or horizontally with
  * proper gaping.
@@ -237,6 +235,5 @@ export {
   createProgressNode,
   iconWithLabel,
   flexLayout,
-  OWNER_AFFILIATIONS,
   measureText,
 };

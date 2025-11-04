@@ -1,7 +1,8 @@
 // @ts-check
 
 import toEmoji from "emoji-name-map";
-import { SECONDARY_ERROR_MESSAGES, TRY_AGAIN_LATER } from "./error.js";
+
+const OWNER_AFFILIATIONS = ["OWNER", "COLLABORATOR", "ORGANIZATION_MEMBER"];
 
 /**
  * Returns boolean if value is either "true" or "false" else the value as it is.
@@ -158,6 +159,7 @@ const buildSearchFilter = (repos = [], owners = []) => {
 };
 
 export {
+  OWNER_AFFILIATIONS,
   parseBoolean,
   parseArray,
   clampValue,
