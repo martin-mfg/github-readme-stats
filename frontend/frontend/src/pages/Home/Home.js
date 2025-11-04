@@ -54,6 +54,7 @@ const HomeScreen = () => {
   const [showTitle, setShowTitle] = useState(true);
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
+  const [hideProgress, setHideProgress] = useState(false);
 
   const resetCustomization = () => {
     setSelectedTimeRange(defaultTimeRange);
@@ -107,6 +108,10 @@ const HomeScreen = () => {
 
   if (langsCount) {
     fullSuffix += `&langs_count=${langsCount}`;
+  }
+
+  if (hideProgress) {
+    fullSuffix += `&hide_progress=${hideProgress}`;
   }
 
   // for stage three
@@ -227,6 +232,8 @@ const HomeScreen = () => {
               setCustomTitle={setCustomTitle}
               langsCount={langsCount}
               setLangsCount={setLangsCount}
+              hideProgress={hideProgress}
+              setHideProgress={setHideProgress}
               fullSuffix={fullSuffix}
             />
           )}

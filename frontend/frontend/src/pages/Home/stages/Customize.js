@@ -29,6 +29,8 @@ const CustomizeStage = ({
   setCustomTitle,
   langsCount,
   setLangsCount,
+  hideProgress,
+  setHideProgress,
   fullSuffix,
 }) => {
   const cardType = selectedCard || CardTypes.STATS;
@@ -113,6 +115,15 @@ const CustomizeStage = ({
             disabled={useCompact}
           />
         )}
+        {cardType === CardTypes.TOP_LANGS && (
+          <CheckboxSection
+            title="Compact View"
+            text="Use default view or compact view."
+            question="Use compact view?"
+            variable={hideProgress}
+            setVariable={setHideProgress}
+          />
+        )}
         <CheckboxSection
           title="LOC Metric"
           text="By default, LOC are measured as Added: (+) - (-). Alternatively, you can use Changed: (+) + (-)"
@@ -144,6 +155,8 @@ CustomizeStage.propTypes = {
   privateAccess: PropTypes.bool.isRequired,
   useCompact: PropTypes.bool.isRequired,
   setUseCompact: PropTypes.func.isRequired,
+  hideProgress: PropTypes.bool.isRequired,
+  setHideProgress: PropTypes.func.isRequired,
   usePercent: PropTypes.bool.isRequired,
   setUsePercent: PropTypes.func.isRequired,
   useLocChanged: PropTypes.bool.isRequired,
