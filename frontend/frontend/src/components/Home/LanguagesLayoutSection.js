@@ -16,7 +16,12 @@ const LanguagesLayoutSection = ({ selectedOption, setSelectedOption }) => {
     DEFAULT_OPTION,
     { id: 2, label: 'Compact', disabled: false, value: 'compact' },
     { id: 3, label: 'Donut', disabled: false, value: 'donut' },
-    { id: 4, label: 'Vertical Donut', disabled: false, value: 'donut-vertical' },
+    {
+      id: 4,
+      label: 'Vertical Donut',
+      disabled: false,
+      value: 'donut-vertical',
+    },
     { id: 5, label: 'Pie', disabled: false, value: 'pie' },
   ];
 
