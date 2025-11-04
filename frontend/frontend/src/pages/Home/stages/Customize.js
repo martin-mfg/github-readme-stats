@@ -5,11 +5,14 @@ import { CheckboxSection, DateRangeSection, Image } from '../../../components';
 import { CardTypes } from '../../../utils';
 import TextSection from '../../../components/Home/TextSection';
 import NumericSection from '../../../components/Home/NumericSection';
+import LanguagesLayoutSection from '../../../components/Home/LanguagesLayoutSection';
 
 const CustomizeStage = ({
   selectedCard,
   selectedTimeRange,
   setSelectedTimeRange,
+  selectedLayout,
+  setSelectedLayout,
   usePrivate,
   setUsePrivate,
   groupOther,
@@ -63,6 +66,12 @@ const CustomizeStage = ({
             setValue={setLangsCount}
             min={1}
             max={20}
+          />
+        )}
+        {cardType === CardTypes.TOP_LANGS && (
+          <LanguagesLayoutSection
+            selectedOption={selectedLayout}
+            setSelectedOption={setSelectedLayout}
           />
         )}
         <DateRangeSection
@@ -145,6 +154,8 @@ CustomizeStage.propTypes = {
   selectedCard: PropTypes.string.isRequired,
   selectedTimeRange: PropTypes.object.isRequired,
   setSelectedTimeRange: PropTypes.func.isRequired,
+  selectedLayout: PropTypes.object.isRequired,
+  setSelectedLayout: PropTypes.func.isRequired,
   usePrivate: PropTypes.bool.isRequired,
   setUsePrivate: PropTypes.func.isRequired,
   groupOther: PropTypes.bool.isRequired,

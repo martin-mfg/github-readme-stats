@@ -15,6 +15,8 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
+import { DEFAULT_OPTION as DEFAULT_TIME_RANGE } from '../../components/Home/DateRangeSection';
+import { DEFAULT_OPTION as DEFAULT_LAYOUT } from '../../components/Home/LanguagesLayoutSection';
 
 const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,13 +38,9 @@ const HomeScreen = () => {
   const [imageSrc, setImageSrc] = useState(`?&username=${userId}`);
 
   // for stage two
-  const defaultTimeRange = {
-    id: 3,
-    label: 'Past 1 Year',
-    disabled: false,
-    value: 'one_year',
-  };
-  const [selectedTimeRange, setSelectedTimeRange] = useState(defaultTimeRange);
+  const [selectedTimeRange, setSelectedTimeRange] =
+    useState(DEFAULT_TIME_RANGE);
+  const [selectedLayout, setSelectedLayout] = useState(DEFAULT_LAYOUT);
 
   const [usePercent, setUsePercent] = useState(false);
   const [usePrivate, setUsePrivate] = useState(false);
@@ -57,7 +55,7 @@ const HomeScreen = () => {
   const [hideProgress, setHideProgress] = useState(false);
 
   const resetCustomization = () => {
-    setSelectedTimeRange(defaultTimeRange);
+    setSelectedTimeRange(DEFAULT_TIME_RANGE);
     setUsePercent(false);
     setUsePrivate(false);
     setUseLocChanged(false);
@@ -72,8 +70,11 @@ const HomeScreen = () => {
     setImageSrc(`?&username=${userId}`);
   }, [userId]);
 
-  const time = selectedTimeRange.value;
-  let fullSuffix = `${imageSrc}&time_range=${time}`;
+  let fullSuffix = `${imageSrc}&time_range=${selectedTimeRange.value}`;
+
+  if (selectedLayout !== DEFAULT_LAYOUT) {
+    fullSuffix += `&layout=${selectedLayout.value}`;
+  }
 
   if (usePercent) {
     fullSuffix += '&use_percent=True';
@@ -213,6 +214,8 @@ const HomeScreen = () => {
               imageSrc={imageSrc}
               selectedTimeRange={selectedTimeRange}
               setSelectedTimeRange={setSelectedTimeRange}
+              selectedLayout={selectedLayout}
+              setSelectedLayout={setSelectedLayout}
               usePrivate={usePrivate}
               setUsePrivate={setUsePrivate}
               groupOther={groupOther}
