@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import Section from './Section';
 import { Input } from '../Generic';
 
-const DateRangeSection = ({
-  selectedOption,
-  setSelectedOption,
-}) => {
+const DateRangeSection = ({ selectedOption, setSelectedOption }) => {
   const options = [
     { id: 1, label: 'Past 1 Month', disabled: false, value: 'one_month' },
     {
