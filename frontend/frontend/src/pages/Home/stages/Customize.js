@@ -37,7 +37,7 @@ const CustomizeStage = ({
   return (
     <div className="w-full flex flex-wrap">
       <div className="h-auto lg:w-2/5 md:w-1/2 pr-10 p-10 rounded-sm bg-gray-200">
-        {cardType === CardTypes.STATS && (
+        {(cardType === CardTypes.STATS || cardType === CardTypes.TOP_LANGS) && (
           <CheckboxSection
             title="Show Title?"
             text="Shows a title at the top of the card."
@@ -66,9 +66,8 @@ const CustomizeStage = ({
           />
         )}
         <DateRangeSection
-          selectedTimeRange={selectedTimeRange}
-          setSelectedTimeRange={setSelectedTimeRange}
-          privateAccess={privateAccess}
+          selectedOption={selectedTimeRange}
+          setSelectedOption={setSelectedTimeRange}
         />
         {cardType === CardTypes.TOP_LANGS && (
           <CheckboxSection
