@@ -53,6 +53,7 @@ const HomeScreen = () => {
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
   const [hideProgress, setHideProgress] = useState(false);
+  const [enableAnimations, setEnableAnimations] = useState(true);
 
   const resetCustomization = () => {
     setSelectedTimeRange(DEFAULT_TIME_RANGE);
@@ -109,6 +110,10 @@ const HomeScreen = () => {
 
   if (langsCount) {
     fullSuffix += `&langs_count=${langsCount}`;
+  }
+
+  if (!enableAnimations) {
+    fullSuffix += `&disable_animations=${!enableAnimations}`;
   }
 
   if (hideProgress) {
@@ -235,6 +240,8 @@ const HomeScreen = () => {
               setCustomTitle={setCustomTitle}
               langsCount={langsCount}
               setLangsCount={setLangsCount}
+              enableAnimations={enableAnimations}
+              setEnableAnimations={setEnableAnimations}
               hideProgress={hideProgress}
               setHideProgress={setHideProgress}
               fullSuffix={fullSuffix}

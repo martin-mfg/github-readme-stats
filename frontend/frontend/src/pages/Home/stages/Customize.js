@@ -32,6 +32,8 @@ const CustomizeStage = ({
   setCustomTitle,
   langsCount,
   setLangsCount,
+  enableAnimations,
+  setEnableAnimations,
   hideProgress,
   setHideProgress,
   fullSuffix,
@@ -132,6 +134,15 @@ const CustomizeStage = ({
             setVariable={setHideProgress}
           />
         )}
+        {cardType === CardTypes.TOP_LANGS && (
+          <CheckboxSection
+            title="Animations"
+            text="Enable Animations."
+            question="enable animations?"
+            variable={enableAnimations}
+            setVariable={setEnableAnimations}
+          />
+        )}
         <CheckboxSection
           title="LOC Metric"
           text="By default, LOC are measured as Added: (+) - (-). Alternatively, you can use Changed: (+) + (-)"
@@ -177,6 +188,8 @@ CustomizeStage.propTypes = {
   setCustomTitle: PropTypes.func.isRequired,
   langsCount: PropTypes.number.isRequired,
   setLangsCount: PropTypes.func.isRequired,
+  enableAnimations: PropTypes.bool.isRequired,
+  setEnableAnimations: PropTypes.func.isRequired,
   fullSuffix: PropTypes.string.isRequired,
 };
 

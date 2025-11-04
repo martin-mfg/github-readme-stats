@@ -26,7 +26,7 @@ const LanguagesLayoutSection = ({ selectedOption, setSelectedOption }) => {
   ];
 
   return (
-    <Section title="Date Range">
+    <Section title="Card Layout">
       <p>Select a card layout.</p>
       <Input
         options={options}
