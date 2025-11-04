@@ -23,6 +23,12 @@ const LanguagesLayoutSection = ({ selectedOption, setSelectedOption }) => {
       value: 'donut-vertical',
     },
     { id: 5, label: 'Pie', disabled: false, value: 'pie' },
+    {
+      id: 6,
+      label: 'Only Languages',
+      disabled: false,
+      value: 'compact&hide_progress=true',
+    },
   ];
 
   return (
