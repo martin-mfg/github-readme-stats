@@ -13,6 +13,8 @@ const CustomizeStage = ({
   setSelectedLayout,
   showTitle,
   setShowTitle,
+  showOwner,
+  setShowOwner,
   customTitle,
   setCustomTitle,
   langsCount,
@@ -59,13 +61,24 @@ const CustomizeStage = ({
             setSelectedOption={setSelectedLayout}
           />
         )}
-        {cardType !== CardTypes.PIN && (
+        {(cardType === CardTypes.STATS ||
+          cardType === CardTypes.TOP_LANGS ||
+          cardType === CardTypes.WAKATIME) && (
           <CheckboxSection
             title="Animations"
             text="Enable Animations."
             question="enable animations?"
             variable={enableAnimations}
             setVariable={setEnableAnimations}
+          />
+        )}
+        {cardType === CardTypes.PIN && (
+          <CheckboxSection
+            title="Show Owner?"
+            text="Shows the repo owner's name next to the repo name."
+            question="Show owner?"
+            variable={showOwner}
+            setVariable={setShowOwner}
           />
         )}
       </div>
@@ -84,6 +97,8 @@ CustomizeStage.propTypes = {
   setSelectedLayout: PropTypes.func.isRequired,
   showTitle: PropTypes.bool.isRequired,
   setShowTitle: PropTypes.func.isRequired,
+  showOwner: PropTypes.bool.isRequired,
+  setShowOwner: PropTypes.func.isRequired,
   customTitle: PropTypes.string.isRequired,
   setCustomTitle: PropTypes.func.isRequired,
   langsCount: PropTypes.number.isRequired,

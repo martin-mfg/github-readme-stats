@@ -40,17 +40,13 @@ const HomeScreen = () => {
   const [selectedLayout, setSelectedLayout] = useState(DEFAULT_LAYOUT);
 
   const [showTitle, setShowTitle] = useState(true);
+  const [showOwner, setShowOwner] = useState(false);
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
   const [enableAnimations, setEnableAnimations] = useState(true);
 
   const resetCustomization = () => {
     // setUsePercent(false);
-    if (selectedCard === CardTypes.GIST) {
-      setEnableAnimations(false);
-    } else {
-      setEnableAnimations(true);
-    }
     if (theme === 'default' || theme === 'default_repocard') {
       if (selectedCard === CardTypes.PIN || selectedCard === CardTypes.GIST) {
         setTheme('default_repocard');
@@ -76,6 +72,10 @@ const HomeScreen = () => {
 
   if (!showTitle) {
     fullSuffix += '&hide_title=true';
+  }
+
+  if (showOwner) {
+    fullSuffix += '&show_owner=true';
   }
 
   if (customTitle) {
@@ -192,6 +192,8 @@ const HomeScreen = () => {
               setSelectedLayout={setSelectedLayout}
               showTitle={showTitle}
               setShowTitle={setShowTitle}
+              showOwner={showOwner}
+              setShowOwner={setShowOwner}
               customTitle={customTitle}
               setCustomTitle={setCustomTitle}
               langsCount={langsCount}
