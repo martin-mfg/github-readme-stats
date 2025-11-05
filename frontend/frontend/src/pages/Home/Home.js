@@ -41,6 +41,7 @@ const HomeScreen = () => {
 
   const [showTitle, setShowTitle] = useState(true);
   const [showOwner, setShowOwner] = useState(false);
+  const [descriptionLines, setDescriptionLines] = useState();
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
   const [enableAnimations, setEnableAnimations] = useState(true);
@@ -76,6 +77,10 @@ const HomeScreen = () => {
 
   if (showOwner) {
     fullSuffix += '&show_owner=true';
+  }
+
+  if (descriptionLines) {
+    fullSuffix += `&description_lines_count=${descriptionLines}`;
   }
 
   if (customTitle) {
@@ -194,6 +199,8 @@ const HomeScreen = () => {
               setShowTitle={setShowTitle}
               showOwner={showOwner}
               setShowOwner={setShowOwner}
+              descriptionLines={descriptionLines}
+              setDescriptionLines={setDescriptionLines}
               customTitle={customTitle}
               setCustomTitle={setCustomTitle}
               langsCount={langsCount}

@@ -15,6 +15,8 @@ const CustomizeStage = ({
   setShowTitle,
   showOwner,
   setShowOwner,
+  descriptionLines,
+  setDescriptionLines,
   customTitle,
   setCustomTitle,
   langsCount,
@@ -81,6 +83,16 @@ const CustomizeStage = ({
             setVariable={setShowOwner}
           />
         )}
+        {cardType === CardTypes.PIN && (
+          <NumericSection
+            title="Description Lines Count"
+            text="Set the number of lines for the description. Will be clamped between 1 and 3.<br>Leave empty for automatic adjustment."
+            value={descriptionLines}
+            setValue={setDescriptionLines}
+            min={1}
+            max={3}
+          />
+        )}
       </div>
       <div className="w-full lg:w-3/5 md:w-1/2 object-center pt-5 md:pt-0 pl-0 md:pl-5 lg:pl-0">
         <div className="w-full lg:w-3/5 mx-auto flex flex-col justify-center">
@@ -97,6 +109,8 @@ CustomizeStage.propTypes = {
   setSelectedLayout: PropTypes.func.isRequired,
   showTitle: PropTypes.bool.isRequired,
   setShowTitle: PropTypes.func.isRequired,
+  descriptionLines: PropTypes.number.isRequired,
+  setDescriptionLines: PropTypes.func.isRequired,
   showOwner: PropTypes.bool.isRequired,
   setShowOwner: PropTypes.func.isRequired,
   customTitle: PropTypes.string.isRequired,
