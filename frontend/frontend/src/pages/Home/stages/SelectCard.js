@@ -24,14 +24,14 @@ const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
           cardType: 'top-langs',
         },
         {
-          title: 'GitHub Extra Pins',
+          title: 'GitHub Extra Pin',
           description:
             'pin more than 6 repositories in your profile using a GitHub profile readme',
           imageSrc: '/pin?repo=anuraghazra/github-readme-stats',
           cardType: 'pin',
         },
         {
-          title: 'GitHub Gist Pins',
+          title: 'GitHub Gist Pin',
           description:
             'pin gists in your GitHub profile using a GitHub profile readme',
           imageSrc: '/gist?id=bbfce31e0217a3689c8d961a356cb10d',

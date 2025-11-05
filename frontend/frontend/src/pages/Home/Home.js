@@ -46,6 +46,18 @@ const HomeScreen = () => {
 
   const resetCustomization = () => {
     // setUsePercent(false);
+    if (selectedCard === CardTypes.GIST) {
+      setEnableAnimations(false);
+    } else {
+      setEnableAnimations(true);
+    }
+    if (theme === 'default' || theme === 'default_repocard') {
+      if (selectedCard === CardTypes.PIN || selectedCard === CardTypes.GIST) {
+        setTheme('default_repocard');
+      } else {
+        setTheme('default');
+      }
+    }
   };
 
   useEffect(() => {

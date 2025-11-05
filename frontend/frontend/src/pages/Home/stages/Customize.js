@@ -59,7 +59,7 @@ const CustomizeStage = ({
             setSelectedOption={setSelectedLayout}
           />
         )}
-        {cardType === CardTypes.TOP_LANGS && (
+        {cardType !== CardTypes.PIN && (
           <CheckboxSection
             title="Animations"
             text="Enable Animations."
