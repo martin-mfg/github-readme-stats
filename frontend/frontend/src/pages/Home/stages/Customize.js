@@ -19,8 +19,6 @@ const CustomizeStage = ({
   setLangsCount,
   enableAnimations,
   setEnableAnimations,
-  hideProgress,
-  setHideProgress,
   fullSuffix,
 }) => {
   const cardType = selectedCard || CardTypes.STATS;
@@ -63,15 +61,6 @@ const CustomizeStage = ({
         )}
         {cardType === CardTypes.TOP_LANGS && (
           <CheckboxSection
-            title="Compact View"
-            text="Use default view or compact view."
-            question="Use compact view?"
-            variable={hideProgress}
-            setVariable={setHideProgress}
-          />
-        )}
-        {cardType === CardTypes.TOP_LANGS && (
-          <CheckboxSection
             title="Animations"
             text="Enable Animations."
             question="enable animations?"
@@ -93,8 +82,6 @@ CustomizeStage.propTypes = {
   selectedCard: PropTypes.string.isRequired,
   selectedLayout: PropTypes.object.isRequired,
   setSelectedLayout: PropTypes.func.isRequired,
-  hideProgress: PropTypes.bool.isRequired,
-  setHideProgress: PropTypes.func.isRequired,
   showTitle: PropTypes.bool.isRequired,
   setShowTitle: PropTypes.func.isRequired,
   customTitle: PropTypes.string.isRequired,

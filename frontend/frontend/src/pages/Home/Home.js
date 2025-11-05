@@ -42,7 +42,6 @@ const HomeScreen = () => {
   const [showTitle, setShowTitle] = useState(true);
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
-  const [hideProgress, setHideProgress] = useState(false);
   const [enableAnimations, setEnableAnimations] = useState(true);
 
   const resetCustomization = () => {
@@ -78,10 +77,6 @@ const HomeScreen = () => {
 
   if (!enableAnimations) {
     fullSuffix += `&disable_animations=${!enableAnimations}`;
-  }
-
-  if (hideProgress) {
-    fullSuffix += `&hide_progress=${hideProgress}`;
   }
 
   // for stage three
@@ -191,8 +186,6 @@ const HomeScreen = () => {
               setLangsCount={setLangsCount}
               enableAnimations={enableAnimations}
               setEnableAnimations={setEnableAnimations}
-              hideProgress={hideProgress}
-              setHideProgress={setHideProgress}
               fullSuffix={fullSuffix}
             />
           )}
