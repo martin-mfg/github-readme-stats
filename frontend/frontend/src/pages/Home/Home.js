@@ -15,7 +15,6 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
-import { DEFAULT_OPTION as DEFAULT_TIME_RANGE } from '../../components/Home/DateRangeSection';
 import { DEFAULT_OPTION as DEFAULT_LAYOUT } from '../../components/Home/LanguagesLayoutSection';
 
 const HomeScreen = () => {
@@ -38,15 +37,9 @@ const HomeScreen = () => {
   const [imageSrc, setImageSrc] = useState(`?&username=${userId}`);
 
   // for stage two
-  const [selectedTimeRange, setSelectedTimeRange] =
-    useState(DEFAULT_TIME_RANGE);
   const [selectedLayout, setSelectedLayout] = useState(DEFAULT_LAYOUT);
 
   const [usePercent, setUsePercent] = useState(false);
-  const [usePrivate, setUsePrivate] = useState(false);
-  const [groupOther, setGroupOther] = useState(false);
-  const [groupPrivate, setGroupPrivate] = useState(false);
-  const [useLocChanged, setUseLocChanged] = useState(false);
   const [useCompact, setUseCompact] = useState(false);
 
   const [showTitle, setShowTitle] = useState(true);
@@ -56,10 +49,7 @@ const HomeScreen = () => {
   const [enableAnimations, setEnableAnimations] = useState(true);
 
   const resetCustomization = () => {
-    setSelectedTimeRange(DEFAULT_TIME_RANGE);
     setUsePercent(false);
-    setUsePrivate(false);
-    setUseLocChanged(false);
     setUseCompact(false);
   };
 
@@ -71,7 +61,7 @@ const HomeScreen = () => {
     setImageSrc(`?&username=${userId}`);
   }, [userId]);
 
-  let fullSuffix = `${imageSrc}&time_range=${selectedTimeRange.value}`;
+  let fullSuffix = `${imageSrc}`;
 
   if (selectedLayout !== DEFAULT_LAYOUT) {
     fullSuffix += `&layout=${selectedLayout.value}`;
@@ -79,20 +69,6 @@ const HomeScreen = () => {
 
   if (usePercent) {
     fullSuffix += '&use_percent=True';
-  }
-
-  if (usePrivate) {
-    fullSuffix += '&include_private=True';
-  }
-
-  if (usePrivate && groupOther && groupPrivate) {
-    fullSuffix += '&group=private';
-  } else if (groupOther) {
-    fullSuffix += '&group=other';
-  }
-
-  if (useLocChanged) {
-    fullSuffix += '&loc_metric=changed';
   }
 
   if (useCompact) {
@@ -217,23 +193,12 @@ const HomeScreen = () => {
             <CustomizeStage
               selectedCard={selectedCard || CardTypes.STATS}
               imageSrc={imageSrc}
-              selectedTimeRange={selectedTimeRange}
-              setSelectedTimeRange={setSelectedTimeRange}
               selectedLayout={selectedLayout}
               setSelectedLayout={setSelectedLayout}
-              usePrivate={usePrivate}
-              setUsePrivate={setUsePrivate}
-              groupOther={groupOther}
-              setGroupOther={setGroupOther}
-              groupPrivate={groupPrivate}
-              setGroupPrivate={setGroupPrivate}
-              privateAccess={privateAccess}
               useCompact={useCompact}
               setUseCompact={setUseCompact}
               usePercent={usePercent}
               setUsePercent={setUsePercent}
-              useLocChanged={useLocChanged}
-              setUseLocChanged={setUseLocChanged}
               showTitle={showTitle}
               setShowTitle={setShowTitle}
               customTitle={customTitle}

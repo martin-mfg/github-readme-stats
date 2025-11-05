@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { CheckboxSection, DateRangeSection, Image } from '../../../components';
+import { CheckboxSection, Image } from '../../../components';
 import { CardTypes } from '../../../utils';
 import TextSection from '../../../components/Home/TextSection';
 import NumericSection from '../../../components/Home/NumericSection';
@@ -9,23 +9,12 @@ import LanguagesLayoutSection from '../../../components/Home/LanguagesLayoutSect
 
 const CustomizeStage = ({
   selectedCard,
-  selectedTimeRange,
-  setSelectedTimeRange,
   selectedLayout,
   setSelectedLayout,
-  usePrivate,
-  setUsePrivate,
-  groupOther,
-  setGroupOther,
-  groupPrivate,
-  setGroupPrivate,
-  privateAccess,
   useCompact,
   setUseCompact,
   usePercent,
   setUsePercent,
-  useLocChanged,
-  setUseLocChanged,
   showTitle,
   setShowTitle,
   customTitle,
@@ -76,10 +65,6 @@ const CustomizeStage = ({
             setSelectedOption={setSelectedLayout}
           />
         )}
-        <DateRangeSection
-          selectedOption={selectedTimeRange}
-          setSelectedOption={setSelectedTimeRange}
-        />
         {cardType === CardTypes.TOP_LANGS && (
           <CheckboxSection
             title="Compact View"
@@ -87,32 +72,6 @@ const CustomizeStage = ({
             question="Use compact view?"
             variable={useCompact}
             setVariable={setUseCompact}
-          />
-        )}
-        <CheckboxSection
-          title="Include Private Repositories?"
-          text="By default, private commits are hidden. We will never reveal private repository information."
-          question="Use private commits?"
-          variable={usePrivate}
-          setVariable={setUsePrivate}
-          disabled={!privateAccess}
-        />
-        {cardType === CardTypes.STATS && (
-          <CheckboxSection
-            title="Group Other Repositories?"
-            text="Group all remaining repositories together at the bottom of the card."
-            question="Group other repositories?"
-            variable={groupOther}
-            setVariable={setGroupOther}
-          />
-        )}
-        {cardType === CardTypes.STATS && usePrivate && groupOther && (
-          <CheckboxSection
-            title="Group Private Repositories?"
-            text="Force private repositories together at the bottom of the card."
-            question="Group private commits?"
-            variable={groupPrivate}
-            setVariable={setGroupPrivate}
           />
         )}
         {cardType === CardTypes.TOP_LANGS && (
@@ -143,14 +102,6 @@ const CustomizeStage = ({
             setVariable={setEnableAnimations}
           />
         )}
-        <CheckboxSection
-          title="LOC Metric"
-          text="By default, LOC are measured as Added: (+) - (-). Alternatively, you can use Changed: (+) + (-)"
-          question="Use LOC changed?"
-          variable={useLocChanged}
-          setVariable={setUseLocChanged}
-          disabled={cardType === CardTypes.TOP_LANGS && usePercent}
-        />
       </div>
       <div className="w-full lg:w-3/5 md:w-1/2 object-center pt-5 md:pt-0 pl-0 md:pl-5 lg:pl-0">
         <div className="w-full lg:w-3/5 mx-auto flex flex-col justify-center">
@@ -163,25 +114,14 @@ const CustomizeStage = ({
 
 CustomizeStage.propTypes = {
   selectedCard: PropTypes.string.isRequired,
-  selectedTimeRange: PropTypes.object.isRequired,
-  setSelectedTimeRange: PropTypes.func.isRequired,
   selectedLayout: PropTypes.object.isRequired,
   setSelectedLayout: PropTypes.func.isRequired,
-  usePrivate: PropTypes.bool.isRequired,
-  setUsePrivate: PropTypes.func.isRequired,
-  groupOther: PropTypes.bool.isRequired,
-  setGroupOther: PropTypes.func.isRequired,
-  groupPrivate: PropTypes.bool.isRequired,
-  setGroupPrivate: PropTypes.func.isRequired,
-  privateAccess: PropTypes.bool.isRequired,
   useCompact: PropTypes.bool.isRequired,
   setUseCompact: PropTypes.func.isRequired,
   hideProgress: PropTypes.bool.isRequired,
   setHideProgress: PropTypes.func.isRequired,
   usePercent: PropTypes.bool.isRequired,
   setUsePercent: PropTypes.func.isRequired,
-  useLocChanged: PropTypes.bool.isRequired,
-  setUseLocChanged: PropTypes.func.isRequired,
   showTitle: PropTypes.bool.isRequired,
   setShowTitle: PropTypes.func.isRequired,
   customTitle: PropTypes.string.isRequired,
