@@ -11,10 +11,6 @@ const CustomizeStage = ({
   selectedCard,
   selectedLayout,
   setSelectedLayout,
-  useCompact,
-  setUseCompact,
-  usePercent,
-  setUsePercent,
   showTitle,
   setShowTitle,
   customTitle,
@@ -70,25 +66,6 @@ const CustomizeStage = ({
             title="Compact View"
             text="Use default view or compact view."
             question="Use compact view?"
-            variable={useCompact}
-            setVariable={setUseCompact}
-          />
-        )}
-        {cardType === CardTypes.TOP_LANGS && (
-          <CheckboxSection
-            title="Percent vs LOC"
-            text="Use absolute LOC (default) or percent to rank your top repositories"
-            question="Use percent?"
-            variable={usePercent}
-            setVariable={setUsePercent}
-            disabled={useCompact}
-          />
-        )}
-        {cardType === CardTypes.TOP_LANGS && (
-          <CheckboxSection
-            title="Compact View"
-            text="Use default view or compact view."
-            question="Use compact view?"
             variable={hideProgress}
             setVariable={setHideProgress}
           />
@@ -105,7 +82,7 @@ const CustomizeStage = ({
       </div>
       <div className="w-full lg:w-3/5 md:w-1/2 object-center pt-5 md:pt-0 pl-0 md:pl-5 lg:pl-0">
         <div className="w-full lg:w-3/5 mx-auto flex flex-col justify-center">
-          <Image imageSrc={fullSuffix} compact={useCompact} />
+          <Image imageSrc={fullSuffix} />
         </div>
       </div>
     </div>
@@ -116,12 +93,8 @@ CustomizeStage.propTypes = {
   selectedCard: PropTypes.string.isRequired,
   selectedLayout: PropTypes.object.isRequired,
   setSelectedLayout: PropTypes.func.isRequired,
-  useCompact: PropTypes.bool.isRequired,
-  setUseCompact: PropTypes.func.isRequired,
   hideProgress: PropTypes.bool.isRequired,
   setHideProgress: PropTypes.func.isRequired,
-  usePercent: PropTypes.bool.isRequired,
-  setUsePercent: PropTypes.func.isRequired,
   showTitle: PropTypes.bool.isRequired,
   setShowTitle: PropTypes.func.isRequired,
   customTitle: PropTypes.string.isRequired,

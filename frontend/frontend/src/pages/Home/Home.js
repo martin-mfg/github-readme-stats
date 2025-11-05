@@ -39,9 +39,6 @@ const HomeScreen = () => {
   // for stage two
   const [selectedLayout, setSelectedLayout] = useState(DEFAULT_LAYOUT);
 
-  const [usePercent, setUsePercent] = useState(false);
-  const [useCompact, setUseCompact] = useState(false);
-
   const [showTitle, setShowTitle] = useState(true);
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
@@ -49,8 +46,7 @@ const HomeScreen = () => {
   const [enableAnimations, setEnableAnimations] = useState(true);
 
   const resetCustomization = () => {
-    setUsePercent(false);
-    setUseCompact(false);
+    // setUsePercent(false);
   };
 
   useEffect(() => {
@@ -65,14 +61,6 @@ const HomeScreen = () => {
 
   if (selectedLayout !== DEFAULT_LAYOUT) {
     fullSuffix += `&layout=${selectedLayout.value}`;
-  }
-
-  if (usePercent) {
-    fullSuffix += '&use_percent=True';
-  }
-
-  if (useCompact) {
-    fullSuffix += '&compact=True';
   }
 
   if (!showTitle) {
@@ -195,10 +183,6 @@ const HomeScreen = () => {
               imageSrc={imageSrc}
               selectedLayout={selectedLayout}
               setSelectedLayout={setSelectedLayout}
-              useCompact={useCompact}
-              setUseCompact={setUseCompact}
-              usePercent={usePercent}
-              setUsePercent={setUsePercent}
               showTitle={showTitle}
               setShowTitle={setShowTitle}
               customTitle={customTitle}
