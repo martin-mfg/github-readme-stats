@@ -55,7 +55,7 @@ const HomeScreen = () => {
 
   const resetCustomization = () => {
     // setUsePercent(false);
-    if (cardTypes === CardTypes.TOP_LANGS) {
+    if (selectedCard === CardTypes.TOP_LANGS) {
       setSelectedWakatimeLayout(WAKATIME_DEFAULT_LAYOUT);
     }
     if (selectedCard === CardTypes.WAKATIME) {
