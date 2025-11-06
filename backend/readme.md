@@ -693,7 +693,7 @@ You can customize the appearance and behavior of the WakaTime stats card using t
 
 ![Harlok's WakaTime stats](https://github-readme-stats-phi-jet-58.vercel.app/api/wakatime?username=ffflabs)
 
-![Harlok's WakaTime stats](https://github-readme-stats-phi-jet-58.vercel.app/api/wakatime?username=ffflabs\&hide_progress=true)
+![Harlok's WakaTime stats](https://github-readme-stats-phi-jet-58.vercel.app/api/wakatime?username=ffflabs\&card_width=315\&hide_progress=true)
 
 *   Compact layout
 

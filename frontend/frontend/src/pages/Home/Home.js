@@ -15,7 +15,8 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
-import { DEFAULT_OPTION as DEFAULT_LAYOUT } from '../../components/Home/LanguagesLayoutSection';
+import { DEFAULT_OPTION as LANGUAGES_DEFAULT_LAYOUT } from '../../components/Home/LanguagesLayoutSection';
+import { DEFAULT_OPTION as WAKATIME_DEFAULT_LAYOUT } from '../../components/Home/WakatimeLayoutSection';
 
 const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +38,12 @@ const HomeScreen = () => {
   const [imageSrc, setImageSrc] = useState(`?&username=${userId}`);
 
   // for stage two
-  const [selectedLayout, setSelectedLayout] = useState(DEFAULT_LAYOUT);
+  const [selectedLanguagesLayout, setSelectedLanguagesLayout] = useState(
+    LANGUAGES_DEFAULT_LAYOUT,
+  );
+  const [selectedWakatimeLayout, setSelectedWakatimeLayout] = useState(
+    WAKATIME_DEFAULT_LAYOUT,
+  );
 
   const [showTitle, setShowTitle] = useState(true);
   const [showOwner, setShowOwner] = useState(false);
@@ -45,9 +51,16 @@ const HomeScreen = () => {
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
   const [enableAnimations, setEnableAnimations] = useState(true);
+  const [usePercent, setUsePercent] = useState(false);
 
   const resetCustomization = () => {
     // setUsePercent(false);
+    if (cardTypes === CardTypes.TOP_LANGS) {
+      setSelectedWakatimeLayout(WAKATIME_DEFAULT_LAYOUT);
+    }
+    if (selectedCard === CardTypes.WAKATIME) {
+      setSelectedLanguagesLayout(LANGUAGES_DEFAULT_LAYOUT);
+    }
     if (theme === 'default' || theme === 'default_repocard') {
       if (selectedCard === CardTypes.PIN || selectedCard === CardTypes.GIST) {
         setTheme('default_repocard');
@@ -67,8 +80,12 @@ const HomeScreen = () => {
 
   let fullSuffix = `${imageSrc}`;
 
-  if (selectedLayout !== DEFAULT_LAYOUT) {
-    fullSuffix += `&layout=${selectedLayout.value}`;
+  if (selectedLanguagesLayout !== LANGUAGES_DEFAULT_LAYOUT) {
+    fullSuffix += `&layout=${selectedLanguagesLayout.value}`;
+  }
+
+  if (selectedWakatimeLayout !== WAKATIME_DEFAULT_LAYOUT) {
+    fullSuffix += `&layout=${selectedWakatimeLayout.value}`;
   }
 
   if (!showTitle) {
@@ -94,6 +111,10 @@ const HomeScreen = () => {
 
   if (!enableAnimations) {
     fullSuffix += `&disable_animations=${!enableAnimations}`;
+  }
+
+  if (usePercent) {
+    fullSuffix += `&display_format=percent`;
   }
 
   // for stage three
@@ -193,8 +214,10 @@ const HomeScreen = () => {
             <CustomizeStage
               selectedCard={selectedCard || CardTypes.STATS}
               imageSrc={imageSrc}
-              selectedLayout={selectedLayout}
-              setSelectedLayout={setSelectedLayout}
+              selectedLanguagesLayout={selectedLanguagesLayout}
+              setSelectedLanguagesLayout={setSelectedLanguagesLayout}
+              selectedWakatimeLayout={selectedWakatimeLayout}
+              setSelectedWakatimeLayout={setSelectedWakatimeLayout}
               showTitle={showTitle}
               setShowTitle={setShowTitle}
               showOwner={showOwner}
@@ -207,6 +230,8 @@ const HomeScreen = () => {
               setLangsCount={setLangsCount}
               enableAnimations={enableAnimations}
               setEnableAnimations={setEnableAnimations}
+              usePercent={usePercent}
+              setUsePercent={setUsePercent}
               fullSuffix={fullSuffix}
             />
           )}

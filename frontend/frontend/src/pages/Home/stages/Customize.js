@@ -6,11 +6,14 @@ import { CardTypes } from '../../../utils';
 import TextSection from '../../../components/Home/TextSection';
 import NumericSection from '../../../components/Home/NumericSection';
 import LanguagesLayoutSection from '../../../components/Home/LanguagesLayoutSection';
+import WakatimeLayoutSection from '../../../components/Home/WakatimeLayoutSection';
 
 const CustomizeStage = ({
   selectedCard,
-  selectedLayout,
-  setSelectedLayout,
+  selectedLanguagesLayout,
+  setSelectedLanguagesLayout,
+  selectedWakatimeLayout,
+  setSelectedWakatimeLayout,
   showTitle,
   setShowTitle,
   showOwner,
@@ -23,13 +26,17 @@ const CustomizeStage = ({
   setLangsCount,
   enableAnimations,
   setEnableAnimations,
+  usePercent,
+  setUsePercent,
   fullSuffix,
 }) => {
   const cardType = selectedCard || CardTypes.STATS;
   return (
     <div className="w-full flex flex-wrap">
       <div className="h-auto lg:w-2/5 md:w-1/2 pr-10 p-10 rounded-sm bg-gray-200">
-        {(cardType === CardTypes.STATS || cardType === CardTypes.TOP_LANGS) && (
+        {(cardType === CardTypes.STATS ||
+          cardType === CardTypes.TOP_LANGS ||
+          cardType === CardTypes.WAKATIME) && (
           <CheckboxSection
             title="Show Title?"
             text="Shows a title at the top of the card."
@@ -38,7 +45,7 @@ const CustomizeStage = ({
             setVariable={setShowTitle}
           />
         )}
-        {cardType === CardTypes.STATS && (
+        {(cardType === CardTypes.STATS || cardType === CardTypes.WAKATIME) && (
           <TextSection
             title="Custom Title"
             text="Set a custom title for the card.<br>Leave empty for default title."
@@ -47,7 +54,8 @@ const CustomizeStage = ({
             setValue={setCustomTitle}
           />
         )}
-        {cardType === CardTypes.TOP_LANGS && (
+        {(cardType === CardTypes.TOP_LANGS ||
+          cardType === CardTypes.WAKATIME) && (
           <NumericSection
             title="Language Count"
             text="Set the number of languages to be shown.<br>Leave empty for default count."
@@ -59,8 +67,14 @@ const CustomizeStage = ({
         )}
         {cardType === CardTypes.TOP_LANGS && (
           <LanguagesLayoutSection
-            selectedOption={selectedLayout}
-            setSelectedOption={setSelectedLayout}
+            selectedOption={selectedLanguagesLayout}
+            setSelectedOption={setSelectedLanguagesLayout}
+          />
+        )}
+        {cardType === CardTypes.WAKATIME && (
+          <WakatimeLayoutSection
+            selectedOption={selectedWakatimeLayout}
+            setSelectedOption={setSelectedWakatimeLayout}
           />
         )}
         {(cardType === CardTypes.STATS ||
@@ -74,7 +88,7 @@ const CustomizeStage = ({
             setVariable={setEnableAnimations}
           />
         )}
-        {cardType === CardTypes.PIN && (
+        {(cardType === CardTypes.PIN || cardType === CardTypes.GIST) && (
           <CheckboxSection
             title="Show Owner?"
             text="Shows the repo owner's name next to the repo name."
@@ -93,6 +107,15 @@ const CustomizeStage = ({
             max={3}
           />
         )}
+        {cardType === CardTypes.WAKATIME && (
+          <CheckboxSection
+            title="Show Percentages"
+            text="Show time spent in hours or percentages."
+            question="Show percentages?"
+            variable={usePercent}
+            setVariable={setUsePercent}
+          />
+        )}
       </div>
       <div className="w-full lg:w-3/5 md:w-1/2 object-center pt-5 md:pt-0 pl-0 md:pl-5 lg:pl-0">
         <div className="w-full lg:w-3/5 mx-auto flex flex-col justify-center">
@@ -105,8 +128,10 @@ const CustomizeStage = ({
 
 CustomizeStage.propTypes = {
   selectedCard: PropTypes.string.isRequired,
-  selectedLayout: PropTypes.object.isRequired,
-  setSelectedLayout: PropTypes.func.isRequired,
+  selectedLanguagesLayout: PropTypes.object.isRequired,
+  setSelectedLanguagesLayout: PropTypes.func.isRequired,
+  selectedWakatimeLayout: PropTypes.object.isRequired,
+  setSelectedWakatimeLayout: PropTypes.func.isRequired,
   showTitle: PropTypes.bool.isRequired,
   setShowTitle: PropTypes.func.isRequired,
   descriptionLines: PropTypes.number.isRequired,
@@ -119,6 +144,8 @@ CustomizeStage.propTypes = {
   setLangsCount: PropTypes.func.isRequired,
   enableAnimations: PropTypes.bool.isRequired,
   setEnableAnimations: PropTypes.func.isRequired,
+  usePercent: PropTypes.bool.isRequired,
+  setUsePercent: PropTypes.func.isRequired,
   fullSuffix: PropTypes.string.isRequired,
 };
 
