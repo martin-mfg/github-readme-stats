@@ -28,9 +28,7 @@ const DisplayStage = ({ userId, themeSuffix }) => {
   };
 
   const copyUrl = () => {
-    navigator.clipboard.writeText(
-      `https://${HOST}/api${themeSuffix}`,
-    );
+    navigator.clipboard.writeText(`https://${HOST}/api${themeSuffix}`);
     toast.info('Copied to Clipboard!', {
       position: 'bottom-right',
       autoClose: 1000,
