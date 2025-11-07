@@ -16,11 +16,13 @@ const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
           description: 'your overall GitHub statistics',
           imageSrc: `?&username=${userId}`,
           cardType: 'stats',
+          demoCustomization: '',
         },
         {
           title: 'Top Languages Card',
           description: 'your most frequently used languages',
-          imageSrc: `/top-langs?&username=${userId}&langs_count=4`,
+          imageSrc: `/top-langs?&username=${userId}`,
+          demoCustomization: '&langs_count=4',
           cardType: 'top-langs',
         },
         {
@@ -28,6 +30,7 @@ const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
           description:
             'pin more than 6 repositories in your profile using a GitHub profile readme',
           imageSrc: '/pin?repo=anuraghazra/github-readme-stats',
+          demoCustomization: '',
           cardType: 'pin',
         },
         {
@@ -35,12 +38,14 @@ const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
           description:
             'pin gists in your GitHub profile using a GitHub profile readme',
           imageSrc: '/gist?id=bbfce31e0217a3689c8d961a356cb10d',
+          demoCustomization: '',
           cardType: 'gist',
         },
         {
           title: 'WakaTime Stats Card',
           description: 'your coding activity from WakaTime',
-          imageSrc: '/wakatime?username=ffflabs&langs_count=6&card_width=450',
+          imageSrc: '/wakatime?username=ffflabs',
+          demoCustomization: '&langs_count=6&card_width=450',
           cardType: 'wakatime',
         },
       ].map((card, index) => (
@@ -56,7 +61,7 @@ const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
           <Card
             title={card.title}
             description={card.description}
-            imageSrc={card.imageSrc}
+            imageSrc={card.imageSrc + card.demoCustomization}
             selected={selectedCard === card.cardType}
             fixedSize="true"
           />

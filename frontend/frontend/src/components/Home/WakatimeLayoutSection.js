@@ -19,7 +19,7 @@ const WakatimeLayoutSection = ({ selectedOption, setSelectedOption }) => {
       id: 3,
       label: 'Text Only',
       disabled: false,
-      value: 'default=hide_progress=true&card_width=315',
+      value: 'default&hide_progress=true&card_width=315',
     },
   ];
 
