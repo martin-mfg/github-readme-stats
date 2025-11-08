@@ -43,6 +43,71 @@ const CustomizeStage = ({
   return (
     <div className="w-full flex flex-wrap">
       <div className="h-auto lg:w-2/5 md:w-1/2 pr-10 p-10 rounded-sm bg-gray-200">
+        {cardType === CardTypes.STATS && (
+          <CheckboxSection
+            title="Show All Stats?"
+            text="Show all available statistics."
+            question="Show all stats?"
+            variable={showAllStats}
+            setVariable={setShowAllStats}
+          />
+        )}
+        {cardType === CardTypes.STATS && (
+          <StatsRankSection
+            selectedOption={selectedStatsRank}
+            setSelectedOption={setSelectedStatsRank}
+          />
+        )}
+        {cardType === CardTypes.STATS && (
+          <CheckboxSection
+            title="Show Icons?"
+            text="Show icons next to all stats."
+            question="Show Icons?"
+            variable={showIcons}
+            setVariable={setShowIcons}
+          />
+        )}
+        {cardType === CardTypes.STATS && (
+          <CheckboxSection
+            title="Include All Commits?"
+            text="Count total commits or just commits of the last 365 days."
+            question="Include all commits?"
+            variable={includeAllCommits}
+            setVariable={setIncludeAllCommits}
+          />
+        )}
+        {cardType === CardTypes.TOP_LANGS && (
+          <LanguagesLayoutSection
+            selectedOption={selectedLanguagesLayout}
+            setSelectedOption={setSelectedLanguagesLayout}
+          />
+        )}
+        {cardType === CardTypes.WAKATIME && (
+          <WakatimeLayoutSection
+            selectedOption={selectedWakatimeLayout}
+            setSelectedOption={setSelectedWakatimeLayout}
+          />
+        )}
+        {(cardType === CardTypes.TOP_LANGS ||
+          cardType === CardTypes.WAKATIME) && (
+          <NumericSection
+            title="Language Count"
+            text="Set the number of languages to be shown.<br>Leave empty for default count."
+            value={langsCount}
+            setValue={setLangsCount}
+            min={1}
+            max={20}
+          />
+        )}
+        {cardType === CardTypes.WAKATIME && (
+          <CheckboxSection
+            title="Show Percentages?"
+            text="Show time spent in hours or percentages."
+            question="Show percentages?"
+            variable={usePercent}
+            setVariable={setUsePercent}
+          />
+        )}
         {(cardType === CardTypes.STATS ||
           cardType === CardTypes.TOP_LANGS ||
           cardType === CardTypes.WAKATIME) && (
@@ -61,35 +126,6 @@ const CustomizeStage = ({
             placeholder='e.g. "My GitHub Stats"'
             value={customTitle}
             setValue={setCustomTitle}
-          />
-        )}
-        {(cardType === CardTypes.TOP_LANGS ||
-          cardType === CardTypes.WAKATIME) && (
-          <NumericSection
-            title="Language Count"
-            text="Set the number of languages to be shown.<br>Leave empty for default count."
-            value={langsCount}
-            setValue={setLangsCount}
-            min={1}
-            max={20}
-          />
-        )}
-        {cardType === CardTypes.STATS && (
-          <StatsRankSection
-            selectedOption={selectedStatsRank}
-            setSelectedOption={setSelectedStatsRank}
-          />
-        )}
-        {cardType === CardTypes.TOP_LANGS && (
-          <LanguagesLayoutSection
-            selectedOption={selectedLanguagesLayout}
-            setSelectedOption={setSelectedLanguagesLayout}
-          />
-        )}
-        {cardType === CardTypes.WAKATIME && (
-          <WakatimeLayoutSection
-            selectedOption={selectedWakatimeLayout}
-            setSelectedOption={setSelectedWakatimeLayout}
           />
         )}
         {(cardType === CardTypes.STATS ||
@@ -120,42 +156,6 @@ const CustomizeStage = ({
             setValue={setDescriptionLines}
             min={1}
             max={3}
-          />
-        )}
-        {cardType === CardTypes.WAKATIME && (
-          <CheckboxSection
-            title="Show Percentages?"
-            text="Show time spent in hours or percentages."
-            question="Show percentages?"
-            variable={usePercent}
-            setVariable={setUsePercent}
-          />
-        )}
-        {cardType === CardTypes.STATS && (
-          <CheckboxSection
-            title="Show Icons?"
-            text="Show icons next to all stats."
-            question="Show Icons?"
-            variable={showIcons}
-            setVariable={setShowIcons}
-          />
-        )}
-        {cardType === CardTypes.STATS && (
-          <CheckboxSection
-            title="Show All Stats?"
-            text="Show all available statistics."
-            question="Show all stats?"
-            variable={showAllStats}
-            setVariable={setShowAllStats}
-          />
-        )}
-        {cardType === CardTypes.STATS && (
-          <CheckboxSection
-            title="Include All Commits?"
-            text="Count total commits or just commits of the last 365 days."
-            question="Include all commits?"
-            variable={includeAllCommits}
-            setVariable={setIncludeAllCommits}
           />
         )}
       </div>

@@ -60,13 +60,20 @@ const HomeScreen = () => {
   const [usePercent, setUsePercent] = useState(false);
 
   const resetCustomization = () => {
-    // setUsePercent(false);
+    if (selectedCard === CardTypes.TOP_LANGS) {
+      setLangsCount(4);
+    }
+    if (selectedCard === CardTypes.WAKATIME) {
+      setLangsCount(6);
+    }
+
     if (selectedCard === CardTypes.TOP_LANGS) {
       setSelectedWakatimeLayout(WAKATIME_DEFAULT_LAYOUT);
     }
     if (selectedCard === CardTypes.WAKATIME) {
       setSelectedLanguagesLayout(LANGUAGES_DEFAULT_LAYOUT);
     }
+
     if (theme === 'default' || theme === 'default_repocard') {
       if (selectedCard === CardTypes.PIN || selectedCard === CardTypes.GIST) {
         setTheme('default_repocard');

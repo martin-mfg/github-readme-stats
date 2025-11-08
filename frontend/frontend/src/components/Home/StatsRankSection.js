@@ -20,8 +20,8 @@ const StatsRankSection = ({ selectedOption, setSelectedOption }) => {
   ];
 
   return (
-    <Section title="Card Layout">
-      <p>Select a card layout.</p>
+    <Section title="Rank Style">
+      <p>Select a rank style.</p>
       <Input
         options={options}
         selectedOption={selectedOption || DEFAULT_OPTION}
