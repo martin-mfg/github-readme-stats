@@ -53,7 +53,7 @@ const HomeScreen = () => {
   const [descriptionLines, setDescriptionLines] = useState();
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
-  const [showIcons, setShowIcons] = useState(true);
+  const [showIcons, setShowIcons] = useState(false);
   const [enableAnimations, setEnableAnimations] = useState(true);
   const [usePercent, setUsePercent] = useState(false);
 

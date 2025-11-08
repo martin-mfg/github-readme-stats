@@ -179,13 +179,13 @@ const fetchTotalItems = (variables, token) => {
     method: "get",
     url:
       `https://api.github.com/search/` +
-      type +
+      variables.type +
       `?per_page=1&q=` +
       buildSearchFilter(variables.repo, variables.owner).replaceAll(
         " ",
         "+",
       ) +
-      filter,
+      variables.filter,
     headers: {
       "Content-Type": "application/json",
       Accept: "application/vnd.github.cloak-preview",
@@ -215,6 +215,8 @@ const totalItemsFetcher = async (username, repo, owner, type, filter) => {
       login: username,
       repo,
       owner,
+      type,
+      filter,
     });
   } catch (err) {
     logger.log(err);
