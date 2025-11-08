@@ -11,7 +11,7 @@ export const DEFAULT_OPTION = {
   value: 'default',
 };
 
-const StatsLayoutSection = ({ selectedOption, setSelectedOption }) => {
+const StatsRankSection = ({ selectedOption, setSelectedOption }) => {
   const options = [
     DEFAULT_OPTION,
     { id: 2, label: 'Percentile', disabled: false, value: 'percentile' },
@@ -31,9 +31,9 @@ const StatsLayoutSection = ({ selectedOption, setSelectedOption }) => {
   );
 };
 
-StatsLayoutSection.propTypes = {
+StatsRankSection.propTypes = {
   selectedOption: PropTypes.object.isRequired,
   setSelectedOption: PropTypes.func.isRequired,
 };
 
-export default StatsLayoutSection;
+export default StatsRankSection;

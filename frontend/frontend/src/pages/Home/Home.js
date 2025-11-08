@@ -15,7 +15,7 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
-import { DEFAULT_OPTION as STATS_DEFAULT_LAYOUT } from '../../components/Home/StatsLayoutSection';
+import { DEFAULT_OPTION as STATS_DEFAULT_RANK } from '../../components/Home/StatsRankSection';
 import { DEFAULT_OPTION as LANGUAGES_DEFAULT_LAYOUT } from '../../components/Home/LanguagesLayoutSection';
 import { DEFAULT_OPTION as WAKATIME_DEFAULT_LAYOUT } from '../../components/Home/WakatimeLayoutSection';
 
@@ -39,8 +39,8 @@ const HomeScreen = () => {
   const [imageSrc, setImageSrc] = useState(`?&username=${userId}`);
 
   // for stage two
-  const [selectedStatsLayout, setSelectedStatsLayout] =
-    useState(STATS_DEFAULT_LAYOUT);
+  const [selectedStatsRank, setSelectedStatsRank] =
+    useState(STATS_DEFAULT_RANK);
   const [selectedLanguagesLayout, setSelectedLanguagesLayout] = useState(
     LANGUAGES_DEFAULT_LAYOUT,
   );
@@ -53,7 +53,9 @@ const HomeScreen = () => {
   const [descriptionLines, setDescriptionLines] = useState();
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
+  const [showAllStats, setShowAllStats] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
+  const [includeAllCommits, setIncludeAllCommits] = useState(false);
   const [enableAnimations, setEnableAnimations] = useState(true);
   const [usePercent, setUsePercent] = useState(false);
 
@@ -84,8 +86,8 @@ const HomeScreen = () => {
 
   let fullSuffix = `${imageSrc}`;
 
-  if (selectedStatsLayout !== STATS_DEFAULT_LAYOUT) {
-    fullSuffix += `&rank_icon=${selectedStatsLayout.value}`;
+  if (selectedStatsRank !== STATS_DEFAULT_RANK) {
+    fullSuffix += `&rank_icon=${selectedStatsRank.value}`;
   }
 
   if (selectedLanguagesLayout !== LANGUAGES_DEFAULT_LAYOUT) {
@@ -117,8 +119,16 @@ const HomeScreen = () => {
     fullSuffix += `&langs_count=${langsCount}`;
   }
 
+  if (showAllStats) {
+    fullSuffix += `&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage,prs_commented,prs_reviewed,issues_commented`;
+  }
+
   if (showIcons) {
     fullSuffix += `&show_icons=true`;
+  }
+
+  if (includeAllCommits) {
+    fullSuffix += `&include_all_commits=true`;
   }
 
   if (!enableAnimations) {
@@ -226,8 +236,8 @@ const HomeScreen = () => {
             <CustomizeStage
               selectedCard={selectedCard || CardTypes.STATS}
               imageSrc={imageSrc}
-              selectedStatsLayout={selectedStatsLayout}
-              setSelectedStatsLayout={setSelectedStatsLayout}
+              selectedStatsRank={selectedStatsRank}
+              setSelectedStatsRank={setSelectedStatsRank}
               selectedLanguagesLayout={selectedLanguagesLayout}
               setSelectedLanguagesLayout={setSelectedLanguagesLayout}
               selectedWakatimeLayout={selectedWakatimeLayout}
@@ -242,8 +252,12 @@ const HomeScreen = () => {
               setCustomTitle={setCustomTitle}
               langsCount={langsCount}
               setLangsCount={setLangsCount}
+              showAllStats={showAllStats}
+              setShowAllStats={setShowAllStats}
               showIcons={showIcons}
               setShowIcons={setShowIcons}
+              includeAllCommits={includeAllCommits}
+              setIncludeAllCommits={setIncludeAllCommits}
               enableAnimations={enableAnimations}
               setEnableAnimations={setEnableAnimations}
               usePercent={usePercent}

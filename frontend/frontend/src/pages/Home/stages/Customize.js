@@ -5,14 +5,14 @@ import { CheckboxSection, Image } from '../../../components';
 import { CardTypes } from '../../../utils';
 import TextSection from '../../../components/Home/TextSection';
 import NumericSection from '../../../components/Home/NumericSection';
-import StatsLayoutSection from '../../../components/Home/StatsLayoutSection';
+import StatsRankSection from '../../../components/Home/StatsRankSection';
 import LanguagesLayoutSection from '../../../components/Home/LanguagesLayoutSection';
 import WakatimeLayoutSection from '../../../components/Home/WakatimeLayoutSection';
 
 const CustomizeStage = ({
   selectedCard,
-  selectedStatsLayout,
-  setSelectedStatsLayout,
+  selectedStatsRank,
+  setSelectedStatsRank,
   selectedLanguagesLayout,
   setSelectedLanguagesLayout,
   selectedWakatimeLayout,
@@ -29,6 +29,10 @@ const CustomizeStage = ({
   setLangsCount,
   showIcons,
   setShowIcons,
+  showAllStats,
+  setShowAllStats,
+  includeAllCommits,
+  setIncludeAllCommits,
   enableAnimations,
   setEnableAnimations,
   usePercent,
@@ -71,9 +75,9 @@ const CustomizeStage = ({
           />
         )}
         {cardType === CardTypes.STATS && (
-          <StatsLayoutSection
-            selectedOption={selectedStatsLayout}
-            setSelectedOption={setSelectedStatsLayout}
+          <StatsRankSection
+            selectedOption={selectedStatsRank}
+            setSelectedOption={setSelectedStatsRank}
           />
         )}
         {cardType === CardTypes.TOP_LANGS && (
@@ -136,6 +140,24 @@ const CustomizeStage = ({
             setVariable={setShowIcons}
           />
         )}
+        {cardType === CardTypes.STATS && (
+          <CheckboxSection
+            title="Show All Stats?"
+            text="Show all available statistics."
+            question="Show all stats?"
+            variable={showAllStats}
+            setVariable={setShowAllStats}
+          />
+        )}
+        {cardType === CardTypes.STATS && (
+          <CheckboxSection
+            title="Include All Commits?"
+            text="Count total commits or just commits of the last 365 days."
+            question="Include all commits?"
+            variable={includeAllCommits}
+            setVariable={setIncludeAllCommits}
+          />
+        )}
       </div>
       <div className="w-full lg:w-3/5 md:w-1/2 object-center pt-5 md:pt-0 pl-0 md:pl-5 lg:pl-0">
         <div className="w-full lg:w-3/5 mx-auto flex flex-col justify-center">
@@ -148,8 +170,8 @@ const CustomizeStage = ({
 
 CustomizeStage.propTypes = {
   selectedCard: PropTypes.string.isRequired,
-  selectedStatsLayout: PropTypes.object.isRequired,
-  setSelectedStatsLayout: PropTypes.func.isRequired,
+  selectedStatsRank: PropTypes.object.isRequired,
+  setSelectedStatsRank: PropTypes.func.isRequired,
   selectedLanguagesLayout: PropTypes.object.isRequired,
   setSelectedLanguagesLayout: PropTypes.func.isRequired,
   selectedWakatimeLayout: PropTypes.object.isRequired,
@@ -166,6 +188,10 @@ CustomizeStage.propTypes = {
   setLangsCount: PropTypes.func.isRequired,
   showIcons: PropTypes.bool.isRequired,
   setShowIcons: PropTypes.func.isRequired,
+  showAllStats: PropTypes.bool.isRequired,
+  setShowAllStats: PropTypes.func.isRequired,
+  includeAllCommits: PropTypes.bool.isRequired,
+  setIncludeAllCommits: PropTypes.func.isRequired,
   enableAnimations: PropTypes.bool.isRequired,
   setEnableAnimations: PropTypes.func.isRequired,
   usePercent: PropTypes.bool.isRequired,
