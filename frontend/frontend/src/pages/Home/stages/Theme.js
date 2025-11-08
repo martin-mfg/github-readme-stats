@@ -9,21 +9,33 @@ import { themes } from '../../../backend/themes/index';
 const ThemeStage = ({ theme, setTheme, fullSuffix }) => {
   return (
     <div className="flex flex-wrap">
-      {Object.keys(themes).map((myTheme, index) => (
-        <button
-          className="p-2 lg:p-4"
-          key={index}
-          type="button"
-          onClick={() => setTheme(myTheme)}
-        >
-          <Card
-            title={myTheme}
-            description=""
-            imageSrc={`${fullSuffix}&theme=${myTheme}`}
-            selected={theme === myTheme}
-          />
-        </button>
-      ))}
+      {Object.keys(themes)
+        .filter(
+          (myTheme) =>
+            ![
+              'merko',
+              'blue-green',
+              'gotham',
+              'blueberry',
+              'outrun',
+              'holi',
+            ].includes(myTheme),
+        )
+        .map((myTheme, index) => (
+          <button
+            className="p-2 lg:p-4"
+            key={index}
+            type="button"
+            onClick={() => setTheme(myTheme)}
+          >
+            <Card
+              title={myTheme}
+              description=""
+              imageSrc={`${fullSuffix}&theme=${myTheme}`}
+              selected={theme === myTheme}
+            />
+          </button>
+        ))}
     </div>
   );
 };
