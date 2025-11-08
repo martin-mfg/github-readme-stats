@@ -70,7 +70,7 @@ const DisplayStage = ({ userId, themeSuffix }) => {
         </div>
       </div>
       <div className="w-full lg:w-3/5 md:w-1/2 object-center pt-5 md:pt-0 pl-0 md:pl-5 lg:pl-0">
-        <div className="w-full lg:w-3/5 mx-auto h-full flex flex-col justify-center">
+        <div className="w-full lg:w-[65%] mx-auto h-full flex flex-col justify-center">
           <Card
             title="Your Card"
             description="The finished product!"

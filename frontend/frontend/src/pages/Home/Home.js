@@ -55,7 +55,7 @@ const HomeScreen = () => {
   const [langsCount, setLangsCount] = useState();
   const [showAllStats, setShowAllStats] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
-  const [includeAllCommits, setIncludeAllCommits] = useState(false);
+  const [includeAllCommits, setIncludeAllCommits] = useState(true);
   const [enableAnimations, setEnableAnimations] = useState(true);
   const [usePercent, setUsePercent] = useState(false);
 
