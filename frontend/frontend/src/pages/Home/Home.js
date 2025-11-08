@@ -39,9 +39,8 @@ const HomeScreen = () => {
   const [imageSrc, setImageSrc] = useState(`?&username=${userId}`);
 
   // for stage two
-  const [selectedStatsLayout, setSelectedStatsLayout] = useState(
-    STATS_DEFAULT_LAYOUT,
-  );
+  const [selectedStatsLayout, setSelectedStatsLayout] =
+    useState(STATS_DEFAULT_LAYOUT);
   const [selectedLanguagesLayout, setSelectedLanguagesLayout] = useState(
     LANGUAGES_DEFAULT_LAYOUT,
   );
@@ -85,7 +84,7 @@ const HomeScreen = () => {
 
   let fullSuffix = `${imageSrc}`;
 
-  if(selectedStatsLayout !== STATS_DEFAULT_LAYOUT) {
+  if (selectedStatsLayout !== STATS_DEFAULT_LAYOUT) {
     fullSuffix += `&rank_icon=${selectedStatsLayout.value}`;
   }
 
