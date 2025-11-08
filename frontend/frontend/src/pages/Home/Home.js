@@ -15,6 +15,7 @@ import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
 import { HOST } from '../../constants';
 import { CardTypes } from '../../utils';
+import { DEFAULT_OPTION as STATS_DEFAULT_LAYOUT } from '../../components/Home/StatsLayoutSection';
 import { DEFAULT_OPTION as LANGUAGES_DEFAULT_LAYOUT } from '../../components/Home/LanguagesLayoutSection';
 import { DEFAULT_OPTION as WAKATIME_DEFAULT_LAYOUT } from '../../components/Home/WakatimeLayoutSection';
 
@@ -38,6 +39,9 @@ const HomeScreen = () => {
   const [imageSrc, setImageSrc] = useState(`?&username=${userId}`);
 
   // for stage two
+  const [selectedStatsLayout, setSelectedStatsLayout] = useState(
+    STATS_DEFAULT_LAYOUT,
+  );
   const [selectedLanguagesLayout, setSelectedLanguagesLayout] = useState(
     LANGUAGES_DEFAULT_LAYOUT,
   );
@@ -50,6 +54,7 @@ const HomeScreen = () => {
   const [descriptionLines, setDescriptionLines] = useState();
   const [customTitle, setCustomTitle] = useState('');
   const [langsCount, setLangsCount] = useState();
+  const [showIcons, setShowIcons] = useState(true);
   const [enableAnimations, setEnableAnimations] = useState(true);
   const [usePercent, setUsePercent] = useState(false);
 
@@ -80,6 +85,10 @@ const HomeScreen = () => {
 
   let fullSuffix = `${imageSrc}`;
 
+  if(selectedStatsLayout !== STATS_DEFAULT_LAYOUT) {
+    fullSuffix += `&rank_icon=${selectedStatsLayout.value}`;
+  }
+
   if (selectedLanguagesLayout !== LANGUAGES_DEFAULT_LAYOUT) {
     fullSuffix += `&layout=${selectedLanguagesLayout.value}`;
   }
@@ -107,6 +116,10 @@ const HomeScreen = () => {
 
   if (langsCount) {
     fullSuffix += `&langs_count=${langsCount}`;
+  }
+
+  if (showIcons) {
+    fullSuffix += `&show_icons=true`;
   }
 
   if (!enableAnimations) {
@@ -214,6 +227,8 @@ const HomeScreen = () => {
             <CustomizeStage
               selectedCard={selectedCard || CardTypes.STATS}
               imageSrc={imageSrc}
+              selectedStatsLayout={selectedStatsLayout}
+              setSelectedStatsLayout={setSelectedStatsLayout}
               selectedLanguagesLayout={selectedLanguagesLayout}
               setSelectedLanguagesLayout={setSelectedLanguagesLayout}
               selectedWakatimeLayout={selectedWakatimeLayout}
@@ -228,6 +243,8 @@ const HomeScreen = () => {
               setCustomTitle={setCustomTitle}
               langsCount={langsCount}
               setLangsCount={setLangsCount}
+              showIcons={showIcons}
+              setShowIcons={setShowIcons}
               enableAnimations={enableAnimations}
               setEnableAnimations={setEnableAnimations}
               usePercent={usePercent}

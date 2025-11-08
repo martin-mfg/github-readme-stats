@@ -5,11 +5,14 @@ import { CheckboxSection, Image } from '../../../components';
 import { CardTypes } from '../../../utils';
 import TextSection from '../../../components/Home/TextSection';
 import NumericSection from '../../../components/Home/NumericSection';
+import StatsLayoutSection from '../../../components/Home/StatsLayoutSection';
 import LanguagesLayoutSection from '../../../components/Home/LanguagesLayoutSection';
 import WakatimeLayoutSection from '../../../components/Home/WakatimeLayoutSection';
 
 const CustomizeStage = ({
   selectedCard,
+  selectedStatsLayout,
+  setSelectedStatsLayout,
   selectedLanguagesLayout,
   setSelectedLanguagesLayout,
   selectedWakatimeLayout,
@@ -24,6 +27,8 @@ const CustomizeStage = ({
   setCustomTitle,
   langsCount,
   setLangsCount,
+  showIcons,
+  setShowIcons,
   enableAnimations,
   setEnableAnimations,
   usePercent,
@@ -63,6 +68,12 @@ const CustomizeStage = ({
             setValue={setLangsCount}
             min={1}
             max={20}
+          />
+        )}
+        {cardType === CardTypes.STATS && (
+          <StatsLayoutSection
+            selectedOption={selectedStatsLayout}
+            setSelectedOption={setSelectedStatsLayout}
           />
         )}
         {cardType === CardTypes.TOP_LANGS && (
@@ -109,11 +120,20 @@ const CustomizeStage = ({
         )}
         {cardType === CardTypes.WAKATIME && (
           <CheckboxSection
-            title="Show Percentages"
+            title="Show Percentages?"
             text="Show time spent in hours or percentages."
             question="Show percentages?"
             variable={usePercent}
             setVariable={setUsePercent}
+          />
+        )}
+        {cardType === CardTypes.STATS && (
+          <CheckboxSection
+            title="Show Icons?"
+            text="Show icons next to all stats."
+            question="Show Icons?"
+            variable={showIcons}
+            setVariable={setShowIcons}
           />
         )}
       </div>
@@ -128,6 +148,8 @@ const CustomizeStage = ({
 
 CustomizeStage.propTypes = {
   selectedCard: PropTypes.string.isRequired,
+  selectedStatsLayout: PropTypes.object.isRequired,
+  setSelectedStatsLayout: PropTypes.func.isRequired,
   selectedLanguagesLayout: PropTypes.object.isRequired,
   setSelectedLanguagesLayout: PropTypes.func.isRequired,
   selectedWakatimeLayout: PropTypes.object.isRequired,
@@ -142,6 +164,8 @@ CustomizeStage.propTypes = {
   setCustomTitle: PropTypes.func.isRequired,
   langsCount: PropTypes.number.isRequired,
   setLangsCount: PropTypes.func.isRequired,
+  showIcons: PropTypes.bool.isRequired,
+  setShowIcons: PropTypes.func.isRequired,
   enableAnimations: PropTypes.bool.isRequired,
   setEnableAnimations: PropTypes.func.isRequired,
   usePercent: PropTypes.bool.isRequired,
