@@ -59,11 +59,8 @@
   },
   "scripts": {
     "setup-trends": "cp ./public/trends.html ./public/index.html",
-    "setup-wrapped": "cp ./public/wrapped.html ./public/index.html",
     "start-trends": "yarn setup-trends && REACT_APP_MODE=trends craco start",
-    "start-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped PORT=3001 craco start",
     "build-trends": "yarn setup-trends && REACT_APP_MODE=trends craco build",
-    "build-wrapped": "yarn setup-wrapped && REACT_APP_MODE=wrapped craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },

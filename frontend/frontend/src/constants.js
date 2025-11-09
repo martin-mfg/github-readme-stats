@@ -12,19 +12,11 @@ export const HOST = PROD
   : 'localhost:3000';
 
 export const REDIRECT_URI = PROD
-  ? MODE === 'trends'
-    ? `https://${HOST}/frontend/user`
-    : 'https://www.githubtrends.io/user/wrapped'
-  : MODE === 'trends'
-    ? `http://${HOST}/frontend/user`
-    : 'http://localhost:3000/user/wrapped';
+  ? `https://${HOST}/frontend/user`
+  : `http://${HOST}/frontend/user`;
 
 export const GITHUB_PRIVATE_AUTH_URL = `https://github.com/login/oauth/authorize?scope=user,repo&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}/private`;
 export const GITHUB_PUBLIC_AUTH_URL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}/public`;
-
-export const WRAPPED_URL = PROD
-  ? 'https://www.githubwrapped.io'
-  : 'http://localhost:3001';
 
 export const BACKEND_URL = PROD
   ? 'https://api.githubtrends.io'

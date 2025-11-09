@@ -10,7 +10,7 @@ import { MdSettings as SettingsIcon } from 'react-icons/md';
 import { logout as _logout } from '../../redux/actions/userActions';
 import appIcon from '../../assets/appLogo64.png';
 import { classnames } from '../../utils';
-import { GITHUB_PUBLIC_AUTH_URL, WRAPPED_URL } from '../../constants';
+import { GITHUB_PUBLIC_AUTH_URL } from '../../constants';
 
 const propTypes = {
   to: PropTypes.string.isRequired,
@@ -79,26 +79,7 @@ const Header = ({ mode }) => {
           {mode === 'trends' && (
             <span className="ml-2 text-xl">GitHub Trends</span>
           )}
-          {mode === 'wrapped' && (
-            <span className="ml-2 text-xl">GitHub Wrapped</span>
-          )}
         </Link>
-        {/* Pages: Wrapped, Dashboard, Demo */}
-        {mode === 'trends' && (
-          <div className="hidden md:flex">
-            <Link
-              to={WRAPPED_URL}
-              className="px-4 py-1 mr-3 rounded-sm bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              Wrapped
-            </Link>
-            {isAuthenticated ? (
-              <StandardLink to="/user">Dashboard</StandardLink>
-            ) : (
-              <StandardLink to="/demo">Demo</StandardLink>
-            )}
-          </div>
-        )}
         {/* Auth Pages: Sign Up, Log In, Log Out */}
         <div className="hidden md:flex ml-auto items-center text-base justify-center">
           {isAuthenticated ? (
@@ -144,18 +125,9 @@ const Header = ({ mode }) => {
       <div className={classnames('p-5 pt-0', !toggle && 'hidden')}>
         {mode === 'trends' && (
           <>
-            <MobileLink to={WRAPPED_URL} onClick={() => setToggle(false)}>
-              Wrapped
+            <MobileLink to="/user" onClick={() => setToggle(false)}>
+              Dashboard
             </MobileLink>
-            {isAuthenticated ? (
-              <MobileLink to="/user" onClick={() => setToggle(false)}>
-                Dashboard
-              </MobileLink>
-            ) : (
-              <MobileLink to="/demo" onClick={() => setToggle(false)}>
-                Demo
-              </MobileLink>
-            )}
           </>
         )}
         {isAuthenticated ? (

@@ -9,12 +9,10 @@ import { FaCheck as CheckIcon, FaGithub as GithubIcon } from 'react-icons/fa';
 import { Button, Preview } from '../../components';
 
 import mockup from '../../assets/mockup.png';
-import wrapped from '../../assets/wrapped1.png';
 import avgupta456Langs from '../../assets/avgupta456_langs.png';
 import tiangoloRepos from '../../assets/tiangolo_repos.png';
 import reininkRepos from '../../assets/reinink_repos.png';
 import dhermesLangs from '../../assets/dhermes_langs.png';
-import { WRAPPED_URL } from '../../constants';
 
 function LandingScreen() {
   const userId = useSelector((state) => state.user.userId);
@@ -93,9 +91,9 @@ function LandingScreen() {
           </p>
           <br />
           <div>
-            <Link to={isAuthenticated ? '/user' : '/demo'} className="w-auto">
+            <Link to="/user" className="w-auto">
               <Button className="my-4 mr-4 w-auto justify-center text-white text-xl 3xl:text-2xl bg-gray-700 hover:bg-gray-800">
-                {isAuthenticated ? 'Visit Dashboard' : 'Try the Demo'}
+                Visit Dashboard
               </Button>
             </Link>
             {!isAuthenticated && (
@@ -105,57 +103,6 @@ function LandingScreen() {
                 </Button>
               </Link>
             )}
-          </div>
-        </div>
-      </div>
-      <div className="text-gray-700 w-full flex flex-wrap items-center py-4 px-4">
-        <div className="w-full lg:w-1/2 3xl:w-1/3 mx-auto p-8 flex flex-col">
-          <h1 className="text-4xl text-gray-900 font-medium mb-12">
-            Reflect on your year
-            <div>
-              with <strong>GitHub Wrapped</strong>
-            </div>
-          </h1>
-          <p className="text-lg font-bold">1. Detailed</p>
-          <p>
-            GitHub Wrapped provides a breakdown of your contributions by date,
-            by date, time, repository, and language. Over 20 stats are
-            displayed.
-          </p>
-          <br />
-          <p className="text-lg font-bold">2. Visual</p>
-          <p>
-            Understand your coding contributions like never before with an
-            interactive calendar, bar charts, pie charts, and more.
-          </p>
-          <br />
-          <p className="text-lg font-bold">3. Public</p>
-          <p>
-            Share your GitHub Wrapped link with your friends and colleagues and
-            take a look at their contributions too.{' '}
-            <strong>No account required</strong>, although rate limiting may
-            apply.
-          </p>
-          <br />
-          <div>
-            <Link to={`${WRAPPED_URL}/avgupta456`} className="w-auto">
-              <Button className="my-4 mr-4 w-auto justify-center text-white text-xl 3xl:text-2xl bg-gray-700 hover:bg-gray-800">
-                Example
-              </Button>
-            </Link>
-            <Link
-              to={isAuthenticated ? `${WRAPPED_URL}/${userId}` : WRAPPED_URL}
-              className="w-auto"
-            >
-              <Button className="my-4 mr-4 w-auto justify-center text-white text-xl 3xl:text-2xl bg-blue-500 hover:bg-blue-600">
-                Get your Wrapped
-              </Button>
-            </Link>
-          </div>
-        </div>
-        <div className="w-full lg:w-1/2 p-8">
-          <div className="flex justify-center">
-            <img src={wrapped} alt="preview" />
           </div>
         </div>
       </div>
@@ -211,11 +158,6 @@ function LandingScreen() {
           <p className="text-3xl font-medium">Ready to get started?</p>
           <p className="text-3xl font-medium">Create an account today.</p>
           <div className="mt-2">
-            <Link to="/demo" className="w-auto">
-              <Button className="my-4 mr-4 w-auto justify-center text-white text-xl 3xl:text-2xl bg-gray-700 hover:bg-gray-800">
-                Try Demo
-              </Button>
-            </Link>
             <Link to="/signup" className="w-auto">
               <Button className="my-4 mr-4 w-auto justify-center text-white text-xl 3xl:text-2xl bg-blue-500 hover:bg-blue-600">
                 Sign Up

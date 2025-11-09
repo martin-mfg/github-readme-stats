@@ -5,6 +5,4 @@ import {
   deleteAccount,
 } from './user';
 
-import { getWrapped } from './wrapped';
-
-export { setUserKey, authenticate, getUserMetadata, deleteAccount, getWrapped };
+export { setUserKey, authenticate, getUserMetadata, deleteAccount };
