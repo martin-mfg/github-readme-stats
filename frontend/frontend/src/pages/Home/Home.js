@@ -93,56 +93,85 @@ const HomeScreen = () => {
 
   let fullSuffix = `${imageSrc}`;
 
-  if (selectedStatsRank !== STATS_DEFAULT_RANK) {
+  if (
+    selectedStatsRank !== STATS_DEFAULT_RANK &&
+    selectedCard === CardTypes.STATS
+  ) {
     fullSuffix += `&rank_icon=${selectedStatsRank.value}`;
   }
 
-  if (selectedLanguagesLayout !== LANGUAGES_DEFAULT_LAYOUT) {
+  if (
+    selectedLanguagesLayout !== LANGUAGES_DEFAULT_LAYOUT &&
+    selectedCard === CardTypes.TOP_LANGS
+  ) {
     fullSuffix += `&layout=${selectedLanguagesLayout.value}`;
   }
 
-  if (selectedWakatimeLayout !== WAKATIME_DEFAULT_LAYOUT) {
+  if (
+    selectedWakatimeLayout !== WAKATIME_DEFAULT_LAYOUT &&
+    selectedCard === CardTypes.WAKATIME
+  ) {
     fullSuffix += `&layout=${selectedWakatimeLayout.value}`;
   }
 
-  if (!showTitle) {
+  if (
+    !showTitle &&
+    (selectedCard === CardTypes.STATS ||
+      selectedCard === CardTypes.TOP_LANGS ||
+      selectedCard === CardTypes.WAKATIME)
+  ) {
     fullSuffix += '&hide_title=true';
   }
 
-  if (showOwner) {
+  if (
+    showOwner &&
+    (selectedCard === CardTypes.PIN || selectedCard === CardTypes.GIST)
+  ) {
     fullSuffix += '&show_owner=true';
   }
 
-  if (descriptionLines) {
+  if (descriptionLines && selectedCard === CardTypes.PIN) {
     fullSuffix += `&description_lines_count=${descriptionLines}`;
   }
 
-  if (customTitle) {
+  if (
+    customTitle &&
+    (selectedCard === CardTypes.STATS || selectedCard === CardTypes.WAKATIME)
+  ) {
     const encodedTitle = encodeURIComponent(customTitle);
     fullSuffix += `&custom_title=${encodedTitle}`;
   }
 
-  if (langsCount) {
+  if (
+    langsCount &&
+    (selectedCard === CardTypes.TOP_LANGS ||
+      selectedCard === CardTypes.WAKATIME)
+  ) {
     fullSuffix += `&langs_count=${langsCount}`;
   }
 
-  if (showAllStats) {
+  if (showAllStats && selectedCard === CardTypes.STATS) {
     fullSuffix += `&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage,prs_commented,prs_reviewed,issues_commented`;
   }
 
-  if (showIcons) {
+  if (showIcons && selectedCard === CardTypes.STATS) {
     fullSuffix += `&show_icons=true`;
   }
 
-  if (includeAllCommits) {
+  if (includeAllCommits && selectedCard === CardTypes.STATS) {
     fullSuffix += `&include_all_commits=true`;
   }
 
-  if (!enableAnimations) {
+  if (
+    !enableAnimations &&
+    (selectedCard === CardTypes.STATS ||
+      selectedCard === CardTypes.TOP_LANGS ||
+      selectedCard === CardTypes.WAKATIME)
+  ) {
     fullSuffix += `&disable_animations=${!enableAnimations}`;
   }
 
-  if (usePercent) {
+  if (usePercent && selectedCard === CardTypes.WAKATIME) {
     fullSuffix += `&display_format=percent`;
   }
 
