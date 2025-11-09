@@ -148,7 +148,20 @@ const HomeScreen = () => {
 
   // for stage three
   const [theme, setTheme] = useState('default');
-  const themeSuffix = `${fullSuffix}&theme=${theme}`;
+  let themeSuffix = fullSuffix;
+
+  if (
+    !(
+      (theme === 'default' &&
+        [CardTypes.STATS, CardTypes.TOP_LANGS, CardTypes.WAKATIME].includes(
+          selectedCard,
+        )) ||
+      (theme === 'default_repocard' &&
+        [CardTypes.PIN, CardTypes.GIST].includes(selectedCard))
+    )
+  ) {
+    themeSuffix += `&theme=${theme}`;
+  }
 
   useEffect(() => {
     async function redirectCode() {
