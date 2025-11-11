@@ -11,6 +11,24 @@ import {
 import { FaGithub as GithubIcon } from 'react-icons/fa';
 
 const LoginStage = ({}) => {
+  const items = [
+    {
+      url: GITHUB_PUBLIC_AUTH_URL,
+      label: 'GitHub Public Access\u00A0',
+      description: 'Generate stats based on your public repositories.',
+      buttonClassName:
+        'h-12 flex justify-center items-center text-white bg-blue-500 hover:bg-blue-600',
+    },
+    {
+      url: GITHUB_PRIVATE_AUTH_URL,
+      label: 'GitHub Private Access',
+      description:
+        'Includes contributions in your private repositories for more complete and accurate stats.',
+      buttonClassName:
+        'h-12 flex justify-center items-center text-black border border-black bg-white hover:bg-gray-100',
+    },
+  ];
+
   return (
     <div className="h-full flex flex-wrap">
       <div className="hidden lg:block lg:w-3/5 lg:p-8 lg:my-auto">
@@ -20,25 +38,20 @@ const LoginStage = ({}) => {
             'lg:h-auto',
           )}
         >
-          <div className="flex items-start gap-4">
-            <a href={GITHUB_PUBLIC_AUTH_URL}>
-              <Button className="h-12 flex justify-center items-center text-white bg-blue-500 hover:bg-blue-600">
-                <GithubIcon className="w-6 h-6" />
-                <span className="ml-2 xl:text-lg">GitHub Public Access</span>
-              </Button>
-            </a>
-            <div className="flex-1">Lorem Ipsum.</div>
-          </div>
-          <div className="mt-4" />
-          <div className="flex items-start gap-4">
-            <a href={GITHUB_PRIVATE_AUTH_URL}>
-              <Button className="h-12 flex justify-center items-center text-black border border-black bg-white hover:bg-gray-100">
-                <GithubIcon className="w-6 h-6" />
-                <span className="ml-2 xl:text-lg">GitHub Private Access</span>
-              </Button>
-            </a>
-            <div className="flex-1">Lorem Ipsum.</div>
-          </div>
+          {items.map((item, index) => (
+            <React.Fragment key={index}>
+              {index > 0 && <div className="mt-4" />}
+              <div className="flex gap-4">
+                <a href={item.url}>
+                  <Button className={item.buttonClassName}>
+                    <GithubIcon className="w-6 h-6" />
+                    <span className="ml-2 xl:text-lg">{item.label}</span>
+                  </Button>
+                </a>
+                <div className="flex-1">{item.description}</div>
+              </div>
+            </React.Fragment>
+          ))}
         </div>
       </div>
       <div className="w-full h-full lg:w-2/5 flex lg:flex-col lg:p-8">
