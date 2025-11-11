@@ -7,6 +7,7 @@ import { ProgressBar } from '../../components';
 import {
   CustomizeStage,
   DisplayStage,
+  LoginStage,
   SelectCardStage,
   ThemeStage,
 } from './stages';
@@ -256,6 +257,7 @@ const HomeScreen = () => {
             <div className="text-2xl text-gray-600 font-semibold">
               {
                 [
+                  'Login',
                   'Select a Card',
                   'Modify Card Parameters',
                   'Choose a Theme',
@@ -266,6 +268,7 @@ const HomeScreen = () => {
             <div>
               {
                 [
+                  'Login or continue as guest.',
                   'You will be able to customize your card in future steps.',
                   'Change the date range, include private commits, and more!',
                   'Choose from one of our predefined themes (more coming soon!)',
@@ -274,14 +277,15 @@ const HomeScreen = () => {
               }
             </div>
           </div>
-          {stage === 0 && (
+          {stage === 0 && <LoginStage />}
+          {stage === 1 && (
             <SelectCardStage
               selectedCard={selectedCard}
               setSelectedCard={setSelectedCard}
               setImageSrc={setImageSrc}
             />
           )}
-          {stage === 1 && (
+          {stage === 2 && (
             <CustomizeStage
               selectedCard={selectedCard || CardTypes.STATS}
               imageSrc={imageSrc}
@@ -314,14 +318,14 @@ const HomeScreen = () => {
               fullSuffix={fullSuffix}
             />
           )}
-          {stage === 2 && (
+          {stage === 3 && (
             <ThemeStage
               theme={theme}
               setTheme={setTheme}
               fullSuffix={fullSuffix}
             />
           )}
-          {stage === 3 && (
+          {stage === 4 && (
             <DisplayStage userId={userId} themeSuffix={themeSuffix} />
           )}
         </div>
