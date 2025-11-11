@@ -54,7 +54,7 @@ const ProgressBar = ({ items, currItem, setCurrItem }) => {
             ? 'text-gray-300 cursor-not-allowed'
             : 'text-gray-700 cursor-pointer',
         )}
-        onClick={() => setCurrItem(currItem - 1)}
+        onClick={() => setCurrItem(Math.max(currItem - 1, 0))}
       />
       <div className="px-2 flex-grow flex flex-row">
         {items.map((item, index) => {
@@ -76,7 +76,7 @@ const ProgressBar = ({ items, currItem, setCurrItem }) => {
             ? 'text-gray-300 cursor-not-allowed'
             : 'text-gray-700 cursor-pointer',
         )}
-        onClick={() => setCurrItem(currItem + 1)}
+        onClick={() => setCurrItem(Math.min(currItem + 1, items.length - 1))}
       />
     </div>
   );

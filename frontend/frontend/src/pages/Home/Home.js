@@ -244,6 +244,7 @@ const HomeScreen = () => {
       <div className="flex flex-col">
         <ProgressBar
           items={[
+            'Login',
             'Select Card',
             'Modify Parameters',
             'Customize Theme',
