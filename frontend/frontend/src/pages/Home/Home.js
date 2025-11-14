@@ -278,7 +278,7 @@ const HomeScreen = () => {
               }
             </div>
           </div>
-          {stage === 0 && <LoginStage />}
+          {stage === 0 && <LoginStage setCurrItem={setStage} />}
           {stage === 1 && (
             <SelectCardStage
               selectedCard={selectedCard}

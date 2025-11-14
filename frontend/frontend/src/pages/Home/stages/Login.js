@@ -2,22 +2,22 @@
 
 import React from 'react';
 
-import { Button, Card } from '../../../components';
-import { classnames } from '../../../utils';
+import { Button, Card, CheckboxSection } from '../../../components';
+import { CardTypes, classnames } from '../../../utils';
 import {
   GITHUB_PRIVATE_AUTH_URL,
   GITHUB_PUBLIC_AUTH_URL,
 } from '../../../constants';
 import { FaGithub as GithubIcon } from 'react-icons/fa';
 
-const LoginStage = ({}) => {
+const LoginStage = ({ setCurrItem }) => {
   const items = [
     {
       url: GITHUB_PUBLIC_AUTH_URL,
       label: 'GitHub Public Access\u00A0',
       description: 'Generate stats based on your public repositories.',
-      buttonClassName:
-        'h-12 flex justify-center items-center text-white bg-blue-500 hover:bg-blue-600',
+      buttonClassName: 'text-white bg-blue-500 hover:bg-blue-600',
+      onClick: null,
     },
     {
       url: GITHUB_PRIVATE_AUTH_URL,
@@ -25,7 +25,18 @@ const LoginStage = ({}) => {
       description:
         'Includes contributions in your private repositories for more complete and accurate stats.',
       buttonClassName:
-        'h-12 flex justify-center items-center text-black border border-black bg-white hover:bg-gray-100',
+        'text-black border border-black bg-white hover:bg-gray-100',
+      onClick: null,
+    },
+    {
+      url: null,
+      label: 'Continue as Guest',
+      description: 'TODO',
+      buttonClassName:
+        'text-black border border-black bg-white hover:bg-gray-100',
+      onClick: () => {
+        setCurrItem(1);
+      },
     },
   ];
 
@@ -34,20 +45,26 @@ const LoginStage = ({}) => {
       <div className="hidden lg:block lg:w-3/5 lg:p-8 lg:my-auto">
         <div
           className={classnames(
-            'bg-gray-100 rounded-sm w-full h-full m-auto p-8 shadow',
+            'bg-gray-200 rounded-sm w-full h-full m-auto p-8 shadow',
             'lg:h-auto',
           )}
         >
           {items.map((item, index) => (
             <React.Fragment key={index}>
               {index > 0 && <div className="mt-4" />}
-              <div className="flex gap-4">
-                <a href={item.url}>
-                  <Button className={item.buttonClassName}>
-                    <GithubIcon className="w-6 h-6" />
-                    <span className="ml-2 xl:text-lg">{item.label}</span>
-                  </Button>
-                </a>
+              <div className="flex gap-4 items-center">
+                {item.url && `<a href="${item.url}">`}
+                <Button
+                  className={
+                    item.buttonClassName +
+                    ' h-12 flex justify-center items-center'
+                  }
+                  onClick={item.onClick}
+                >
+                  <GithubIcon className="w-6 h-6" />
+                  <span className="ml-2 xl:text-lg">{item.label}</span>
+                </Button>
+                {item.url && '</a>'}
                 <div className="flex-1">{item.description}</div>
               </div>
             </React.Fragment>
@@ -123,8 +140,8 @@ const LoginStage = ({}) => {
   );
 };
 
-LoginStage.propTypes = {};
-
-LoginStage.defaultProps = {};
+LoginStage.propTypes = {
+  setCurrItem: PropTypes.func.isRequired,
+};
 
 export default LoginStage;
