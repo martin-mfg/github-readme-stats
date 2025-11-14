@@ -49,26 +49,30 @@ const LoginStage = ({ setCurrItem }) => {
             'lg:h-auto',
           )}
         >
-          {items.map((item, index) => (
-            <React.Fragment key={index}>
-              {index > 0 && <div className="mt-4" />}
-              <div className="flex gap-4 items-center">
-                {item.url && `<a href="${item.url}">`}
-                <Button
-                  className={
-                    item.buttonClassName +
-                    ' h-12 flex justify-center items-center'
-                  }
-                  onClick={item.onClick}
-                >
-                  <GithubIcon className="w-6 h-6" />
-                  <span className="ml-2 xl:text-lg">{item.label}</span>
-                </Button>
-                {item.url && '</a>'}
-                <div className="flex-1">{item.description}</div>
-              </div>
-            </React.Fragment>
-          ))}
+          {items.map((item, index) => {
+            const button = (
+              <Button
+                className={
+                  item.buttonClassName +
+                  ' h-12 flex justify-center items-center'
+                }
+                onClick={item.onClick}
+              >
+                {item.url && <GithubIcon className="w-6 h-6" />}
+                <span className="ml-2 xl:text-lg">{item.label}</span>
+              </Button>
+            );
+
+            return (
+              <React.Fragment key={index}>
+                {index > 0 && <div className="mt-4" />}
+                <div className="flex gap-4 items-center">
+                  {item.url ? <a href={item.url}>{button}</a> : button}
+                  <div className="flex-1">{item.description}</div>
+                </div>
+              </React.Fragment>
+            );
+          })}
         </div>
       </div>
       <div className="w-full h-full lg:w-2/5 flex lg:flex-col lg:p-8">
