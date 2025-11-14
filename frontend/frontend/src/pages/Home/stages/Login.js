@@ -57,14 +57,14 @@ const LoginStage = ({ setCurrItem }) => {
                 <p className="text-sm text-gray-500 mt-1">
                   {privateAccess
                     ? 'You have granted access to both public and private repositories.'
-                    : 'You have granted access to public repositories only.'}
+                    : 'You have granted access to public repositories.'}
                 </p>
               </div>
 
               {/* Access Level Management Buttons */}
               <div className="mb-4">
                 {privateAccess ? (
-                  <div>
+                  <div className="flex items-center gap-4">
                     <a
                       href={`https://${HOST}/api/downgrade?user_key=${userKey}`}
                     >
@@ -74,13 +74,13 @@ const LoginStage = ({ setCurrItem }) => {
                         </span>
                       </Button>
                     </a>
-                    <p className="text-sm text-gray-600 mt-2">
+                    <p className="text-sm text-gray-600 flex-1">
                       Switch to public access if you prefer not to share private
                       repository data.
                     </p>
                   </div>
                 ) : (
-                  <div>
+                  <div className="flex items-center gap-4">
                     <a href={GITHUB_PRIVATE_AUTH_URL}>
                       <Button className="h-12 flex justify-center items-center w-[260px] text-white bg-blue-500 hover:bg-blue-600">
                         <span className="xl:text-lg">
@@ -88,7 +88,7 @@ const LoginStage = ({ setCurrItem }) => {
                         </span>
                       </Button>
                     </a>
-                    <p className="text-sm text-gray-600 mt-2">
+                    <p className="text-sm text-gray-600 flex-1">
                       Upgrade to include contributions from your private
                       repositories for more complete stats.
                     </p>
@@ -97,15 +97,15 @@ const LoginStage = ({ setCurrItem }) => {
               </div>
 
               {/* Logout Button */}
-              <div className="mt-6">
+              <div className="mt-6 flex items-center gap-4">
                 <Button
                   className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100"
                   onClick={logout}
                 >
-                  <span className="xl:text-lg">Sign Out</span>
+                  <span className="xl:text-lg">Log Out</span>
                 </Button>
-                <p className="text-sm text-gray-600 mt-2">
-                  Sign out from your GitHub account.
+                <p className="text-sm text-gray-600 flex-1">
+                  Log out from your GitHub account.
                 </p>
               </div>
             </>
@@ -121,7 +121,7 @@ const LoginStage = ({ setCurrItem }) => {
                 </p>
               </div>
 
-              <div>
+              <div className="flex items-center gap-4 mb-4">
                 <a href={GITHUB_PUBLIC_AUTH_URL}>
                   <Button className="h-12 flex justify-center items-center w-[260px] text-white bg-blue-500 hover:bg-blue-600">
                     <GithubIcon className="w-6 h-6" />
@@ -130,12 +130,12 @@ const LoginStage = ({ setCurrItem }) => {
                     </span>
                   </Button>
                 </a>
-                <p className="text-sm text-gray-600 mt-2 mb-4">
+                <p className="text-sm text-gray-600 flex-1">
                   Generate stats based on your public repositories.
                 </p>
               </div>
 
-              <div>
+              <div className="flex items-center gap-4 mb-4">
                 <a href={GITHUB_PRIVATE_AUTH_URL}>
                   <Button className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100">
                     <GithubIcon className="w-6 h-6" />
@@ -144,20 +144,20 @@ const LoginStage = ({ setCurrItem }) => {
                     </span>
                   </Button>
                 </a>
-                <p className="text-sm text-gray-600 mt-2 mb-4">
+                <p className="text-sm text-gray-600 flex-1">
                   Includes contributions in your private repositories for more
                   complete and accurate stats.
                 </p>
               </div>
 
-              <div>
+              <div className="flex items-center gap-4">
                 <Button
                   className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100"
                   onClick={() => setCurrItem(1)}
                 >
                   <span className="ml-2 xl:text-lg">Continue as Guest</span>
                 </Button>
-                <p className="text-sm text-gray-600 mt-2">
+                <p className="text-sm text-gray-600 flex-1">
                   Try out Github Trends with data from an example
                   user/repository.
                 </p>

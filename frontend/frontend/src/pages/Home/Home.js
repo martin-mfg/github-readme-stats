@@ -227,18 +227,6 @@ const HomeScreen = () => {
     );
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="h-full py-8 flex justify-center items-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">
-            Please sign in to access this page
-          </h1>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="h-full px-2 py-4 lg:p-8 text-gray-600 body-font">
       <div className="flex flex-col">
