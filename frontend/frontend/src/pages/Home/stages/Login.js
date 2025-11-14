@@ -1,45 +1,29 @@
 /* eslint-disable react/no-array-index-key */
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Card, CheckboxSection } from '../../../components';
-import { CardTypes, classnames } from '../../../utils';
+import { Button, Card } from '../../../components';
+import { classnames } from '../../../utils';
 import {
   GITHUB_PRIVATE_AUTH_URL,
   GITHUB_PUBLIC_AUTH_URL,
+  HOST,
 } from '../../../constants';
 import { FaGithub as GithubIcon } from 'react-icons/fa';
+import { logout as _logout } from '../../../redux/actions/userActions';
 
 const LoginStage = ({ setCurrItem }) => {
-  const items = [
-    {
-      url: GITHUB_PUBLIC_AUTH_URL,
-      label: 'GitHub Public Access\u00A0',
-      description: 'Generate stats based on your public repositories.',
-      buttonClassName: 'text-white bg-blue-500 hover:bg-blue-600',
-      onClick: null,
-    },
-    {
-      url: GITHUB_PRIVATE_AUTH_URL,
-      label: 'GitHub Private Access',
-      description:
-        'Includes contributions in your private repositories for more complete and accurate stats.',
-      buttonClassName:
-        'text-black border border-black bg-white hover:bg-gray-100',
-      onClick: null,
-    },
-    {
-      url: null,
-      label: 'Continue as Guest',
-      description: 'TODO',
-      buttonClassName:
-        'text-black border border-black bg-white hover:bg-gray-100',
-      onClick: () => {
-        setCurrItem(1);
-      },
-    },
-  ];
+  const userId = useSelector((state) => state.user.userId);
+  const userKey = useSelector((state) => state.user.userKey);
+  const privateAccess = useSelector((state) => state.user.privateAccess);
+  const isAuthenticated = userId && userId.length > 0;
 
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch(_logout());
+  };
   return (
     <div className="h-full flex flex-wrap">
       <div className="hidden lg:block lg:w-3/5 lg:p-8 lg:my-auto">
@@ -49,30 +33,137 @@ const LoginStage = ({ setCurrItem }) => {
             'lg:h-auto',
           )}
         >
-          {items.map((item, index) => {
-            const button = (
-              <Button
-                className={
-                  item.buttonClassName +
-                  ' h-12 flex justify-center items-center'
-                }
-                onClick={item.onClick}
-              >
-                {item.url && <GithubIcon className="w-6 h-6" />}
-                <span className="ml-2 xl:text-lg">{item.label}</span>
-              </Button>
-            );
+          {isAuthenticated ? (
+            <>
+              {/* User is logged in */}
+              <div className="mb-6">
+                <p className="text-lg text-gray-700 mb-2">
+                  You are logged in as{' '}
+                  <a
+                    href={`https://github.com/${userId}`}
+                    target="_blank"
+                    className="text-blue-500 hover:underline font-semibold"
+                  >
+                    {userId}
+                  </a>
+                  .
+                </p>
+                <p className="text-gray-600">
+                  Access Level:{' '}
+                  <strong>
+                    {privateAccess ? 'Private Access' : 'Public Access'}
+                  </strong>
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  {privateAccess
+                    ? 'You have granted access to both public and private repositories.'
+                    : 'You have granted access to public repositories only.'}
+                </p>
+              </div>
 
-            return (
-              <React.Fragment key={index}>
-                {index > 0 && <div className="mt-4" />}
-                <div className="flex gap-4 items-center">
-                  {item.url ? <a href={item.url}>{button}</a> : button}
-                  <div className="flex-1">{item.description}</div>
-                </div>
-              </React.Fragment>
-            );
-          })}
+              {/* Access Level Management Buttons */}
+              <div className="mb-4">
+                {privateAccess ? (
+                  <div>
+                    <a
+                      href={`https://${HOST}/api/downgrade?user_key=${userKey}`}
+                    >
+                      <Button className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100">
+                        <span className="xl:text-lg">
+                          Downgrade to Public Access
+                        </span>
+                      </Button>
+                    </a>
+                    <p className="text-sm text-gray-600 mt-2">
+                      Switch to public access if you prefer not to share private
+                      repository data.
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <a href={GITHUB_PRIVATE_AUTH_URL}>
+                      <Button className="h-12 flex justify-center items-center w-[260px] text-white bg-blue-500 hover:bg-blue-600">
+                        <span className="xl:text-lg">
+                          Upgrade to Private Access
+                        </span>
+                      </Button>
+                    </a>
+                    <p className="text-sm text-gray-600 mt-2">
+                      Upgrade to include contributions from your private
+                      repositories for more complete stats.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Logout Button */}
+              <div className="mt-6">
+                <Button
+                  className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100"
+                  onClick={logout}
+                >
+                  <span className="xl:text-lg">Sign Out</span>
+                </Button>
+                <p className="text-sm text-gray-600 mt-2">
+                  Sign out from your GitHub account.
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* User is not logged in - show login options */}
+              <div className="mb-6">
+                <p className="text-lg text-gray-700 mb-2">
+                  You are not logged in.
+                </p>
+                <p className="text-sm text-gray-500">
+                  Please choose an option below to continue.
+                </p>
+              </div>
+
+              <div>
+                <a href={GITHUB_PUBLIC_AUTH_URL}>
+                  <Button className="h-12 flex justify-center items-center w-[260px] text-white bg-blue-500 hover:bg-blue-600">
+                    <GithubIcon className="w-6 h-6" />
+                    <span className="ml-2 xl:text-lg">
+                      GitHub Public Access
+                    </span>
+                  </Button>
+                </a>
+                <p className="text-sm text-gray-600 mt-2 mb-4">
+                  Generate stats based on your public repositories.
+                </p>
+              </div>
+
+              <div>
+                <a href={GITHUB_PRIVATE_AUTH_URL}>
+                  <Button className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100">
+                    <GithubIcon className="w-6 h-6" />
+                    <span className="ml-2 xl:text-lg">
+                      GitHub Private Access
+                    </span>
+                  </Button>
+                </a>
+                <p className="text-sm text-gray-600 mt-2 mb-4">
+                  Includes contributions in your private repositories for more
+                  complete and accurate stats.
+                </p>
+              </div>
+
+              <div>
+                <Button
+                  className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100"
+                  onClick={() => setCurrItem(1)}
+                >
+                  <span className="ml-2 xl:text-lg">Continue as Guest</span>
+                </Button>
+                <p className="text-sm text-gray-600 mt-2">
+                  Try out Github Trends with data from an example
+                  user/repository.
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className="w-full h-full lg:w-2/5 flex lg:flex-col lg:p-8">
