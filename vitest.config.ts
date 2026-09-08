@@ -5,7 +5,7 @@ export default defineConfig({
     projects: [
       "packages/core/vitest.config.ts",
       "apps/backend/vitest.config.ts",
-      "apps/frontend/vite.config.ts",
+      "apps/frontend/vitest.config.ts",
     ],
   },
 });

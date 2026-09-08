@@ -51,6 +51,7 @@ exports[`Test /api/gist contract > should match the public happy-path response s
     .gray { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: #434d58 }
     .icon { fill: #586069 }
   
+          
 
           
       /* Animations */
@@ -75,8 +76,13 @@ exports[`Test /api/gist contract > should match the public happy-path response s
         </style>
 
         
+        <defs>
+          
+          
+        </defs>
+        
 
-        <rect data-testid="card-bg" x="0.5" y="0.5" rx="4.5" height="99%" stroke="#e4e2e2" width="399" fill="#fffefe" stroke-opacity="1"/>
+        <rect data-testid="card-bg" class="card-bg" x="0.5" y="0.5" rx="4.5" height="99%" stroke="#e4e2e2" width="399" fill="#fffefe" stroke-opacity="1"/>
 
         
       <g data-testid="card-title" transform="translate(25, 35)">
@@ -145,12 +151,25 @@ exports[`Test /api/gist contract > should match the public many-params response 
           }
           
     .description {
-      font: 400 13px 'Segoe UI', Ubuntu, Sans-Serif;fill: #abcdef;
+      font: 400 13px 'Segoe UI', Ubuntu, Sans-Serif;fill: #ffabcd;
       
     }
-    .gray { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: #abcdef }
+    .gray { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: #ffabcd }
     .icon { fill: #ff00aa }
   
+          
+          @media (prefers-color-scheme: dark) {
+            .header { fill: #123456; }
+            .card-bg { fill: #0f172a; stroke: #fedcba; }
+            
+      .description {
+        fill: #abcdef;
+        
+      }
+      .gray { fill: #abcdef }
+      .icon { fill: #aa00ff }
+    
+          }
 
           
       /* Animations */
@@ -175,8 +194,13 @@ exports[`Test /api/gist contract > should match the public many-params response 
         </style>
 
         
+        <defs>
+          
+          
+        </defs>
+        
 
-        <rect data-testid="card-bg" x="0.5" y="0.5" rx="12" height="99%" stroke="#fedcba" width="399" fill="#0f172a" stroke-opacity="1"/>
+        <rect data-testid="card-bg" class="card-bg" x="0.5" y="0.5" rx="12" height="99%" stroke="#fedcba" width="399" fill="#0f172a" stroke-opacity="1"/>
 
         
       <g data-testid="card-title" transform="translate(25, 35)">
@@ -215,7 +239,7 @@ exports[`Test /api/gist contract > should match the public many-params response 
   
         </g>
       </svg>",
-  "graphqlRequest": "{"query":"\\nquery gistInfo($gistName: String!) {\\n    viewer {\\n        gist(name: $gistName) {\\n            description\\n            owner {\\n                login\\n            }\\n            stargazerCount\\n            forks {\\n                totalCount\\n            }\\n            files {\\n                name\\n                language {\\n                    name\\n                }\\n                size\\n            }\\n        }\\n    }\\n}\\n","variables":{"gistName":"happy-gist-id"}}",
+  "graphqlRequest": "{"query":"\\nquery gistInfo($gistName: String!) {\\n  viewer {\\n    gist(name: $gistName) {\\n      description\\n      owner {\\n        login\\n      }\\n      stargazerCount\\n      forks {\\n        totalCount\\n      }\\n      files {\\n        ...GistFileInfo\\n      }\\n    }\\n  }\\n}\\nfragment GistFileInfo on GistFile {\\n  name\\n  language {\\n    name\\n  }\\n  size\\n}","variables":{"gistName":"happy-gist-id"}}",
   "headers": [
     [
       "Cache-Control",

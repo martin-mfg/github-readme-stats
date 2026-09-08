@@ -1,18 +1,21 @@
 {
   "extends": ["../../tsconfig.base.json"],
   "include": [
+    ".astro/types.d.ts",
     "src",
     "src/**/*.json",
     "e2e",
-    "vite.config.ts",
+    "astro.config.ts",
+    "vitest.config.ts",
     "playwright.config.ts"
   ],
   "compilerOptions": {
-    "lib": ["DOM"],
-    "composite": true,
+    "lib": ["DOM", "ESNext"],
     "module": "esnext",
     "moduleResolution": "bundler",
-    "outDir": "./build-ts",
+    // Starlight ships TypeScript rather than declarations, and its own sources trip
+    // this flag. Re-enable once it publishes `.d.ts` files.
+    "noPropertyAccessFromIndexSignature": false,
     "resolveJsonModule": true
   }
 }

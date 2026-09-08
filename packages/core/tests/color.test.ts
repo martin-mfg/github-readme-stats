@@ -1,11 +1,17 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  BASE_COLOR_KEYS,
+  COLOR_PARAM_KEYS,
+  THEME_VARIANTS,
   findInvalidColor,
+  findInvalidColorParam,
   getCardColors,
+  getLightDarkColors,
   isBareHexColor,
   isPrefixedHexColor,
   isValidGradient,
+  pickColorParams,
 } from "../src/common/color.js";
 
 describe("getCardColors", () => {
@@ -17,6 +23,7 @@ describe("getCardColors", () => {
       icon_color: "00f",
       bg_color: "fff",
       border_color: "fff",
+      prog_bar_bg_color: "f0f",
       theme: "dark",
     });
     expect(colors).toStrictEqual({
@@ -26,6 +33,7 @@ describe("getCardColors", () => {
       ringColor: "#0000ff",
       bgColor: "#fff",
       borderColor: "#fff",
+      progBarBgColor: "#f0f",
     });
   });
 
@@ -45,6 +53,7 @@ describe("getCardColors", () => {
       ringColor: "#2f80ed",
       bgColor: "#fff",
       borderColor: "#e4e2e2",
+      progBarBgColor: "#ddd",
     });
   });
 
@@ -59,6 +68,7 @@ describe("getCardColors", () => {
       iconColor: "#79ff97",
       bgColor: "#151515",
       borderColor: "#e4e2e2",
+      progBarBgColor: "#ddd",
     });
   });
 
@@ -78,6 +88,7 @@ describe("getCardColors", () => {
       ringColor: "#f00",
       bgColor: "#fff",
       borderColor: "#fff",
+      progBarBgColor: "#ddd",
     });
   });
 
@@ -92,6 +103,7 @@ describe("getCardColors", () => {
       ringColor: "#2f80ed",
       bgColor: "#fffefe",
       borderColor: "#e4e2e2",
+      progBarBgColor: "#ddd",
     });
   });
 });
@@ -148,6 +160,122 @@ describe("isValidGradient", () => {
   });
 });
 
+describe("getLightDarkColors", () => {
+  it("returns darkColors null when no mode-specific params are given", () => {
+    const { lightColors, darkColors } = getLightDarkColors({
+      title_color: "f00",
+      theme: "cobalt",
+    });
+    expect(darkColors).toBeNull();
+    expect(lightColors.titleColor).toBe("#f00");
+  });
+
+  it("lightColors equal base colors when only dark params are given", () => {
+    const base = getCardColors({ theme: "cobalt" });
+    const { lightColors } = getLightDarkColors({
+      theme: "cobalt",
+      title_color_dark: "0f0",
+    });
+    expect(lightColors).toStrictEqual(base);
+  });
+
+  it("light theme is respected when no dark params are given", () => {
+    const base = getCardColors({ theme: "cobalt" });
+    const { lightColors } = getLightDarkColors({
+      theme_light: "cobalt",
+    });
+    expect(lightColors).toStrictEqual(base);
+  });
+
+  it("lightColors use light-specific color override, darkColors use dark-specific", () => {
+    const { lightColors, darkColors } = getLightDarkColors({
+      title_color_light: "f00",
+      title_color_dark: "0f0",
+    });
+    expect(lightColors.titleColor).toBe("#f00");
+    expect(darkColors?.titleColor).toBe("#0f0");
+  });
+
+  it("theme_light sets the light mode base theme independently", () => {
+    const radicalColors = getCardColors({ theme: "radical" });
+    const { lightColors, darkColors } = getLightDarkColors({
+      theme_light: "radical",
+      theme_dark: "cobalt",
+    });
+    expect(lightColors).toStrictEqual(radicalColors);
+    expect(darkColors).toStrictEqual(getCardColors({ theme: "cobalt" }));
+  });
+
+  it("mode-specific params win over general color param", () => {
+    const { lightColors, darkColors } = getLightDarkColors({
+      title_color: "f00",
+      title_color_light: "0f0",
+      title_color_dark: "00f",
+    });
+    expect(lightColors.titleColor).toBe("#0f0");
+    expect(darkColors?.titleColor).toBe("#00f");
+  });
+
+  it("general theme param is used as base for both modes", () => {
+    const { lightColors, darkColors } = getLightDarkColors({
+      theme: "cobalt",
+      title_color_dark: "0f0",
+    });
+    expect(lightColors).toStrictEqual(getCardColors({ theme: "cobalt" }));
+    expect(darkColors?.titleColor).toBe("#0f0");
+    expect(darkColors?.bgColor).toBe(
+      getCardColors({ theme: "cobalt" }).bgColor,
+    );
+  });
+
+  it("ring color follows title color when ring is not set explicitly", () => {
+    const { darkColors } = getLightDarkColors({ title_color_dark: "0f0" });
+    expect(darkColors?.ringColor).toBe("#0f0");
+  });
+
+  it("ring_color_dark can be set independently", () => {
+    const { darkColors } = getLightDarkColors({
+      title_color_dark: "0f0",
+      ring_color_dark: "f0f",
+    });
+    expect(darkColors?.titleColor).toBe("#0f0");
+    expect(darkColors?.ringColor).toBe("#f0f");
+  });
+
+  it("prog_bar_bg_color_dark overrides prog bar color for dark mode", () => {
+    const { lightColors, darkColors } = getLightDarkColors({
+      prog_bar_bg_color_dark: "333",
+      title_color_dark: "fff",
+    });
+    expect(darkColors?.progBarBgColor).toBe("#333");
+    expect(lightColors.progBarBgColor).toBe("#ddd"); // default
+  });
+
+  it("bg gradient works in dark mode", () => {
+    const { darkColors } = getLightDarkColors({ bg_color_dark: "90,f00,0f0" });
+    expect(darkColors?.bgColor).toStrictEqual(["90", "f00", "0f0"]);
+  });
+
+  it("mode-specific theme and color override general", () => {
+    const { lightColors, darkColors } = getLightDarkColors({
+      theme: "vue",
+      theme_light: "radical",
+      theme_dark: "cobalt",
+      title_color: "f00",
+      title_color_light: "0f0",
+      title_color_dark: "00f",
+    });
+    expect(lightColors.titleColor).toBe("#0f0");
+    expect(darkColors?.titleColor).toBe("#00f");
+    expect(lightColors.bgColor).toBe(
+      getCardColors({ theme: "radical" }).bgColor,
+    );
+    expect(darkColors?.bgColor).toBe(
+      getCardColors({ theme: "cobalt" }).bgColor,
+    );
+  });
+});
+
 describe("findInvalidColor", () => {
   it("should return null for valid colors", () => {
     expect(
@@ -195,5 +323,71 @@ describe("findInvalidColor", () => {
         bg_color: "fff",
       }),
     ).toBe("title_color");
+  });
+});
+
+describe("color param surface", () => {
+  // These names are part of the public URL API: once released they cannot be
+  // renamed without breaking existing cards. Pinned deliberately, so adding or
+  // removing one has to be an explicit decision rather than a side effect.
+  it("accepts exactly these params", () => {
+    expect(COLOR_PARAM_KEYS).toStrictEqual([
+      "title_color",
+      "icon_color",
+      "text_color",
+      "bg_color",
+      "border_color",
+      "ring_color",
+      "prog_bar_bg_color",
+      "theme",
+      "title_color_light",
+      "icon_color_light",
+      "text_color_light",
+      "bg_color_light",
+      "border_color_light",
+      "ring_color_light",
+      "prog_bar_bg_color_light",
+      "theme_light",
+      "title_color_dark",
+      "icon_color_dark",
+      "text_color_dark",
+      "bg_color_dark",
+      "border_color_dark",
+      "ring_color_dark",
+      "prog_bar_bg_color_dark",
+      "theme_dark",
+    ]);
+  });
+
+  it("derives a light and dark variant for every base param", () => {
+    for (const key of BASE_COLOR_KEYS) {
+      for (const variant of THEME_VARIANTS) {
+        expect(COLOR_PARAM_KEYS).toContain(`${key}_${variant}`);
+      }
+    }
+    expect(COLOR_PARAM_KEYS).toHaveLength(
+      BASE_COLOR_KEYS.length * (THEME_VARIANTS.length + 1),
+    );
+  });
+
+  it("picks every accepted param off a query, and nothing else", () => {
+    const query = Object.fromEntries(
+      COLOR_PARAM_KEYS.map((key) => [key, "fff"]),
+    );
+    expect(
+      Object.keys(pickColorParams({ ...query, username: "x" })),
+    ).toStrictEqual([...COLOR_PARAM_KEYS]);
+  });
+
+  it("validates colors but skips theme params", () => {
+    expect(
+      findInvalidColorParam({ theme: "not-a-color", bg_color: "fff" }),
+    ).toBeNull();
+    expect(
+      findInvalidColorParam({ theme_dark: "not-a-color", bg_color: "fff" }),
+    ).toBeNull();
+    expect(findInvalidColorParam({ bg_color_dark: "not-a-color" })).toBe(
+      "bg_color_dark",
+    );
   });
 });

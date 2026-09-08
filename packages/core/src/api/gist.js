@@ -1,5 +1,5 @@
 import { renderGistCard } from "../cards/gist.js";
-import { findInvalidColor } from "../common/color.js";
+import { findInvalidColorParam, pickColorParams } from "../common/color.js";
 import {
   MissingParamError,
   retrieveSecondaryMessage,
@@ -13,27 +13,18 @@ import { isLocaleAvailable } from "../translations.js";
 export default async (
   {
     id,
-    title_color,
-    icon_color,
-    text_color,
-    bg_color,
-    theme,
     locale,
     border_radius,
-    border_color,
     show_owner,
     browser_rendering,
     hide_border,
+    ...remainingParams
   },
   pat = null,
 ) => {
-  const invalidColorInput = findInvalidColor({
-    title_color,
-    icon_color,
-    text_color,
-    bg_color,
-    border_color,
-  });
+  const colorParams = pickColorParams(remainingParams);
+
+  const invalidColorInput = findInvalidColorParam(colorParams);
   if (invalidColorInput) {
     return {
       status: "error - permanent",
@@ -50,13 +41,7 @@ export default async (
       content: renderError({
         message: "Something went wrong",
         secondaryMessage: "Language not found",
-        renderOptions: {
-          title_color,
-          text_color,
-          bg_color,
-          border_color,
-          theme,
-        },
+        renderOptions: colorParams,
       }),
     };
   }
@@ -68,13 +53,7 @@ export default async (
       content: renderError({
         message: "Something went wrong",
         secondaryMessage: "Gist ID contains unsafe characters",
-        renderOptions: {
-          title_color,
-          text_color,
-          bg_color,
-          border_color,
-          theme,
-        },
+        renderOptions: colorParams,
       }),
     };
   }
@@ -85,13 +64,8 @@ export default async (
     return {
       status: "success",
       content: renderGistCard(gistData, {
-        title_color,
-        icon_color,
-        text_color,
-        bg_color,
-        theme,
+        ...colorParams,
         border_radius,
-        border_color,
         locale: locale ? locale.toLowerCase() : null,
         show_owner: parseBoolean(show_owner),
         browser_rendering: parseBoolean(browser_rendering),
@@ -106,11 +80,7 @@ export default async (
           message: err.message,
           secondaryMessage: retrieveSecondaryMessage(err),
           renderOptions: {
-            title_color,
-            text_color,
-            bg_color,
-            border_color,
-            theme,
+            ...colorParams,
             show_repo_link: !(err instanceof MissingParamError),
           },
         }),
@@ -120,13 +90,7 @@ export default async (
       status: "error - temporary",
       content: renderError({
         message: "An unknown error occurred",
-        renderOptions: {
-          title_color,
-          text_color,
-          bg_color,
-          border_color,
-          theme,
-        },
+        renderOptions: colorParams,
       }),
     };
   }

@@ -1,5 +1,6 @@
 import { getCardColors, isPrefixedHexColor } from "./color.js";
 import { SECONDARY_ERROR_MESSAGES, TRY_AGAIN_LATER } from "./error.js";
+import { kFormatter } from "./fmt.js";
 import { encodeHTML } from "./html.js";
 import { clampValue } from "./ops.js";
 
@@ -71,9 +72,9 @@ const createLanguageNode = (langName: string, langColor: string): string => {
  * @param params.x X-axis position.
  * @param params.y Y-axis position.
  * @param params.width Width of progress bar.
- * @param params.color Progress color.
+ * @param params.color Optional foreground color as an inline fill fallback.
+ *   When omitted, the color must be set via a `.lang-progress` CSS rule.
  * @param params.progress Progress value.
- * @param params.progressBarBackgroundColor Progress bar bg color.
  * @param params.delay Delay before animation starts.
  * @returns Progress node.
  */
@@ -83,24 +84,17 @@ const createProgressNode = ({
   width,
   color,
   progress,
-  progressBarBackgroundColor,
   delay,
 }: {
   x: number;
   y: number;
   width: number;
-  color: string;
+  color?: string;
   progress: number;
-  progressBarBackgroundColor: string;
   delay: number;
 }): string => {
-  if (!isPrefixedHexColor(color)) {
+  if (color !== undefined && !isPrefixedHexColor(color)) {
     throw new Error(`Invalid progress color: "${color}"`);
-  }
-  if (!isPrefixedHexColor(progressBarBackgroundColor)) {
-    throw new Error(
-      `Invalid progress bar background color: "${progressBarBackgroundColor}"`,
-    );
   }
   if (!Number.isFinite(width)) {
     throw new Error(`Invalid width: "${width}"`);
@@ -119,11 +113,11 @@ const createProgressNode = ({
 
   return `
     <svg width="${width}" x="${x}" y="${y}">
-      <rect data-testid="progress-background" rx="5" ry="5" x="0" y="0" width="${width}" height="8" fill="${progressBarBackgroundColor}"></rect>
+      <rect data-testid="progress-background" class="progress-background" rx="5" ry="5" x="0" y="0" width="${width}" height="8"></rect>
       <svg data-testid="lang-progress" width="${progressPercentage}%">
         <rect
             height="8"
-            fill="${color}"
+            ${color === undefined ? "" : `fill="${color}"`}
             rx="5" ry="5" x="0" y="0"
             class="lang-progress"
             style="animation-delay: ${delay}ms;"
@@ -265,6 +259,112 @@ const iconWithLabel = (
   return flexLayout({ items: [iconSvg, text], gap: 20 }).join("");
 };
 
+/**
+ * Create a labelled stat text item
+ * (a label and its value, optionally with an icon and link).
+ * Shared by the stats and repo cards.
+ *
+ * The caller must ensure that the passed `icon` and `link` are properly sanitized!
+ *
+ * @param params Object that contains the createTextNode parameters.
+ * @param params.icon The sanitized icon to display.
+ * @param params.label The label to display.
+ * @param params.value The value to display.
+ * @param params.id The id of the stat.
+ * @param params.unitSymbol The unit symbol of the stat.
+ * @param params.index The index of the stat.
+ * @param params.showIcons Whether to show icons.
+ * @param params.shiftValuePos Number of pixels the value has to be shifted to the right.
+ * @param params.bold Whether to bold the label.
+ * @param params.numberFormat The format of numbers on card.
+ * @param params.numberPrecision The precision of numbers on card.
+ * @param params.link Sanitized url to link to.
+ * @param params.labelXOffset horizontal offset for label.
+ * @returns The stats card text item SVG object.
+ */
+const createTextNode = ({
+  icon,
+  label,
+  value,
+  id,
+  unitSymbol,
+  index,
+  showIcons,
+  shiftValuePos,
+  bold,
+  numberFormat,
+  numberPrecision,
+  link,
+  labelXOffset = 25,
+}: {
+  icon: string;
+  label: string;
+  value: number | string;
+  id: string;
+  // `| undefined`: card callers forward possibly-undefined per-stat fields
+  unitSymbol?: string | undefined;
+  index: number;
+  showIcons: boolean;
+  shiftValuePos: number;
+  bold: boolean;
+  numberFormat: string;
+  numberPrecision?: number | undefined;
+  link?: string | undefined;
+  labelXOffset?: number;
+}): string => {
+  if (!Number.isFinite(labelXOffset)) {
+    throw new Error(`Invalid labelXOffset: "${labelXOffset}"`);
+  }
+  if (!Number.isFinite(shiftValuePos)) {
+    throw new Error(`Invalid shiftValuePos: "${shiftValuePos}"`);
+  }
+  if (!Number.isFinite(index)) {
+    throw new Error(`Invalid index: "${index}"`);
+  }
+
+  const precision =
+    numberPrecision !== undefined && Number.isFinite(numberPrecision)
+      ? clampValue(numberPrecision, 0, 2)
+      : undefined;
+  // `long` format and the percentage stat keep the raw value; everything else
+  // (always a number here) is abbreviated via kFormatter.
+  const rawValue =
+    numberFormat.toLowerCase() === "long" || id === "prs_merged_percentage";
+  const kValue =
+    rawValue || typeof value !== "number"
+      ? value
+      : kFormatter(value, precision);
+
+  const staggerDelay = (index + 3) * 150;
+  const boldClass = bold ? " bold" : "not_bold";
+  const valueX = (showIcons ? 140 : 120) + (bold ? 5 : 0) + shiftValuePos;
+  const unit = unitSymbol ? ` ${unitSymbol}` : "";
+  const labelOffset = showIcons ? `x="${labelXOffset}"` : "";
+  const iconSvg = showIcons
+    ? `
+    <svg data-testid="icon" class="icon" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+      ${icon}
+    </svg>
+  `
+    : "";
+
+  const content = `
+      ${iconSvg}
+      <text class="stat ${boldClass}" ${labelOffset} y="12.5">${encodeHTML(label)}:</text>
+      <text
+        class="stat ${boldClass}"
+        x="${valueX}"
+        y="12.5"
+        data-testid="${id}"
+      >${kValue}${unit}</text>`;
+  const inner = link ? `<a href="${link}">${content}</a>` : content;
+
+  return `
+    <g class="stagger" style="animation-delay: ${staggerDelay}ms" transform="translate(25, 0)">${inner}
+    </g>
+  `;
+};
+
 // Script parameters.
 const ERROR_CARD_LENGTH = 576.5;
 
@@ -313,7 +413,6 @@ const renderError = ({
     show_repo_link = true,
   } = renderOptions;
 
-  // returns theme based colors with proper overrides and defaults
   const { titleColor, textColor, bgColor, borderColor } = getCardColors({
     title_color,
     text_color,
@@ -542,6 +641,7 @@ export {
   renderError,
   createLanguageNode,
   createProgressNode,
+  createTextNode,
   iconWithLabel,
   flexLayout,
   measureText,

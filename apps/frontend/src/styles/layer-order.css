@@ -1,0 +1,8 @@
+/*
+ * Tailwind's utilities must outrank Starlight's reset, whose `margin: 0` otherwise beats every margin utility in the wizard. 
+ * Preflight stays ahead so the chrome keeps its styling.
+ * Imported by both entry sheets: 
+ * only the first `@layer` wins, and dev loads them in the opposite order to a build.
+ */
+@layer theme, base, components, starlight.base, starlight.reset, starlight.core,
+  starlight.content, starlight.components, starlight.utils, utilities;

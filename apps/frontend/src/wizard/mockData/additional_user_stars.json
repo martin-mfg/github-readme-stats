@@ -1,0 +1,54 @@
+{
+  "data": {
+    "user": {
+      "repositories": {
+        "totalCount": 139,
+        "nodes": [
+          { "name": "classicLogo", "stargazerCount": 1 },
+          { "name": "creativechat", "stargazerCount": 1 },
+          { "name": "verlet_tests", "stargazerCount": 1 },
+          { "name": "blade-checkout-ui-demo", "stargazerCount": 0 },
+          { "name": "tslint-plugin-analytics", "stargazerCount": 0 },
+          { "name": "stargazer", "stargazerCount": 0 },
+          { "name": "react-smooth-range-input", "stargazerCount": 0 },
+          { "name": "csb-git-integration-bug", "stargazerCount": 0 },
+          { "name": "covid-nepal-web", "stargazerCount": 0 },
+          { "name": "shrijan00003.github.io", "stargazerCount": 0 },
+          { "name": "TheBigCB.com", "stargazerCount": 0 },
+          { "name": "html2commonmark", "stargazerCount": 0 },
+          { "name": "test-myaction", "stargazerCount": 0 },
+          { "name": "react-emoji-render", "stargazerCount": 0 },
+          { "name": "sajilo-editor", "stargazerCount": 0 },
+          { "name": "coder-aayush.github.io", "stargazerCount": 0 },
+          { "name": "codesandbox-client", "stargazerCount": 0 },
+          { "name": "product-sans", "stargazerCount": 0 },
+          { "name": "NodejsBlogSystem", "stargazerCount": 0 },
+          { "name": "native-javascript", "stargazerCount": 0 },
+          { "name": "p5.js", "stargazerCount": 0 },
+          { "name": "gatsbytutorials.com", "stargazerCount": 0 },
+          { "name": "hello-world-docker-action", "stargazerCount": 0 },
+          { "name": "glugmvit.github.io", "stargazerCount": 0 },
+          { "name": "react-map-interaction", "stargazerCount": 0 },
+          { "name": "react-external-image", "stargazerCount": 0 },
+          { "name": "gatsby-boilerplate", "stargazerCount": 0 },
+          { "name": "YouBackup", "stargazerCount": 0 },
+          { "name": "npm-expansions", "stargazerCount": 0 },
+          { "name": "Toy-Neural-Network-JS", "stargazerCount": 0 },
+          { "name": "LSystemCreator", "stargazerCount": 0 },
+          { "name": "Happy-2019", "stargazerCount": 0 },
+          { "name": "jquery-navScroll", "stargazerCount": 0 },
+          { "name": "strml.net", "stargazerCount": 0 },
+          { "name": "Logo", "stargazerCount": 0 },
+          { "name": "website", "stargazerCount": 0 },
+          { "name": "anuraghazra.github.io-old", "stargazerCount": 0 },
+          { "name": "Quintus", "stargazerCount": 0 },
+          { "name": "Electron_experiments", "stargazerCount": 0 }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "Y3Vyc29yOnYyOpIAzgd5N08="
+        }
+      }
+    }
+  }
+}

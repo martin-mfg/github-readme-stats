@@ -1,3 +1,5 @@
+import type { RepoInfoFragment } from "../graphql/generated/repo.js";
+
 export interface GistData {
   name: string;
   nameWithOwner: string;
@@ -7,27 +9,28 @@ export interface GistData {
   forksCount: number;
 }
 
-export interface RepositoryData {
-  name: string;
-  nameWithOwner: string;
-  isPrivate: boolean;
-  isArchived: boolean;
-  isTemplate: boolean;
-  stargazerCount: number;
-  description: string;
+/**
+ * What the repo query returns, with `primaryLanguage` loosened:
+ * the schema says `name` is non-null, but the card falls back to defaults for callers passing untyped data.
+ */
+type RepoInfo = Omit<RepoInfoFragment, "primaryLanguage"> & {
   primaryLanguage: {
-    color: string;
-    id: string;
-    name: string;
-  };
-  forkCount: number;
-  starCount: number;
-  totalPRsAuthored: number;
-  totalPRsCommented: number;
-  totalPRsReviewed: number;
-  totalIssuesAuthored: number;
-  totalIssuesCommented: number;
+    color: string | null;
+    id?: string;
+    name: string | null;
+  } | null;
+};
+
+export interface RepoUserStats {
+  // only present when the matching include_* flag is set (see fetchRepoUserStats)
+  totalPRsAuthored?: number;
+  totalPRsCommented?: number;
+  totalPRsReviewed?: number;
+  totalIssuesAuthored?: number;
+  totalIssuesCommented?: number;
 }
+
+export type RepositoryData = RepoInfo & RepoUserStats;
 
 export interface StatsData {
   name: string;
@@ -41,18 +44,23 @@ export interface StatsData {
   totalDiscussionsStarted: number;
   totalDiscussionsAnswered: number;
   contributedTo: number;
+  allTimeContributedTo: number;
   totalPRsAuthored: number;
   totalPRsCommented: number;
   totalPRsReviewed: number;
   totalIssuesAuthored: number;
   totalIssuesCommented: number;
+  totalContributions: number;
   rank: { level: string; percentile: number };
 }
 
 export interface Lang {
   name: string;
-  color: string;
+  // GitHub's GraphQL `Language.color` is nullable — the card falls back to a default.
+  color: string | null;
   size: number;
+  /** Number of repositories the language appears in. */
+  count: number;
 }
 
 export type TopLangData = Record<string, Lang>;
