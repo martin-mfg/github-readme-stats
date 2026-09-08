@@ -1,10 +1,3 @@
-declare module "*.css";
-
-declare module "*.png" {
-  const img: string;
-  export default img;
-}
-
 // This package doesn't have a @types counter part
 declare module "save-svg-as-png" {
   const saveSvgAsPng: (

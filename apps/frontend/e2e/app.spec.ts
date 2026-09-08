@@ -1,25 +1,29 @@
 import { expect, test } from "@playwright/test";
 
+const REPO_URL = "https://github.com/stats-organization/github-stats-extended";
+
 test("load initial page correctly", async ({ page }) => {
   await page.goto("");
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/GitHub Stats Extended/);
 
-  // Page title / header branding
-  await expect(page.getByText("GitHub Stats Extended")).toBeVisible();
+  // Header branding, with the logo beside the wordmark.
+  const siteTitle = page.getByRole("link", { name: "GitHub Stats Extended" });
+  await expect(siteTitle).toBeVisible();
+  await expect(siteTitle.locator("img")).toBeVisible();
 
-  // Logo exists
-  await expect(page.locator('img[alt="logo"]')).toBeVisible();
+  // The two halves of the site, with this one marked as current.
+  await expect(
+    page.getByRole("link", { name: "Wizard", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await expect(
+    page.getByRole("link", { name: "Docs", exact: true }),
+  ).toHaveAttribute("href", "/frontend/docs/");
 
-  // Star on GitHub link
-  const starButton = page.getByRole("link", { name: /star on/i });
-  await expect(starButton).toBeVisible();
-
-  const githubLink = page.locator(
-    'a[href*="github.com/stats-organization/github-stats-extended"]',
-  );
-  await expect(githubLink).toHaveAttribute("target", "_blank");
+  await expect(
+    page.getByRole("link", { name: "GitHub", exact: true }),
+  ).toHaveAttribute("href", REPO_URL);
 
   // Login buttons
   const publicAccessBtn = page.getByRole("button", {
@@ -39,72 +43,53 @@ test("load initial page correctly", async ({ page }) => {
   await expect(guestBtn).toBeEnabled();
 });
 
-test("theme picker switches and persists the theme", async ({ page }) => {
+test("theme selection applies, persists and reaches the wizard", async ({
+  page,
+}) => {
   await page.goto("");
 
   const html = page.locator("html");
-  const trigger = page.getByRole("button", { name: /choose theme/i });
-  const options = page.getByRole("menuitemradio");
+  const themeSelect = page.getByRole("combobox", { name: "Select theme" });
 
-  // The menu is closed initially.
-  await expect(trigger).toBeVisible();
-  await expect(trigger).toHaveAttribute("aria-expanded", "false");
-  await expect(options).toHaveCount(0);
-
-  // Opening it reveals the options (portaled to body, above the stepper).
-  await trigger.click();
-  await expect(trigger).toHaveAttribute("aria-expanded", "true");
-
-  // Read the themes off the options instead of hardcoding their names.
-  const firstTheme = await options.first().getAttribute("data-theme-value");
-  const lastTheme = await options.last().getAttribute("data-theme-value");
-
-  // Selecting an option applies the theme, persists it, and closes the menu.
-  await options.last().click();
-  await expect(html).toHaveAttribute("data-theme", lastTheme ?? "");
-  await expect(options).toHaveCount(0);
+  // The site's own control owns `data-theme`, which is also what daisyUI reads.
+  await themeSelect.selectOption("dark");
+  await expect(html).toHaveAttribute("data-theme", "dark");
   await expect(
-    page.evaluate(() => localStorage.getItem("theme")),
-  ).resolves.toBe(lastTheme);
+    page.evaluate(() => localStorage.getItem("starlight-theme")),
+  ).resolves.toBe("dark");
 
-  // The choice survives a reload and is marked as selected on reopen.
+  // The choice survives a reload.
   await page.reload();
-  await expect(html).toHaveAttribute("data-theme", lastTheme ?? "");
-  await trigger.click();
-  await expect(options.last()).toHaveAttribute("aria-checked", "true");
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  await expect(themeSelect).toHaveValue("dark");
 
-  // Switching to another option works too.
-  await options.first().click();
-  await expect(html).toHaveAttribute("data-theme", firstTheme ?? "");
+  // Switching back works too.
+  await themeSelect.selectOption("light");
+  await expect(html).toHaveAttribute("data-theme", "light");
 });
 
 test("navigates between steps", async ({ page }) => {
   await page.goto("");
 
+  // Scoped to the page content: Astro's dev toolbar has headings of its own.
+  const heading = page.locator("main").getByRole("heading", { level: 1 });
+
   // We are at stage 1
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Login");
+  await expect(heading).toContainText("Login");
 
   // Go to stage 2
   await page.getByRole("button", { name: "Select card" }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Select a Card",
-  );
+  await expect(heading).toContainText("Select a Card");
 
   // Go to stage 3
   await page.getByRole("button", { name: "Modify parameters" }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Modify Card Parameters",
-  );
+  await expect(heading).toContainText("Modify Card Parameters");
 
   // Go to stage 4
   await page.getByRole("button", { name: "Select theme" }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Choose a Theme",
-  );
+  await expect(heading).toContainText("Choose a Theme");
 
   // Go to stage 5
   await page.getByRole("button", { name: "Display card" }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Display your Card",
-  );
+  await expect(heading).toContainText("Display your Card");
 });

@@ -1,0 +1,56 @@
+---
+// Starlight has no nav slot, so the two top-level destinations sit beside the title.
+import Default from "@astrojs/starlight/components/SiteTitle.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const path = Astro.url.pathname;
+const links = [
+  { href: `${base}/`, label: "Wizard", current: !path.startsWith(`${base}/docs`) },
+  { href: `${base}/docs/`, label: "Docs", current: path.startsWith(`${base}/docs`) },
+];
+---
+
+<Default><slot /></Default>
+
+<nav class="app-nav">
+  {
+    links.map(({ href, label, current }) => (
+      <a href={href} aria-current={current ? "page" : undefined}>
+        {label}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .app-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    /* The title wrapper clips its overflow, so the links sit outside it. */
+    margin-inline-start: 1rem;
+  }
+
+  .app-nav a {
+    color: var(--sl-color-white);
+    font-size: var(--sl-text-base);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .app-nav a:hover {
+    color: var(--sl-color-text-accent);
+  }
+
+  .app-nav a[aria-current="page"] {
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+  }
+
+  /* The header gets cramped before the search box collapses. */
+  @media (max-width: 50rem) {
+    .app-nav {
+      display: none;
+    }
+  }
+</style>

@@ -15,5 +15,7 @@ cp -RP apps/backend/.vercel/output/functions/api.func/_dot_vercel_copy/output ap
 rm -rf apps/deployment
 pnpm install
 pnpm build:frontend
+# serve the built site under `/frontend` (wizard) and `/frontend/docs` (docs),
+# matching the Astro `base` paths used by their assets.
 mkdir -p apps/backend/.vercel/output/static/frontend/
 cp -RP apps/frontend/build/. apps/backend/.vercel/output/static/frontend/

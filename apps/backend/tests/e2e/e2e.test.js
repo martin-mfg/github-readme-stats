@@ -201,7 +201,7 @@ beforeAll(async () => {
       return [200, STATS_MOCK_RESPONSE];
     }
 
-    if (query.includes("query userInfo") && variables?.login === USER) {
+    if (query.includes("query topLanguages") && variables?.login === USER) {
       return [200, TOP_LANGS_MOCK_RESPONSE];
     }
 

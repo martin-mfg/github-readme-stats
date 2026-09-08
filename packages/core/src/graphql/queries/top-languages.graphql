@@ -1,0 +1,34 @@
+fragment TopLanguage on LanguageEdge {
+  size
+  node {
+    color
+    name
+  }
+}
+
+fragment TopLanguagesRepository on Repository {
+  name
+  languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+    edges {
+      ...TopLanguage
+    }
+  }
+}
+
+query topLanguages(
+  $login: String!
+  $ownerAffiliations: [RepositoryAffiliation]
+) {
+  user(login: $login) {
+    # do not fetch forks
+    repositories(
+      ownerAffiliations: $ownerAffiliations
+      isFork: false
+      first: 100
+    ) {
+      nodes {
+        ...TopLanguagesRepository
+      }
+    }
+  }
+}

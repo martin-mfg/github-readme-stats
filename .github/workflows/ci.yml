@@ -83,6 +83,10 @@ jobs:
     permissions:
       contents: read
 
+    # Compares the cards we render here against the preview deployment,
+    # which is still on the last commit merged on master.
+    # So any PR that changes card output turns this red until the preview catches up.
+    # Worth a look, just not always a bug.
     continue-on-error: true
 
     steps:
@@ -121,6 +125,12 @@ jobs:
 
       - name: Lint (knip)
         run: pnpm run lint:knip
+
+      - name: Lint (deduped deps)
+        run: pnpm run lint:deps
+
+      - name: Lint (generated GraphQL types)
+        run: pnpm --filter ./packages/core/ run check-graphql-types
 
       - name: Typecheck
         run: pnpm run typecheck

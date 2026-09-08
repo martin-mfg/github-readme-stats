@@ -7,9 +7,10 @@ test("selecting 'None' progress style hides the rank circle", async ({
 
   // Stage 0 -> 2: go to customization
   await page.getByRole("button", { name: "Modify Parameters" }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Modify Card Parameters",
-  );
+  // Scoped to the page content: Astro's dev toolbar has headings of its own.
+  await expect(
+    page.locator("main").getByRole("heading", { level: 1 }),
+  ).toContainText("Modify Card Parameters");
 
   const preview = page.locator("#svgWrapper");
   const rankCircle = preview.locator('[data-testid="rank-circle"]');
@@ -18,7 +19,11 @@ test("selecting 'None' progress style hides the rank circle", async ({
   await expect(preview).toBeAttached();
   await expect(rankCircle).toHaveCount(1);
 
-  await page.getByRole("combobox").selectOption({ label: "None" });
+  // Scoped: the site header has a theme combobox of its own.
+  await page
+    .locator("main")
+    .getByRole("combobox")
+    .selectOption({ label: "None" });
 
   await expect(rankCircle).toHaveCount(0);
 });

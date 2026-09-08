@@ -1,0 +1,25 @@
+fragment GistFileInfo on GistFile {
+  name
+  language {
+    name
+  }
+  size
+}
+
+query gistInfo($gistName: String!) {
+  viewer {
+    gist(name: $gistName) {
+      description
+      owner {
+        login
+      }
+      stargazerCount
+      forks {
+        totalCount
+      }
+      files {
+        ...GistFileInfo
+      }
+    }
+  }
+}

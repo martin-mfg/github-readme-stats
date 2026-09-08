@@ -4,7 +4,8 @@ updates:
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: daily
+      interval: cron
+      cronjob: "45 0 * * 3,6"
     open-pull-requests-limit: 20
     commit-message:
       prefix: "build(deps)"
@@ -31,6 +32,12 @@ updates:
         patterns:
           - "vite"
           - "@vitejs/*"
+      astro:
+        patterns:
+          - "astro"
+          - "astro-*"
+          - "@astrojs/*"
+          - "starlight-*"
       tailwind:
         patterns:
           - "tailwindcss"
@@ -57,6 +64,11 @@ updates:
         patterns:
           - "axios"
           - "axios-*"
+      graphql:
+        patterns:
+          - "graphql"
+          - "@graphql-codegen/*"
+          - "@octokit/graphql-schema"
 
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: github-actions

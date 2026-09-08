@@ -8,6 +8,9 @@ export const data_stats = {
       name: "Anurag Hazra",
       login: "anuraghazra",
       repositoriesContributedTo: { totalCount: 51 },
+      contributionsCollection: {
+        contributionYears: [2022, 2024],
+      },
       commits: {
         totalCommitContributions: 200,
       },

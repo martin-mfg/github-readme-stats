@@ -1,18 +1,18 @@
-import { isPrefixedHexColor, isValidGradient } from "./color.js";
+import { getCardColors, isPrefixedHexColor, isValidGradient } from "./color.js";
 import { encodeHTML } from "./html.js";
 import { flexLayout } from "./render.js";
 
 interface CardColors {
   /** Card title color. */
-  titleColor?: string;
+  titleColor: string;
   /** Card text color. */
-  textColor?: string;
+  textColor: string;
   /** Card icon color. */
-  iconColor?: string;
+  iconColor: string;
   /** Card background color. */
-  bgColor?: string | Array<string>;
+  bgColor: string | Array<string>;
   /** Card border color. */
-  borderColor?: string;
+  borderColor: string;
 }
 
 class Card {
@@ -21,9 +21,10 @@ class Card {
   hideBorder: boolean;
   hideTitle: boolean;
   border_radius: number;
-  colors: CardColors;
+  colors: { light: CardColors; dark: CardColors | null };
   title: string;
   css: string;
+  darkCss: string;
   paddingX: number;
   paddingY: number;
   titlePrefixIcon: string | undefined;
@@ -40,7 +41,9 @@ class Card {
    * @param props.width Card width.
    * @param props.height Card height.
    * @param props.border_radius Card border radius.
-   * @param props.colors Card colors arguments.
+   * @param props.colors Card colors for light and dark mode.
+   * @param props.colors.light Card colors for light mode.
+   * @param props.colors.dark Card colors for dark mode, or `null` when no dark-mode override is needed.
    * @param props.customTitle Card custom title.
    * @param props.defaultTitle Card default title.
    * @param props.titlePrefixIcon Sanitized card title prefix icon.
@@ -49,16 +52,17 @@ class Card {
     width = 100,
     height = 100,
     border_radius = 4.5,
-    colors = {},
+    colors = { light: getCardColors({}), dark: null },
     customTitle,
     defaultTitle = "",
     titlePrefixIcon,
   }: {
     width?: number;
     height?: number;
-    border_radius?: number;
-    colors?: CardColors;
-    customTitle?: string;
+    // `| undefined`: card callers forward possibly-undefined query options
+    border_radius?: number | undefined;
+    colors?: { light: CardColors; dark: CardColors | null };
+    customTitle?: string | undefined;
     defaultTitle?: string;
     titlePrefixIcon?: string;
   }) {
@@ -70,11 +74,11 @@ class Card {
 
     this.border_radius = parseFloat(String(border_radius));
 
-    // returns theme based colors with proper overrides and defaults
     this.colors = colors;
     this.title = customTitle === undefined ? defaultTitle : customTitle;
 
     this.css = "";
+    this.darkCss = "";
 
     this.paddingX = 25;
     this.paddingY = 35;
@@ -105,12 +109,17 @@ class Card {
   }
 
   /**
-   * The caller must ensure that the passed `css` string is properly sanitized!
+   * Sets the card CSS for light and dark mode.
    *
-   * @param value The sanitized CSS to add to the card.
+   * The caller must ensure that the passed CSS strings are properly sanitized!
+   *
+   * @param props The props object.
+   * @param props.light CSS applied unconditionally (light/default mode).
+   * @param props.dark CSS placed inside a `@media (prefers-color-scheme: dark)` block. Pass `null` when not needed.
    */
-  setCSS(value: string): void {
-    this.css = value;
+  setCSS({ light, dark }: { light: string; dark?: string | null }): void {
+    this.css = light;
+    this.darkCss = dark ?? "";
   }
 
   /**
@@ -183,19 +192,12 @@ class Card {
    * @returns The rendered card gradient.
    */
   renderGradient(): string {
-    if (typeof this.colors.bgColor !== "object") {
-      return "";
-    }
-    if (!isValidGradient(this.colors.bgColor)) {
-      throw new Error(`Invalid gradient: ${this.colors.bgColor.join(",")}`);
-    }
-
-    const gradients = this.colors.bgColor.slice(1);
-    return `
-        <defs>
+    const buildGradientDef = (id: string, bgColor: Array<string>): string => {
+      const gradients = bgColor.slice(1);
+      return `
           <linearGradient
-            id="gradient"
-            gradientTransform="rotate(${String(this.colors.bgColor[0])})"
+            id="${id}"
+            gradientTransform="rotate(${String(bgColor[0])})"
             gradientUnits="userSpaceOnUse"
           >
             ${gradients
@@ -204,7 +206,31 @@ class Card {
                 return `<stop offset="${offset}%" stop-color="#${grad}" />`;
               })
               .join(",")}
-          </linearGradient>
+          </linearGradient>`;
+    };
+
+    if (
+      typeof this.colors.light.bgColor === "object" &&
+      !isValidGradient(this.colors.light.bgColor)
+    ) {
+      throw new Error(
+        `Invalid gradient: ${this.colors.light.bgColor.join(",")}`,
+      );
+    }
+    if (
+      this.colors.dark &&
+      typeof this.colors.dark.bgColor === "object" &&
+      !isValidGradient(this.colors.dark.bgColor)
+    ) {
+      throw new Error(
+        `Invalid dark gradient: ${this.colors.dark.bgColor.join(",")}`,
+      );
+    }
+
+    return `
+        <defs>
+          ${typeof this.colors.light.bgColor === "object" ? buildGradientDef("gradient", this.colors.light.bgColor) : ""}
+          ${this.colors.dark && typeof this.colors.dark.bgColor === "object" ? buildGradientDef("gradient-dark", this.colors.dark.bgColor) : ""}
         </defs>
         `;
   }
@@ -237,6 +263,28 @@ class Card {
   };
 
   /**
+   * Builds the @media (prefers-color-scheme: dark) CSS block for the card.
+   * Returns an empty string when no dark colors are set.
+   */
+  private renderDarkMediaBlock(): string {
+    if (!this.colors.dark) {
+      return "";
+    }
+
+    const bgFill =
+      typeof this.colors.dark.bgColor === "object"
+        ? "url(#gradient-dark)"
+        : this.colors.dark.bgColor;
+
+    return `
+          @media (prefers-color-scheme: dark) {
+            .header { fill: ${this.colors.dark.titleColor}; }
+            .card-bg { fill: ${bgFill}; stroke: ${this.colors.dark.borderColor}; }
+            ${this.darkCss}
+          }`;
+  }
+
+  /**
    * The caller must ensure that the passed `body` string is properly sanitized!
    *
    * @param body The sanitized inner body of the card.
@@ -246,26 +294,21 @@ class Card {
     if (!Number.isFinite(this.border_radius)) {
       throw new Error(`Invalid border radius: "${this.border_radius}"`);
     }
-    if (
-      this.colors.titleColor !== undefined &&
-      !isPrefixedHexColor(this.colors.titleColor)
-    ) {
-      throw new Error(`Invalid title color: "${this.colors.titleColor}"`);
+    if (!isPrefixedHexColor(this.colors.light.titleColor)) {
+      throw new Error(`Invalid title color: "${this.colors.light.titleColor}"`);
+    }
+    if (!isPrefixedHexColor(this.colors.light.borderColor)) {
+      throw new Error(
+        `Invalid border color: "${this.colors.light.borderColor}"`,
+      );
     }
     if (
-      this.colors.borderColor !== undefined &&
-      !isPrefixedHexColor(this.colors.borderColor)
-    ) {
-      throw new Error(`Invalid border color: "${this.colors.borderColor}"`);
-    }
-    if (
-      this.colors.bgColor !== undefined &&
-      !(typeof this.colors.bgColor === "object"
-        ? isValidGradient(this.colors.bgColor)
-        : isPrefixedHexColor(this.colors.bgColor))
+      !(typeof this.colors.light.bgColor === "object"
+        ? isValidGradient(this.colors.light.bgColor)
+        : isPrefixedHexColor(this.colors.light.bgColor))
     ) {
       throw new Error(
-        `Invalid background color: ${String(this.colors.bgColor)}`,
+        `Invalid background color: ${String(this.colors.light.bgColor)}`,
       );
     }
 
@@ -284,7 +327,7 @@ class Card {
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
-            fill: ${String(this.colors.titleColor)};
+            fill: ${this.colors.light.titleColor};
             animation: fadeInAnimation 0.8s ease-in-out forwards;
           }
           @supports(-moz-appearance: auto) {
@@ -292,6 +335,7 @@ class Card {
             .header { font-size: 15.5px; }
           }
           ${this.css}
+          ${this.renderDarkMediaBlock()}
 
           ${this.getAnimations()}
           ${
@@ -305,16 +349,17 @@ class Card {
 
         <rect
           data-testid="card-bg"
+          class="card-bg"
           x="0.5"
           y="0.5"
           rx="${this.border_radius}"
           height="99%"
-          stroke="${String(this.colors.borderColor)}"
+          stroke="${this.colors.light.borderColor}"
           width="${this.width - 1}"
           fill="${
-            typeof this.colors.bgColor === "object"
+            typeof this.colors.light.bgColor === "object"
               ? "url(#gradient)"
-              : String(this.colors.bgColor)
+              : this.colors.light.bgColor
           }"
           stroke-opacity="${this.hideBorder ? 0 : 1}"
         />

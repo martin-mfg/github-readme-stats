@@ -75,27 +75,22 @@ describe("Card", () => {
     const card = new Card({ titlePrefixIcon: icons.contribs });
 
     document.body.innerHTML = card.render(``);
-    expect(document.getElementsByClassName("icon")[0]).toBeInTheDocument();
+    expect(document.querySelector(".icon")).toBeInTheDocument();
   });
 
   it("title should not have prefix icon", () => {
     const card = new Card({});
 
     document.body.innerHTML = card.render(``);
-    expect(document.getElementsByClassName("icon")[0]).toBeUndefined();
+    expect(document.querySelector(".icon")).not.toBeInTheDocument();
   });
 
   it("should have proper height, width", () => {
     const card = new Card({ height: 200, width: 200 });
     document.body.innerHTML = card.render(``);
-    expect(document.getElementsByTagName("svg")[0]).toHaveAttribute(
-      "height",
-      "200",
-    );
-    expect(document.getElementsByTagName("svg")[0]).toHaveAttribute(
-      "width",
-      "200",
-    );
+    const svg = document.querySelector("svg");
+    expect(svg).toHaveAttribute("height", "200");
+    expect(svg).toHaveAttribute("width", "200");
   });
 
   it("should have less height after title is hidden", () => {
@@ -103,10 +98,7 @@ describe("Card", () => {
     card.setHideTitle(true);
 
     document.body.innerHTML = card.render(``);
-    expect(document.getElementsByTagName("svg")[0]).toHaveAttribute(
-      "height",
-      "170",
-    );
+    expect(document.querySelector("svg")).toHaveAttribute("height", "170");
   });
 
   it("main-card-body should have proper when title is visible", () => {
@@ -130,22 +122,20 @@ describe("Card", () => {
   });
 
   it("should render with correct colors", () => {
-    // returns theme based colors with proper overrides and defaults
-    const { titleColor, textColor, iconColor, bgColor } = getCardColors({
-      title_color: "f00",
-      icon_color: "0f0",
-      text_color: "00f",
-      bg_color: "fff",
-      theme: "default",
-    });
+    const { titleColor, textColor, iconColor, bgColor, borderColor } =
+      getCardColors({
+        title_color: "f00",
+        icon_color: "0f0",
+        text_color: "00f",
+        bg_color: "fff",
+        theme: "default",
+      });
 
     const card = new Card({
       height: 200,
       colors: {
-        titleColor,
-        textColor,
-        iconColor,
-        bgColor,
+        light: { titleColor, textColor, iconColor, bgColor, borderColor },
+        dark: null,
       },
     });
     document.body.innerHTML = card.render(``);
@@ -160,22 +150,22 @@ describe("Card", () => {
       "#fff",
     );
   });
+
   it("should render gradient backgrounds", () => {
-    const { titleColor, textColor, iconColor, bgColor } = getCardColors({
-      title_color: "f00",
-      icon_color: "0f0",
-      text_color: "00f",
-      bg_color: "90,fff,000,f00",
-      theme: "default",
-    });
+    const { titleColor, textColor, iconColor, bgColor, borderColor } =
+      getCardColors({
+        title_color: "f00",
+        icon_color: "0f0",
+        text_color: "00f",
+        bg_color: "90,fff,000,f00",
+        theme: "default",
+      });
 
     const card = new Card({
       height: 200,
       colors: {
-        titleColor,
-        textColor,
-        iconColor,
-        bgColor,
+        light: { titleColor, textColor, iconColor, bgColor, borderColor },
+        dark: null,
       },
     });
     document.body.innerHTML = card.render(``);

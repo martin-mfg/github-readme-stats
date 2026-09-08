@@ -36,8 +36,8 @@ function getRandomInt(max: number): number {
  */
 type FetcherResponse<TData = unknown> = AxiosResponse<TData & ResponseErrors>;
 
-type FetcherFunction<TData = unknown> = (
-  variables: Record<string, unknown>,
+type FetcherFunction<TData = unknown, TVariables = Record<string, unknown>> = (
+  variables: TVariables,
   token: string,
   retriesForTests?: number,
 ) => Promise<FetcherResponse<TData>>;
@@ -46,14 +46,15 @@ type FetcherFunction<TData = unknown> = (
  * Try to execute the fetcher function until it succeeds or the max number of retries is reached.
  *
  * @template TData Shape of `response.data` returned by the fetcher.
+ * @template TVariables Variables the fetcher accepts.
  * @param fetcher The fetcher function.
  * @param variables Object with arguments to pass to the fetcher function.
  * @param pat Optional PAT override.
  * @returns The response from the fetcher function.
  */
-const retryer = async <TData = unknown>(
-  fetcher: FetcherFunction<TData>,
-  variables: Record<string, unknown>,
+const retryer = async <TData = unknown, TVariables = Record<string, unknown>>(
+  fetcher: FetcherFunction<TData, TVariables>,
+  variables: TVariables,
   pat: string | null = null,
 ): Promise<FetcherResponse<TData>> => {
   const PATs = pat

@@ -1,0 +1,56 @@
+name: Generate Themes Doc
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "packages/core/src/themes/index.ts"
+      - "scripts/generate-theme-readme.js"
+  workflow_dispatch:
+  schedule:
+    #        ┌───────────── minute (0 - 59)
+    #        │ ┌───────────── hour (0 - 23)
+    #        │ │  ┌───────────── day of the month (1 - 31)
+    #        │ │  │   ┌───────────── month (1 - 12 or JAN-DEC)
+    #        │ │  │   │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+    #        │ │  │   │ │
+    #        │ │  │   │ │
+    #        │ │  │   │ │
+    #        * *  *   * *
+    - cron: "45 22 */7 * *"
+
+permissions: {}
+
+jobs:
+  generate-theme-doc:
+    runs-on: ubuntu-latest
+    name: Generate Themes Doc
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install-dependencies
+
+      - name: Generate themes doc
+        run: pnpm run generate-theme-readme
+
+      - name: Create Pull Request if the themes doc has changed
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          commit-message: "docs(frontend): update available themes page"
+          branch: "update_themes_doc/patch"
+          delete-branch: true
+          title: Update available themes page
+          body: >-
+            The [generate-theme-readme](https://github.com/stats-organization/github-stats-extended/actions/workflows/generate-theme-readme.yml)
+            workflow detected changes in
+            [`packages/core/src/themes/index.ts`](https://github.com/stats-organization/github-stats-extended/blob/master/packages/core/src/themes/index.ts)
+            and regenerated the Available Themes page,
+            [`apps/frontend/src/content/docs/docs/customization/themes.md`](https://github.com/stats-organization/github-stats-extended/blob/master/apps/frontend/src/content/docs/docs/customization/themes.md).
+          labels: "ci"

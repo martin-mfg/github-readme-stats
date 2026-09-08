@@ -1,0 +1,39 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+
+import { Wizard } from "../wizard/Wizard";
+
+// Tailwind and daisyUI, loaded only here: the docs pages are styled by Starlight.
+import "../index.css";
+---
+
+{/* `splash` drops the sidebar and table of contents, leaving the wizard the full width. */}
+<StarlightPage
+  frontmatter={{
+    title: "Card wizard",
+    description: "Build your GitHub stats card and copy its markdown.",
+    template: "splash",
+  }}
+>
+  {/* `not-content` opts out of the prose spacing Starlight applies to markdown. */}
+  <div class="not-content wizard bg-base-100"><Wizard client:only="react" /></div>
+</StarlightPage>
+
+{/* Only this page loads these rules, so the docs keep Starlight's reading column. */}
+<style is:global>
+  /* Starlight caps the content at a reading width; the wizard uses the whole viewport. */
+  :root {
+    --sl-main-pad: 0rem;
+  }
+  main .sl-container {
+    max-width: none;
+  }
+  main .content-panel {
+    padding: 0;
+  }
+
+  /* Every wizard stage heads its own section, so the page title would be a second `h1`. */
+  .content-panel:has(> .sl-container > #_top) {
+    display: none;
+  }
+</style>

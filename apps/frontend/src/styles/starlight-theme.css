@@ -1,0 +1,52 @@
+@import "./layer-order.css";
+
+/*
+ * Gives the docs the wizard's accent and GitHub's dark background, so the two
+ * halves read as one site.
+ */
+:root {
+  --app-primary: #2f80ed;
+
+  --sl-font: "Segoe UI", Ubuntu, Sans-Serif;
+  --sl-color-accent: var(--app-primary);
+  --sl-color-accent-low: color-mix(in oklab, var(--app-primary), #000 45%);
+  --sl-color-accent-high: color-mix(in oklab, var(--app-primary), #fff 45%);
+  --sl-color-text-accent: var(--app-primary);
+}
+
+:root[data-theme="dark"] {
+  --sl-color-bg: #0d1117;
+  --sl-color-bg-sidebar: #0d1117;
+}
+
+/* Prose styles render images as blocks; shrink-wrap any link that wraps one. */
+.sl-markdown-content a:has(> img) {
+  display: inline-block;
+}
+
+/* Prose styles render images as blocks, so the row is explicit. */
+.card-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.card-row a {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.card-row img {
+  max-width: 100%;
+  height: auto;
+}
+
+/*
+ * `prefers-color-scheme` cannot see the site theme, so pick the card by `data-theme`.
+ * `plugins/rehypeCardImages.ts` writes these classes; keep class names in sync with that file.
+ */
+:root[data-theme="dark"] .card-preview-light,
+:root[data-theme="light"] .card-preview-dark {
+  display: none;
+}

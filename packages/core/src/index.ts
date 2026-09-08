@@ -9,7 +9,8 @@ export { retryer } from "./common/retryer.js";
 
 export { renderError } from "./common/render.js";
 
-export { dateDiff, clampValue } from "./common/ops.js";
+export { clampValue } from "./common/ops.js";
+export { dateDiff } from "./common/date.js";
 
 export { logger } from "./common/log.js";
 export { request } from "./common/http.js";
@@ -23,3 +24,4 @@ export { default as wakatime } from "./api/wakatime.js";
 export { getConfig, loadConfigFromEnv } from "./common/config.js";
 
 export { themes } from "./themes/index.js";
+export type { ThemeName } from "./themes/index.js";

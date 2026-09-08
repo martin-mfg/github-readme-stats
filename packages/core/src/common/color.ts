@@ -1,4 +1,5 @@
 import { themes } from "../themes/index.js";
+import type { ThemeName } from "../themes/index.js";
 
 /** Matches a 3-, 4-, 6-, or 8-digit hex color with no leading `#`. */
 const HEX_COLOR =
@@ -114,7 +115,37 @@ interface CardColors {
   bgColor: string | Array<string>;
   borderColor: string;
   ringColor: string;
+  progBarBgColor: string;
 }
+
+/**
+ * Every color param a card accepts, before any `_light` / `_dark` suffix.
+ *
+ * Single source of truth: the param types and {@link COLOR_PARAM_KEYS} are all
+ * derived from this, so adding a param here is enough.
+ */
+const BASE_COLOR_KEYS = [
+  "title_color",
+  "icon_color",
+  "text_color",
+  "bg_color",
+  "border_color",
+  "ring_color",
+  "prog_bar_bg_color",
+  "theme",
+] as const;
+
+const THEME_VARIANTS = ["light", "dark"] as const;
+
+type BaseColorKey = (typeof BASE_COLOR_KEYS)[number];
+type ThemeVariant = (typeof THEME_VARIANTS)[number];
+
+/**
+ * Object with all input color params. Not every field is consumed by every card
+ * (e.g. `prog_bar_bg_color` is only used by the top-languages card's `normal`
+ * layout).
+ */
+type ColorInput = Partial<Record<BaseColorKey, string | undefined>>;
 
 /**
  * Returns theme based colors with proper overrides and defaults.
@@ -126,6 +157,7 @@ interface CardColors {
  * @param props.bg_color Card background color.
  * @param props.border_color Card border color.
  * @param props.ring_color Card ring color.
+ * @param props.prog_bar_bg_color Progress bar background color.
  * @param props.theme Card theme.
  * @returns Card colors.
  */
@@ -136,21 +168,14 @@ const getCardColors = ({
   bg_color,
   border_color,
   ring_color,
+  prog_bar_bg_color,
   theme,
-}: {
-  title_color?: string | undefined;
-  text_color?: string | undefined;
-  icon_color?: string | undefined;
-  bg_color?: string | undefined;
-  border_color?: string | undefined;
-  ring_color?: string | undefined;
-  theme?: string | undefined;
-}): CardColors => {
+}: ColorInput): CardColors => {
   const defaultTheme = themes.default;
   const isThemeProvided = theme !== undefined && theme in themes;
 
   const selectedTheme = isThemeProvided
-    ? themes[theme as keyof typeof themes]
+    ? themes[theme as ThemeName]
     : defaultTheme;
 
   const defaultBorderColor =
@@ -167,8 +192,6 @@ const getCardColors = ({
 
   // get the color provided by the user else the theme color
   // finally if both colors are invalid we use the titleColor
-  // NOTE: no built-in theme defines `ring_color`, so it falls back to the title color.
-  const ringColor = fallbackColor(ring_color, titleColor);
   const iconColor = fallbackColor(
     icon_color || selectedTheme.icon_color,
     "#" + defaultTheme.icon_color,
@@ -186,11 +209,16 @@ const getCardColors = ({
     border_color || defaultBorderColor,
     "#" + defaultBorderColor,
   );
+  // No theme defines `ring_color`, so it falls back to the title color.
+  const ringColor = fallbackColor(ring_color, titleColor);
+  // No theme defines `prog_bar_bg_color`, so it falls back to "#ddd".
+  const progBarBgColor = fallbackColor(prog_bar_bg_color, "#ddd");
 
   if (
     typeof titleColor !== "string" ||
     typeof textColor !== "string" ||
     typeof ringColor !== "string" ||
+    typeof progBarBgColor !== "string" ||
     typeof iconColor !== "string" ||
     typeof borderColor !== "string"
   ) {
@@ -199,14 +227,135 @@ const getCardColors = ({
     );
   }
 
-  return { titleColor, iconColor, textColor, bgColor, borderColor, ringColor };
+  return {
+    titleColor,
+    iconColor,
+    textColor,
+    bgColor,
+    borderColor,
+    ringColor,
+    progBarBgColor,
+  };
 };
 
+type LightDarkColorParams = Partial<
+  Record<`${BaseColorKey}_${ThemeVariant}`, string | undefined>
+>;
+
+/**
+ * Returns the light- or dark-mode-specific color params, given a set of
+ * raw query params. Also removes the "_light" or "_dark" suffixes.
+ *
+ * @param params Raw query params with optional `_light` / `_dark` suffixes.
+ * @param suffix `"_light"` or `"_dark"`.
+ * @returns ColorInput with the suffix stripped, ready for `getCardColors`.
+ */
+const extractLightDarkColors = (
+  params: LightDarkColorParams,
+  suffix: `_${ThemeVariant}`,
+): ColorInput =>
+  Object.fromEntries(
+    BASE_COLOR_KEYS.map((key) => [key, params[`${key}${suffix}`]]),
+  );
+
+/**
+ * Returns resolved colors for both light and dark mode given all input params.
+ *
+ * Each mode resolves independently, then runs the normal `getCardColors` precedence
+ * (explicit color -> theme color -> default theme):
+ *   light: `theme_light ?? theme`, with `*_light` params overriding general ones
+ *   dark:  `theme_dark  ?? theme`, with `*_dark`  params overriding general ones
+ *
+ * Anything a mode does not override falls back to the general params,
+ * so a partial override such as `bg_color_dark` alone keeps every other color from the base theme.
+ *
+ * When no `_light` / `_dark` param is provided at all, `darkColors` is `null` and the caller emits no dark-mode block.
+ *
+ * @param params Raw query params, containing both general and `_light`/`_dark` suffixed colors and themes.
+ * @returns `{ lightColors, darkColors }`, resolved colors for both light and dark mode
+ */
+const getLightDarkColors = (
+  params: ColorInput & LightDarkColorParams,
+): { lightColors: CardColors; darkColors: CardColors | null } => {
+  const lightOverrides = extractLightDarkColors(params, "_light");
+  const darkOverrides = extractLightDarkColors(params, "_dark");
+
+  const hasModeOverrides =
+    Object.values(lightOverrides).some((v) => v !== undefined) ||
+    Object.values(darkOverrides).some((v) => v !== undefined);
+
+  if (!hasModeOverrides) {
+    return { lightColors: getCardColors(params), darkColors: null };
+  }
+
+  const defined = (obj: ColorInput): ColorInput =>
+    Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined));
+
+  return {
+    lightColors: getCardColors({ ...params, ...defined(lightOverrides) }),
+    darkColors: getCardColors({ ...params, ...defined(darkOverrides) }),
+  };
+};
+
+type ColorParams = ColorInput & LightDarkColorParams;
+
+const COLOR_PARAM_KEYS: ReadonlyArray<keyof ColorParams> = [
+  ...BASE_COLOR_KEYS,
+  ...THEME_VARIANTS.flatMap((variant) =>
+    BASE_COLOR_KEYS.map((key) => `${key}_${variant}` as const),
+  ),
+];
+
+/**
+ * Picks all color-related parameters from a query object.
+ *
+ * @param query Raw query parameters.
+ * @returns All color-related parameters.
+ */
+const pickColorParams = (
+  query: Record<string, string | undefined>,
+): ColorParams =>
+  Object.fromEntries(
+    COLOR_PARAM_KEYS.filter((k) => k in query).map((k) => [k, query[k]]),
+  );
+
+/** Params naming a theme rather than holding a color value. */
+const THEME_PARAM_KEYS: ReadonlyArray<keyof ColorParams> = [
+  "theme",
+  ...THEME_VARIANTS.map((variant) => `theme_${variant}` as const),
+];
+
+/**
+ * Finds the first color param holding an invalid color.
+ *
+ * Theme params are skipped: they name a theme, and an unknown name falls back
+ * to the default rather than being an error.
+ *
+ * @param params Color params, as returned by {@link pickColorParams}.
+ * @returns The first invalid param name, or null if all are valid.
+ */
+const findInvalidColorParam = (params: ColorParams): string | null =>
+  findInvalidColor(
+    Object.fromEntries(
+      Object.entries(params).filter(
+        ([key]) => !THEME_PARAM_KEYS.includes(key as keyof ColorParams),
+      ),
+    ),
+  );
+
 export {
-  fallbackColor,
   getCardColors,
+  getLightDarkColors,
   findInvalidColor,
+  findInvalidColorParam,
+  pickColorParams,
   isValidGradient,
   isBareHexColor,
   isPrefixedHexColor,
+
+  // Not re-exported from the package index: internal,
+  // exposed so tests can pin the accepted param list.
+  BASE_COLOR_KEYS,
+  THEME_VARIANTS,
+  COLOR_PARAM_KEYS,
 };

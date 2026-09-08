@@ -16,22 +16,23 @@ on:
 permissions: {}
 
 jobs:
-  triggerRepeatRecent:
-    if: |
-      github.repository == 'anuraghazra/github-readme-stats' ||
-      github.repository == 'stats-organization/github-readme-stats' ||
-      github.repository == 'stats-organization/github-stats-extended'
+  repeat-recent-requests:
+    if: github.repository == 'stats-organization/github-stats-extended'
     name: Trigger server to update cached data.
     runs-on: ubuntu-latest
     steps:
       - name: Make Request
-        id: myRequest
-        uses: fjogeleit/http-request-action@f98bb26551cd1af7d3eb2674578a80754ece88db # v2
-        with:
-          url: "https://github-stats-extended.vercel.app/api/repeat-recent"
-          method: "POST"
-          timeout: "300000"
-      - name: Show Response
         run: |
-          echo ${{ steps.myRequest.outputs.response }}
-          echo ${{ steps.myRequest.outputs.status }}
+          args=(
+            --silent --show-error            # no progress bar, but still report errors
+            --request POST                   # the only thing the endpoint checks
+            --location                       # a redirect would otherwise pass the status check
+            --max-redirs 5                   # bounded well below curl's default of 50
+            --speed-limit 1 --speed-time 360 # give up after 360s of no traffic
+            --output response.txt            # keep the body out of the status capture
+            --write-out "%{http_code}"       # status is all we capture on stdout
+          )
+          status=$(curl "${args[@]}" "https://github-stats-extended.vercel.app/api/repeat-recent")
+          cat response.txt
+          printf '\nstatus: %s\n' "$status"
+          test "$status" -lt 400
