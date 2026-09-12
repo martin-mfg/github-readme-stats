@@ -270,7 +270,7 @@ const extractLightDarkColors = (
  * @returns `{ lightColors, darkColors }`, resolved colors for both light and dark mode
  */
 const getLightDarkColors = (
-  params: ColorInput & LightDarkColorParams,
+  params: ColorParams,
 ): { lightColors: CardColors; darkColors: CardColors | null } => {
   const lightOverrides = extractLightDarkColors(params, "_light");
   const darkOverrides = extractLightDarkColors(params, "_dark");

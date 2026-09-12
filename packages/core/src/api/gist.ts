@@ -59,9 +59,12 @@ export default async (
     };
   }
 
-  const borderRadius =
+  const borderRadiusParsed =
     border_radius === undefined ? undefined : parseFloat(border_radius);
-  if (borderRadius !== undefined && !Number.isFinite(borderRadius)) {
+  if (
+    borderRadiusParsed !== undefined &&
+    !Number.isFinite(borderRadiusParsed)
+  ) {
     return {
       status: "error - permanent",
       content: renderError({
@@ -90,7 +93,7 @@ export default async (
       status: "success",
       content: renderGistCard(gistData, {
         ...colorParams,
-        border_radius: borderRadius,
+        border_radius: borderRadiusParsed,
         show_owner: parseBoolean(show_owner),
         browser_rendering: parseBoolean(browser_rendering),
         hide_border: parseBoolean(hide_border),
