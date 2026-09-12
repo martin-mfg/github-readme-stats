@@ -46,13 +46,21 @@ It works everywhere, including GitHub sponsorship pages, where the other light/d
 
 GitHub-Stats-Extended adds `light_github` and `dark_github` [themes](/frontend/docs/customization/themes/) that exactly match GitHub's own UI colors. For repo and gist cards use `light_github_repocard` and `dark_github_repocard`, which differ only in icon color.
 
-### New Contributions stat
+### New contributions stat
 
 GitHub-Stats-Extended adds an optional stat showing the number of [contributions](https://docs.github.com/en/account-and-profile/reference/profile-contributions-reference#what-counts-as-a-contribution) (commits, pull requests, issues, etc.) across all years of a user's history. Enable it with `&show=contributions`. Whether private contributions are counted depends on [your profile visibility settings](https://docs.github.com/en/account-and-profile/how-tos/contribution-settings/manage-visibility-settings-for-private-contributions-and-achievements#changing-the-visibility-of-your-private-contributions).
 
 :::note
 The pre-existing "Contributed to" stat counts repositories a user has contributed to, not contributions.
 :::
+
+### New options for "contributed-to" stats
+
+GitHub-Stats-Extended adds an `all_time_contribs` stat that shows the number of repositories a user has contributed to across all years — not just the past year like the default `contribs` stat.
+Enable it with [`&show=all_time_contribs`](/frontend/docs/cards/stats/#showing-additional-individual-stats).
+
+GitHub-Stats-Extended also adds a parameter [`contribs_include_own_repos`](/frontend/docs/cards/stats/#options) to include the user's own repositories in the `contribs` and `all_time_contribs` stats.
+By default, both stats exclude them and only count repositories owned by other users or organizations.
 
 ### Customization of top languages card
 

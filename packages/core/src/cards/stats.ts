@@ -9,7 +9,7 @@ import { createTextNode, flexLayout, measureText } from "../common/render.js";
 import type { StatsData } from "../fetchers/types.js";
 import { statCardLocales, wakatimeCardLocales } from "../translations.js";
 
-import type { CommonOptions } from "./common-options.js";
+import type { CommonCardOptions } from "./options.js";
 
 const CARD_MIN_WIDTH = 287;
 const CARD_DEFAULT_WIDTH = 287;
@@ -20,7 +20,8 @@ const RANK_ONLY_CARD_DEFAULT_WIDTH = 290;
 
 type RankIcon = "default" | "github" | "percentile";
 
-interface StatCardOptions extends CommonOptions {
+interface StatCardOptions extends CommonCardOptions {
+  locale: string;
   hide: Array<string>;
   show_icons: boolean;
   hide_title: boolean;
@@ -243,6 +244,7 @@ const renderStatsCard = (
     totalDiscussionsStarted,
     totalDiscussionsAnswered,
     contributedTo,
+    allTimeContributedTo,
     totalPRsAuthored,
     totalPRsCommented,
     totalPRsReviewed,
@@ -431,6 +433,15 @@ const renderStatsCard = (
     value: contributedTo,
     id: "contribs",
   };
+
+  if (show.includes("all_time_contribs")) {
+    STATS["all_time_contribs"] = {
+      icon: icons.contribs,
+      label: i18n.t("statcard.all-time-contribs"),
+      value: allTimeContributedTo,
+      id: "all_time_contribs",
+    };
+  }
 
   const isLongLocale = locale ? LONG_LOCALES.includes(locale) : false;
 
