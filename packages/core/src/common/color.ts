@@ -105,15 +105,22 @@ const fallbackColor = (
 };
 
 /**
- * Object containing card colors.
+ * Resolved card colors for a single color scheme, as written into the SVG.
  */
 interface CardColors {
+  /** Card title color. */
   titleColor: string;
+  /** Card icon color. */
   iconColor: string;
+  /** Card text color. */
   textColor: string;
+  /** Card background color, or a gradient as `[angle, ...stops]`. */
   bgColor: string | Array<string>;
+  /** Card border color. */
   borderColor: string;
+  /** Stats card rank ring color. */
   ringColor: string;
+  /** Progress bar background color. */
   progBarBgColor: string;
 }
 
@@ -338,6 +345,7 @@ const findInvalidColorParam = (params: ColorParams): string | null =>
     ),
   );
 
+export type { CardColors };
 export type { ColorParams };
 
 export {
